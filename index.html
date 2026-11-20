@@ -2,116 +2,1009 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>RYKERLORD</title>
   <style>
+    :root {
+      --bg: #000000;
+      --surface: #111111;
+      --surface-2: #1c1c1e;
+      --text: #ffffff;
+      --muted: #8e8e93;
+      --border: #2c2c2e;
+      --accent: #38bdf8;
+      --accent-text: #000000;
+      --msg-in: #1c1c1e;
+      --msg-out: #0284c7;
+      --msg-out-text: #ffffff;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    [data-theme="white"] {
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --surface-2: #f1f5f9;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #0284c7;
+      --accent-text: #ffffff;
+      --msg-in: #e2e8f0;
+      --msg-out: #0284c7;
+      --msg-out-text: #ffffff;
+    }
+    [data-theme="navy"] {
+      --bg: #071326;
+      --surface: #0d1f3c;
+      --surface-2: #142c54;
+      --text: #f1f5f9;
+      --muted: #93c5fd;
+      --border: #1e3a6e;
+      --accent: #60a5fa;
+      --accent-text: #071326;
+      --msg-in: #142c54;
+      --msg-out: #2563eb;
+      --msg-out-text: #ffffff;
+    }
+    [data-theme="purple"] {
+      --bg: #f5f0ff;
+      --surface: #ede4ff;
+      --surface-2: #e2d4ff;
+      --text: #2e1065;
+      --muted: #6b21a8;
+      --border: #d8b4fe;
+      --accent: #7e22ce;
+      --accent-text: #ffffff;
+      --msg-in: #e2d4ff;
+      --msg-out: #7e22ce;
+      --msg-out-text: #ffffff;
+    }
+    [data-theme="pink"] {
+      --bg: #fff0f5;
+      --surface: #ffe4ee;
+      --surface-2: #ffd1e3;
+      --text: #500724;
+      --muted: #9d174d;
+      --border: #fbcfe8;
+      --accent: #db2777;
+      --accent-text: #ffffff;
+      --msg-in: #ffd1e3;
+      --msg-out: #db2777;
+      --msg-out-text: #ffffff;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: #0f172a; color: #f8fafc; max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; border-left: 1px solid #1e293b; border-right: 1px solid #1e293b; }
-    header { background: #1e293b; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 10; }
-    header h1 { font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; color: #38bdf8; }
-    .badge { background: #22c55e; color: #052e16; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
-    main { flex: 1; padding: 12px; padding-bottom: 72px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.2s, color 0.2s;
+      font-size: 15px;
+    }
+    body.font-sm { font-size: 13px; }
+    body.font-lg { font-size: 17px; }
+
+    /* Auth Screen */
+    #auth-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px 18px;
+      gap: 16px;
+    }
+    .auth-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .auth-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
+    .auth-tab {
+      flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text); font-weight: 700; cursor: pointer;
+    }
+    .auth-tab.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+    /* Header */
+    header {
+      background: var(--surface);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    header h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: 1px; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    .badge { background: var(--success); color: #052e16; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
+    .icon-btn {
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+      padding: 6px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+
+    main { flex: 1; padding: 12px 12px 124px; }
     .section { display: none; }
     .section.active { display: block; }
-    .composer { background: #1e293b; padding: 12px; border-radius: 12px; margin-bottom: 14px; border: 1px solid #334155; }
-    textarea, input { width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 10px; font-size: 0.95rem; outline: none; }
-    button.primary { background: #38bdf8; color: #0f172a; border: none; padding: 8px 16px; border-radius: 999px; font-weight: 700; margin-top: 8px; cursor: pointer; }
-    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
-    .card-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
-    .card-author { font-weight: 700; color: #f8fafc; }
-    .card-actions { display: flex; gap: 16px; margin-top: 10px; font-size: 0.85rem; color: #94a3b8; }
-    .card-actions span { cursor: pointer; }
-    .chat-box { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
-    .msg { max-width: 78%; padding: 10px 12px; border-radius: 14px; font-size: 0.92rem; line-height: 1.35; }
-    .msg.in { background: #1e293b; align-self: flex-start; border-bottom-left-radius: 4px; }
-    .msg.out { background: #0284c7; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+    /* Inputs & Buttons */
+    input, textarea, select {
+      width: 100%; background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 0.92rem;
+    }
+    button.primary {
+      background: var(--accent); color: var(--accent-text); border: none;
+      padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
+    }
+    button.secondary {
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+      padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
+    }
+    button.danger-btn {
+      background: var(--danger); color: #ffffff; border: none;
+      padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 13px; margin-bottom: 10px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 6px; }
+    .card-author { font-weight: 700; color: var(--text); }
+    .card-body { line-height: 1.42; word-break: break-word; }
+    .card-actions { display: flex; gap: 18px; margin-top: 10px; font-size: 0.84rem; color: var(--muted); }
+    .card-actions span { cursor: pointer; user-select: none; }
+
+    /* Theme Grid */
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px; }
+    .theme-pill {
+      padding: 10px; border-radius: 10px; border: 2px solid var(--border);
+      font-weight: 700; font-size: 0.82rem; cursor: pointer; text-align: center;
+    }
+    .theme-pill.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+
+    /* Chat */
+    .chat-list-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+    }
+    .chat-box { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; max-height: 50vh; overflow-y: auto; }
+    .msg { max-width: 78%; padding: 10px 12px; border-radius: 14px; font-size: 0.9rem; line-height: 1.35; }
+    .msg.in { background: var(--msg-in); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.out { background: var(--msg-out); color: var(--msg-out-text); align-self: flex-end; border-bottom-right-radius: 4px; }
     .chat-input { display: flex; gap: 8px; }
-    nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: #1e293b; border-top: 1px solid #334155; display: flex; justify-content: space-around; padding: 10px 0; }
-    nav button { background: none; border: none; color: #94a3b8; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-    nav button.active { color: #38bdf8; }
+
+    /* Alphabetical Settings */
+    .settings-item {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      margin-bottom: 8px; overflow: hidden;
+    }
+    .settings-header {
+      padding: 13px 14px; display: flex; justify-content: space-between; align-items: center;
+      font-weight: 700; cursor: pointer;
+    }
+    .settings-body {
+      display: none; padding: 12px 14px; border-top: 1px solid var(--border);
+      background: var(--surface-2); font-size: 0.88rem;
+    }
+    .settings-item.open .settings-body { display: block; }
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    .toggle-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+
+    /* Bottom Dock: Quick Search + Nav */
+    .bottom-dock {
+      position: fixed; bottom: 0; width: 100%; max-width: 480px;
+      background: var(--surface); border-top: 1px solid var(--border);
+      z-index: 30; padding: 6px 10px 8px;
+    }
+    .quick-search-wrap { position: relative; margin-bottom: 6px; }
+    .quick-search-input {
+      width: 100%; padding: 8px 12px; border-radius: 999px;
+      background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      font-size: 0.86rem;
+    }
+    .quick-search-results {
+      display: none; position: absolute; bottom: 42px; left: 0; right: 0;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      max-height: 260px; overflow-y: auto; padding: 8px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.35); z-index: 40;
+    }
+    .quick-search-results.open { display: block; }
+    .search-result-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px; border-bottom: 1px solid var(--border); gap: 8px;
+    }
+    .search-result-row:last-child { border-bottom: none; }
+    nav { display: flex; }
+    nav button {
+      flex: 1; background: none; border: none; color: var(--muted);
+      padding: 6px 2px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    }
+    nav button.active { color: var(--accent); }
+
+    /* Modal for Terms & Privacy Policy */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      z-index: 100; justify-content: center; align-items: center; padding: 14px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: 16px; max-width: 450px; width: 100%; max-height: 84vh;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .modal-head {
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; font-weight: 800;
+    }
+    .modal-content {
+      padding: 16px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5;
+    }
+    .modal-content h3 { margin: 12px 0 4px; color: var(--accent); font-size: 0.95rem; }
+    .modal-content p, .modal-content li { margin-bottom: 6px; color: var(--text); }
+    .modal-content ul { padding-left: 18px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>RYKERLORD</h1>
-    <span class="badge">LIVE v0.1</span>
-  </header>
 
-  <main>
-    <!-- X-Style Public Pulse Feed -->
-    <div id="feed" class="section active">
-      <div class="composer">
-        <textarea id="postInput" rows="2" placeholder="What's happening right now?"></textarea>
-        <button class="primary" onclick="addPost()">Post</button>
+  <!-- AUTHENTICATION GATE (SIGN UP / LOGIN) -->
+  <div id="auth-screen">
+    <div style="text-align:center;">
+      <h1 style="font-size:1.8rem; font-weight:900; letter-spacing:2px;">RYKERLORD</h1>
+      <p style="color:var(--muted); font-size:0.88rem; margin-top:4px;">Public Pulse &bull; Private Chats &bull; Real Communities</p>
+    </div>
+
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signup" onclick="switchAuthMode('signup')">Create Account</button>
+        <button class="auth-tab" id="tab-login" onclick="switchAuthMode('login')">Log In</button>
       </div>
-      <div id="feedList">
+
+      <div id="signup-fields" style="display:flex; flex-direction:column; gap:10px;">
+        <input id="reg-name" placeholder="Full Name (e.g. Alex Carter)" />
+        <input id="reg-user" placeholder="Choose Username (e.g. alexc)" />
+        <input id="reg-bio" placeholder="Short Bio (optional)" />
+      </div>
+
+      <input id="auth-email" type="email" placeholder="Email address" />
+      <input id="auth-pass" type="password" placeholder="Password (min 6 characters)" />
+
+      <div id="terms-check-row" style="display:flex; align-items:flex-start; gap:8px; font-size:0.8rem; color:var(--muted);">
+        <input type="checkbox" id="agree-terms" style="width:18px; height:18px; margin-top:2px;" />
+        <label for="agree-terms">
+          I agree to the <a href="#" onclick="openLegalModal(); return false;" style="color:var(--accent); font-weight:700;">Terms &amp; Conditions and Privacy Policy</a>.
+        </label>
+      </div>
+
+      <button class="primary" id="auth-submit-btn" onclick="submitAuth()">Create Account &amp; Enter</button>
+      <p id="auth-error" style="color:var(--danger); font-size:0.82rem; display:none;"></p>
+    </div>
+
+    <div style="text-align:center;">
+      <span style="font-size:0.78rem; color:var(--muted);">Theme: </span>
+      <button class="icon-btn" onclick="setTheme('black')">Black</button>
+      <button class="icon-btn" onclick="setTheme('white')">White</button>
+      <button class="icon-btn" onclick="setTheme('navy')">Navy</button>
+      <button class="icon-btn" onclick="setTheme('purple')">Purple</button>
+      <button class="icon-btn" onclick="setTheme('pink')">Pink</button>
+    </div>
+  </div>
+
+  <!-- MAIN APP SHELL -->
+  <div id="app-shell" style="display:none; flex:1; flex-direction:column;">
+    <header>
+      <div>
+        <h1>RYKERLORD</h1>
+        <span id="header-user-tag" style="font-size:0.74rem; color:var(--muted);">@user</span>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" onclick="cycleTheme()">&#127912; Theme</button>
+        <span class="badge">LIVE v0.2</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- 1. X-Style Public Pulse Feed -->
+      <div id="feed" class="section active">
         <div class="card">
-          <div class="card-header"><span class="card-author">@rykerlord</span><span>Just now</span></div>
-          <p>Welcome to RYKERLORD — fast public pulse + private chats + real communities.</p>
-          <div class="card-actions"><span onclick="this.innerText='❤️ 1'">🤍 0</span><span>💬 Reply</span><span>🔁 Repost</span></div>
+          <textarea id="postInput" rows="3" placeholder="What's happening right now?"></textarea>
+          <button class="primary" style="margin-top:8px;" onclick="addPost()">Post to Pulse</button>
+        </div>
+        <div id="feedList"></div>
+      </div>
+
+      <!-- 2. WhatsApp-Style Private Chats -->
+      <div id="chats" class="section">
+        <div id="chat-directory">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="font-size:0.95rem;">Direct Messages</strong>
+            <span style="font-size:0.78rem; color:var(--muted);">Tap a person to chat</span>
+          </div>
+          <div id="peopleChatList"></div>
+        </div>
+
+        <div id="chat-thread-view" style="display:none;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <button class="secondary" onclick="closeChatThread()">&larr; Back</button>
+            <div>
+              <strong id="active-chat-name">User</strong>
+              <div style="font-size:0.75rem; color:var(--success);">&#9679; Active now</div>
+            </div>
+          </div>
+          <div class="card chat-box" id="chatBox"></div>
+          <div class="chat-input">
+            <input id="chatInput" placeholder="Write a private message..." />
+            <button class="primary" style="width:auto;" onclick="sendMsg()">Send</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- WhatsApp-Style Direct Chat -->
-    <div id="chats" class="section">
-      <div class="card-header" style="margin-bottom:10px;"><span class="card-author">Direct Chat • Alex</span><span style="color:#22c55e;">● Online</span></div>
-      <div class="chat-box" id="chatBox">
-        <div class="msg in">Yo! Is the new app live yet?</div>
-        <div class="msg out">Just launched v0.1 straight from my phone!</div>
+      <!-- 3. Facebook-Style Groups -->
+      <div id="groups" class="section">
+        <div class="card">
+          <strong style="display:block; margin-bottom:8px;">Create a New Community Group</strong>
+          <input id="newGroupName" placeholder="Group name (e.g. Tech Innovators)" style="margin-bottom:8px;" />
+          <input id="newGroupDesc" placeholder="Short description..." style="margin-bottom:8px;" />
+          <button class="primary" onclick="createGroup()">Create Group</button>
+        </div>
+        <div id="groupList"></div>
       </div>
-      <div class="chat-input">
-        <input id="chatInput" placeholder="Message..." />
-        <button class="primary" style="margin-top:0;" onclick="sendMsg()">Send</button>
+
+      <!-- 4. Alphabetical Settings (A - T) -->
+      <div id="settings" class="section">
+        <div style="margin-bottom:10px;">
+          <strong style="font-size:1rem;">Settings (A &ndash; Z)</strong>
+          <div style="font-size:0.78rem; color:var(--muted);">Tap any category to expand controls</div>
+        </div>
+        <div id="alphabetical-settings-list"></div>
+      </div>
+    </main>
+
+    <!-- BOTTOM DOCK: QUICK SEARCH BAR + NAVIGATION -->
+    <div class="bottom-dock">
+      <div class="quick-search-wrap">
+        <input
+          id="quickSearchInput"
+          class="quick-search-input"
+          placeholder="&#128269; Quick search people (@username), groups, or posts..."
+          oninput="runQuickSearch(this.value)"
+          onfocus="runQuickSearch(this.value)"
+        />
+        <div id="quickSearchResults" class="quick-search-results"></div>
+      </div>
+      <nav>
+        <button class="active" onclick="showTab('feed', this)">Pulse</button>
+        <button onclick="showTab('chats', this)">Chats</button>
+        <button onclick="showTab('groups', this)">Groups</button>
+        <button onclick="showTab('settings', this)">Settings</button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ELABORATE TERMS & CONDITIONS + PRIVACY POLICY MODAL -->
+  <div id="legal-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span>RYKERLORD Terms &amp; Privacy Policy</span>
+        <button class="icon-btn" onclick="closeLegalModal()">Close &times;</button>
+      </div>
+      <div class="modal-content">
+        <p><strong>Effective Date:</strong> November 2026 &bull; <strong>Platform:</strong> RYKERLORD Social Network</p>
+        <p>Welcome to RYKERLORD. By creating an account, accessing, or interacting on RYKERLORD (including Pulse feeds, Private Chats, and Community Groups), you agree to be bound by these Terms &amp; Conditions and Privacy Policy.</p>
+
+        <h3>1. Eligibility &amp; Account Registration</h3>
+        <ul>
+          <li>You must be at least <strong>13 years of age</strong> (or the minimum legal age in your country) to register an account.</li>
+          <li>You agree to provide accurate registration details and maintain only one personal account unless authorized.</li>
+          <li>You are solely responsible for safeguarding your login password and all activity occurring under your handle.</li>
+        </ul>
+
+        <h3>2. Acceptable Use &amp; Prohibited Conduct</h3>
+        <p>To keep RYKERLORD safe for everyone, you strictly agree NOT to:</p>
+        <ul>
+          <li>Post or transmit hate speech, harassment, threats of violence, bullying, or sexually explicit/non-consensual material.</li>
+          <li>Impersonate any individual, brand, or RYKERLORD administrator, or create deceptive/spam accounts.</li>
+          <li>Share private personal data (doxxing), financial credentials, or confidential information of others without explicit consent.</li>
+          <li>Upload malware, phishing links, automated scraping bots, or attempt to disrupt platform infrastructure.</li>
+          <li>Infringe upon copyrights, trademarks, or intellectual property rights belonging to third parties.</li>
+        </ul>
+
+        <h3>3. User-Generated Content &amp; License</h3>
+        <ul>
+          <li><strong>Your Ownership:</strong> You retain full ownership of the text, messages, and media you create and post on RYKERLORD.</li>
+          <li><strong>Platform License:</strong> By posting public content on Pulse or Groups, you grant RYKERLORD a worldwide, non-exclusive, royalty-free license to host, store, display, reproduce, and distribute your content solely to operate and improve the service.</li>
+          <li>You may delete your posts or account at any time, though cached or reposted copies shared by other users may remain visible briefly.</li>
+        </ul>
+
+        <h3>4. Content Moderation &amp; Account Termination</h3>
+        <p>RYKERLORD reserves the right to remove any content, restrict visibility, or suspend/terminate accounts without prior notice if we determine a violation of these Terms or risk of harm to our community.</p>
+
+        <h3>5. Privacy Policy &amp; Data Collection</h3>
+        <ul>
+          <li><strong>Information We Collect:</strong> Account profile data (display name, username, email, bio), user posts, group memberships, direct messages, and basic technical preferences (selected theme, accessibility settings).</li>
+          <li><strong>How We Use Data:</strong> To authenticate your login, deliver messages and feeds, enable user search/discovery, prevent spam/abuse, and maintain platform reliability.</li>
+          <li><strong>No Sale of Personal Data:</strong> RYKERLORD does not sell your personal information or private messages to third-party data brokers.</li>
+        </ul>
+
+        <h3>6. Your Privacy Rights &amp; Controls</h3>
+        <ul>
+          <li><strong>Access &amp; Correction:</strong> You may view and edit your profile details anytime under <em>Settings &rarr; Account</em>.</li>
+          <li><strong>Privacy Controls:</strong> You can enable Private Account mode, manage Direct Message permissions, and block or mute other users under <em>Settings &rarr; Privacy and safety</em>.</li>
+          <li><strong>Deletion:</strong> You may clear local storage or request full account deletion at any time.</li>
+        </ul>
+
+        <h3>7. Disclaimers &amp; Limitation of Liability</h3>
+        <p>RYKERLORD is provided on an <strong>"AS IS" and "AS AVAILABLE"</strong> basis without warranties of uninterrupted availability. User posts represent the views of their respective authors, not RYKERLORD. To the maximum extent permitted by law, RYKERLORD shall not be liable for indirect, incidental, or consequential damages arising from platform use.</p>
+
+        <h3>8. Updates to Terms &amp; Governing Law</h3>
+        <p>We may revise these Terms &amp; Privacy Policy as new features launch. Continued use of RYKERLORD after updates constitutes acceptance of the revised terms.</p>
       </div>
     </div>
-
-    <!-- Facebook-Style Communities -->
-    <div id="groups" class="section">
-      <div class="card">
-        <div class="card-header"><span class="card-author">Tech & Builders Hub</span><span>1.2k members</span></div>
-        <p style="font-size:0.9rem; color:#cbd5e1; margin-bottom:8px;">Share builds, ask questions, and collaborate with creators.</p>
-        <button class="primary" onclick="this.innerText='Joined ✓'">Join Group</button>
-      </div>
-      <div class="card">
-        <div class="card-header"><span class="card-author">Photography & Visuals</span><span>840 members</span></div>
-        <p style="font-size:0.9rem; color:#cbd5e1; margin-bottom:8px;">Daily photo drops, gear talk, and local meetups.</p>
-        <button class="primary" onclick="this.innerText='Joined ✓'">Join Group</button>
-      </div>
-    </div>
-  </main>
-
-  <nav>
-    <button class="active" onclick="switchTab('feed', this)">⚡ Pulse</button>
-    <button onclick="switchTab('chats', this)">💬 Chats</button>
-    <button onclick="switchTab('groups', this)">👥 Groups</button>
-  </nav>
+  </div>
 
   <script>
-    function switchTab(id, btn) {
+    const THEMES = ['black', 'white', 'navy', 'purple', 'pink'];
+    let currentTheme = localStorage.getItem('ryker_theme') || 'black';
+    let authMode = 'signup';
+    let currentUser = JSON.parse(localStorage.getItem('ryker_current_user') || 'null');
+
+    // Default Directory of Platform Individuals so user can interact immediately
+    let usersDB = JSON.parse(localStorage.getItem('ryker_users_db') || 'null') || [
+      { id: 'u1', name: 'Ryker Admin', username: 'rykerlord', bio: 'Founder of RYKERLORD. Building fast mobile communities.', email: 'admin@rykerlord.app', following: true },
+      { id: 'u2', name: 'Maya Lin', username: 'mayatech', bio: 'UI designer & mobile creator', email: 'maya@example.com', following: false },
+      { id: 'u3', name: 'David Kimani', username: 'dkimani', bio: 'Football, tech & photography', email: 'david@example.com', following: false },
+      { id: 'u4', name: 'Sofia Vance', username: 'sofiav', bio: 'Startup founder & writer', email: 'sofia@example.com', following: false }
+    ];
+
+    let posts = JSON.parse(localStorage.getItem('ryker_posts') || 'null') || [
+      { id: 1, author: 'Ryker Admin', username: 'rykerlord', time: 'Just now', text: 'Welcome to RYKERLORD v0.2! Use the Quick Search bar at the bottom to find people, switch themes in Settings, and start chatting.', likes: 4, liked: false, replies: [] },
+      { id: 2, author: 'Maya Lin', username: 'mayatech', time: '12m ago', text: 'Loving the Very Light Purple and Pure Black themes on mobile!', likes: 2, liked: false, replies: [] }
+    ];
+
+    let groups = JSON.parse(localStorage.getItem('ryker_groups') || 'null') || [
+      { id: 'g1', name: 'Builders & Creators', desc: 'Share apps, ideas & feedback', members: 142, joined: true },
+      { id: 'g2', name: 'Daily Campus & Career Hub', desc: 'Study notes, remote jobs & tips', members: 89, joined: false },
+      { id: 'g3', name: 'Photography & Visual Arts', desc: 'Mobile shots & editing tricks', members: 64, joined: false }
+    ];
+
+    let chatsDB = JSON.parse(localStorage.getItem('ryker_chats_db') || 'null') || {
+      rykerlord: [{ sender: 'in', text: 'Hey! Welcome to RYKERLORD. Tap any user in Quick Search to start a private chat.' }],
+      mayatech: [{ sender: 'in', text: 'Hi there! Glad to connect on RYKERLORD.' }]
+    };
+
+    let activeChatPartner = null;
+
+    let userPrefs = JSON.parse(localStorage.getItem('ryker_prefs') || 'null') || {
+      privateAccount: false,
+      activeStatus: true,
+      readReceipts: true,
+      notifLikes: true,
+      notifMessages: true,
+      timelineOrder: 'latest',
+      language: 'English',
+      dataSaver: false,
+      fontSize: 'md'
+    };
+
+    function saveAll() {
+      localStorage.setItem('ryker_users_db', JSON.stringify(usersDB));
+      localStorage.setItem('ryker_posts', JSON.stringify(posts));
+      localStorage.setItem('ryker_groups', JSON.stringify(groups));
+      localStorage.setItem('ryker_chats_db', JSON.stringify(chatsDB));
+      localStorage.setItem('ryker_prefs', JSON.stringify(userPrefs));
+      if (currentUser) localStorage.setItem('ryker_current_user', JSON.stringify(currentUser));
+    }
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      if (theme === 'black') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('ryker_theme', theme);
+      renderSettings();
+    }
+
+    function cycleTheme() {
+      const next = THEMES[(THEMES.indexOf(currentTheme) + 1) % THEMES.length];
+      setTheme(next);
+    }
+
+    function applyFontSize(size) {
+      userPrefs.fontSize = size;
+      document.body.classList.remove('font-sm', 'font-lg');
+      if (size === 'sm') document.body.classList.add('font-sm');
+      if (size === 'lg') document.body.classList.add('font-lg');
+      saveAll();
+    }
+
+    // AUTHENTICATION FLOW
+    function switchAuthMode(mode) {
+      authMode = mode;
+      document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
+      document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+      document.getElementById('signup-fields').style.display = mode === 'signup' ? 'flex' : 'none';
+      document.getElementById('terms-check-row').style.display = mode === 'signup' ? 'flex' : 'none';
+      document.getElementById('auth-submit-btn').textContent = mode === 'signup' ? 'Create Account & Enter' : 'Log In to RYKERLORD';
+      document.getElementById('auth-error').style.display = 'none';
+    }
+
+    function submitAuth() {
+      const email = document.getElementById('auth-email').value.trim().toLowerCase();
+      const pass = document.getElementById('auth-pass').value.trim();
+      const errEl = document.getElementById('auth-error');
+
+      if (!email || !pass || pass.length < 4) {
+        errEl.textContent = 'Please enter a valid email and password (at least 4 characters).';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (authMode === 'signup') {
+        const name = document.getElementById('reg-name').value.trim();
+        const rawUser = document.getElementById('reg-user').value.trim().replace(/^@/, '').toLowerCase();
+        const bio = document.getElementById('reg-bio').value.trim() || 'New member on RYKERLORD';
+        const agreed = document.getElementById('agree-terms').checked;
+
+        if (!name || !rawUser) {
+          errEl.textContent = 'Please enter your Full Name and choose a Username.';
+          errEl.style.display = 'block';
+          return;
+        }
+        if (!agreed) {
+          errEl.textContent = 'You must agree to the Terms & Conditions and Privacy Policy to create an account.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        const newUser = { id: 'u_' + Date.now(), name, username: rawUser, bio, email, password: pass };
+        usersDB = usersDB.filter(u => u.username !== rawUser);
+        usersDB.unshift(newUser);
+        currentUser = newUser;
+      } else {
+        const found = usersDB.find(u => u.email === email || u.username === email);
+        if (found) {
+          currentUser = found;
+        } else {
+          // Allow instant login demo if user enters email
+          const handle = email.split('@')[0];
+          currentUser = { id: 'u_' + Date.now(), name: handle, username: handle, bio: 'RYKERLORD Member', email };
+          usersDB.unshift(currentUser);
+        }
+      }
+
+      saveAll();
+      enterApp();
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem('ryker_current_user');
+      document.getElementById('app-shell').style.display = 'none';
+      document.getElementById('auth-screen').style.display = 'flex';
+    }
+
+    function enterApp() {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-shell').style.display = 'flex';
+      document.getElementById('header-user-tag').textContent = '@' + currentUser.username;
+      renderFeed();
+      renderChatDirectory();
+      renderGroups();
+      renderSettings();
+    }
+
+    // NAVIGATION
+    function showTab(tabId, btn) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      btn.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+      if (btn) btn.classList.add('active');
+      document.getElementById('quickSearchResults').classList.remove('open');
     }
+
+    // PULSE FEED
+    function renderFeed() {
+      const list = document.getElementById('feedList');
+      const ordered = userPrefs.timelineOrder === 'top'
+        ? [...posts].sort((a, b) => b.likes - a.likes)
+        : posts;
+
+      list.innerHTML = ordered.map(p => `
+        <div class="card">
+          <div class="card-header">
+            <span class="card-author">${p.name || p.author} <span style="color:var(--muted); font-weight:400;">@${p.username}</span></span>
+            <span>${p.time}</span>
+          </div>
+          <div class="card-body">${p.text}</div>
+          <div class="card-actions">
+            <span onclick="toggleLike(${p.id})" style="color:${p.liked ? 'var(--accent)' : 'inherit'}">&#9829; ${p.likes}</span>
+            <span onclick="replyPost(${p.id})">&#128172; Reply (${(p.replies || []).length})</span>
+            <span onclick="startChatWith('${p.username}')">&#9993; Message</span>
+          </div>
+          ${(p.replies && p.replies.length) ? `
+            <div style="margin-top:8px; padding-left:10px; border-left:2px solid var(--border); font-size:0.82rem;">
+              ${p.replies.map(r => `<div style="margin-top:4px;"><strong>@${r.username}:</strong> ${r.text}</div>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
     function addPost() {
       const input = document.getElementById('postInput');
-      if (!input.value.trim()) return;
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `<div class="card-header"><span class="card-author">@rykerlord</span><span>Now</span></div><p>${input.value}</p><div class="card-actions"><span onclick="this.innerText='❤️ 1'">🤍 0</span><span>💬 Reply</span><span>🔁 Repost</span></div>`;
-      document.getElementById('feedList').prepend(card);
+      const text = input.value.trim();
+      if (!text) return;
+      posts.unshift({
+        id: Date.now(),
+        author: currentUser.name,
+        username: currentUser.username,
+        time: 'Just now',
+        text,
+        likes: 0,
+        liked: false,
+        replies: []
+      });
       input.value = '';
+      saveAll();
+      renderFeed();
     }
+
+    function toggleLike(id) {
+      const p = posts.find(x => x.id === id);
+      if (!p) return;
+      p.liked = !p.liked;
+      p.likes += p.liked ? 1 : -1;
+      saveAll();
+      renderFeed();
+    }
+
+    function replyPost(id) {
+      const text = prompt('Write your reply:');
+      if (!text || !text.trim()) return;
+      const p = posts.find(x => x.id === id);
+      if (!p) return;
+      p.replies = p.replies || [];
+      p.replies.push({ username: currentUser.username, text: text.trim() });
+      saveAll();
+      renderFeed();
+    }
+
+    // CHATS
+    function renderChatDirectory() {
+      const others = usersDB.filter(u => u.username !== currentUser.username);
+      document.getElementById('peopleChatList').innerHTML = others.map(u => {
+        const thread = chatsDB[u.username] || [];
+        const lastMsg = thread.length ? thread[thread.length - 1].text : 'Tap to start a private chat';
+        return `
+          <div class="chat-list-item" onclick="startChatWith('${u.username}')">
+            <div>
+              <strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.82rem;">@${u.username}</span>
+              <div style="font-size:0.8rem; color:var(--muted); margin-top:2px;">${lastMsg}</div>
+            </div>
+            <span style="color:var(--accent); font-weight:700; font-size:0.82rem;">Chat &rarr;</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function startChatWith(username) {
+      if (username === currentUser.username) return;
+      const partner = usersDB.find(u => u.username === username) || { name: username, username };
+      activeChatPartner = partner;
+      showTab('chats', document.querySelectorAll('nav button')[1]);
+      document.getElementById('chat-directory').style.display = 'none';
+      document.getElementById('chat-thread-view').style.display = 'block';
+      document.getElementById('active-chat-name').textContent = `${partner.name} (@${partner.username})`;
+      renderChatMessages();
+    }
+
+    function closeChatThread() {
+      activeChatPartner = null;
+      document.getElementById('chat-thread-view').style.display = 'none';
+      document.getElementById('chat-directory').style.display = 'block';
+      renderChatDirectory();
+    }
+
+    function renderChatMessages() {
+      if (!activeChatPartner) return;
+      const thread = chatsDB[activeChatPartner.username] || [];
+      const box = document.getElementById('chatBox');
+      box.innerHTML = thread.length
+        ? thread.map(m => `<div class="msg ${m.sender}">${m.text}</div>`).join('')
+        : `<div style="color:var(--muted); font-size:0.84rem; text-align:center; padding:16px;">Say hello to @${activeChatPartner.username}!</div>`;
+      box.scrollTop = box.scrollHeight;
+    }
+
     function sendMsg() {
       const input = document.getElementById('chatInput');
-      if (!input.value.trim()) return;
-      const msg = document.createElement('div');
-      msg.className = 'msg out';
-      msg.innerText = input.value;
-      document.getElementById('chatBox').appendChild(msg);
+      const text = input.value.trim();
+      if (!text || !activeChatPartner) return;
+      const handle = activeChatPartner.username;
+      chatsDB[handle] = chatsDB[handle] || [];
+      chatsDB[handle].push({ sender: 'out', text });
       input.value = '';
+      saveAll();
+      renderChatMessages();
     }
+
+    // GROUPS
+    function renderGroups() {
+      document.getElementById('groupList').innerHTML = groups.map(g => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+          <div>
+            <strong>${g.name}</strong>
+            <div style="font-size:0.82rem; color:var(--muted);">${g.desc}</div>
+            <div style="font-size:0.76rem; color:var(--accent); margin-top:3px;">${g.members} members</div>
+          </div>
+          <button class="${g.joined ? 'secondary' : 'primary'}" style="width:auto;" onclick="toggleGroup('${g.id}')">
+            ${g.joined ? 'Joined ✓' : 'Join'}
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function createGroup() {
+      const name = document.getElementById('newGroupName').value.trim();
+      const desc = document.getElementById('newGroupDesc').value.trim() || 'Community discussion group';
+      if (!name) return;
+      groups.unshift({ id: 'g_' + Date.now(), name, desc, members: 1, joined: true });
+      document.getElementById('newGroupName').value = '';
+      document.getElementById('newGroupDesc').value = '';
+      saveAll();
+      renderGroups();
+    }
+
+    function toggleGroup(id) {
+      const g = groups.find(x => x.id === id);
+      if (!g) return;
+      g.joined = !g.joined;
+      g.members += g.joined ? 1 : -1;
+      saveAll();
+      renderGroups();
+    }
+
+    // QUICK SEARCH BAR (Individuals, Groups, Posts)
+    function runQuickSearch(query) {
+      const box = document.getElementById('quickSearchResults');
+      const q = query.trim().toLowerCase().replace(/^@/, '');
+      if (!q) {
+        box.classList.remove('open');
+        return;
+      }
+
+      const matchedUsers = usersDB.filter(u =>
+        u.username !== currentUser.username &&
+        (u.name.toLowerCase().includes(q) || u.username.toLowerCase().includes(q) || (u.bio && u.bio.toLowerCase().includes(q)))
+      );
+      const matchedGroups = groups.filter(g => g.name.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q));
+      const matchedPosts = posts.filter(p => p.text.toLowerCase().includes(q));
+
+      let html = '';
+
+      if (matchedUsers.length) {
+        html += `<div style="font-size:0.74rem; font-weight:800; color:var(--muted); padding:4px 6px;">PEOPLE ON RYKERLORD</div>`;
+        html += matchedUsers.map(u => `
+          <div class="search-result-row">
+            <div>
+              <strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.8rem;">@${u.username}</span>
+              <div style="font-size:0.75rem; color:var(--muted);">${u.bio || ''}</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="secondary" style="padding:5px 8px; font-size:0.75rem;" onclick="toggleFollow('${u.username}')">${u.following ? 'Following' : 'Follow'}</button>
+              <button class="primary" style="padding:5px 8px; font-size:0.75rem; width:auto;" onclick="startChatWith('${u.username}')">Chat</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if (matchedGroups.length) {
+        html += `<div style="font-size:0.74rem; font-weight:800; color:var(--muted); padding:6px 6px 2px;">GROUPS</div>`;
+        html += matchedGroups.map(g => `
+          <div class="search-result-row">
+            <div><strong>${g.name}</strong><div style="font-size:0.75rem; color:var(--muted);">${g.members} members</div></div>
+            <button class="secondary" style="padding:5px 8px; font-size:0.75rem;" onclick="showTab('groups', document.querySelectorAll('nav button')[2])">View</button>
+          </div>
+        `).join('');
+      }
+
+      if (matchedPosts.length) {
+        html += `<div style="font-size:0.74rem; font-weight:800; color:var(--muted); padding:6px 6px 2px;">POSTS</div>`;
+        html += matchedPosts.slice(0, 3).map(p => `
+          <div class="search-result-row" onclick="showTab('feed', document.querySelectorAll('nav button')[0])" style="cursor:pointer;">
+            <div style="font-size:0.8rem;"><strong>@${p.username}:</strong> ${p.text.slice(0, 55)}...</div>
+          </div>
+        `).join('');
+      }
+
+      if (!html) {
+        html = `<div style="padding:10px; text-align:center; color:var(--muted); font-size:0.82rem;">No people, groups, or posts matched "${query}"</div>`;
+      }
+
+      box.innerHTML = html;
+      box.classList.add('open');
+    }
+
+    function toggleFollow(username) {
+      const u = usersDB.find(x => x.username === username);
+      if (!u) return;
+      u.following = !u.following;
+      saveAll();
+      runQuickSearch(document.getElementById('quickSearchInput').value);
+    }
+
+    // ALPHABETICAL SETTINGS RENDERER (A - T)
+    function renderSettings() {
+      const sections = [
+        {
+          title: 'Accessibility',
+          body: `
+            <label style="display:block; margin-bottom:6px;">Text Size</label>
+            <select onchange="applyFontSize(this.value)">
+              <option value="sm" ${userPrefs.fontSize === 'sm' ? 'selected' : ''}>Small (Compact)</option>
+              <option value="md" ${userPrefs.fontSize === 'md' ? 'selected' : ''}>Medium (Default)</option>
+              <option value="lg" ${userPrefs.fontSize === 'lg' ? 'selected' : ''}>Large (Easy Read)</option>
+            </select>
+          `
+        },
+        {
+          title: 'Account',
+          body: `
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <input id="edit-name" value="${currentUser.name}" placeholder="Display Name" />
+              <input id="edit-user" value="${currentUser.username}" placeholder="Username" />
+              <input id="edit-bio" value="${currentUser.bio || ''}" placeholder="Bio" />
+              <button class="primary" onclick="saveAccountEdits()">Save Profile Changes</button>
+            </div>
+          `
+        },
+        {
+          title: 'Additional resources',
+          body: `
+            <p style="margin-bottom:8px;">RYKERLORD Platform v0.2 &bull; Built for fast mobile communities.</p>
+            <button class="secondary" style="width:100%;" onclick="openLegalModal()">Read Full Terms &amp; Conditions and Privacy Policy</button>
+          `
+        },
+        {
+          title: 'Appearance',
+          body: `
+            <div>Choose your platform color theme:</div>
+            <div class="theme-grid">
+              <div class="theme-pill ${currentTheme === 'black' ? 'active' : ''}" style="background:#000; color:#fff;" onclick="setTheme('black')">Pure Black</div>
+              <div class="theme-pill ${currentTheme === 'white' ? 'active' : ''}" style="background:#fff; color:#0f172a;" onclick="setTheme('white')">Crisp White</div>
+              <div class="theme-pill ${currentTheme === 'navy' ? 'active' : ''}" style="background:#071326; color:#93c5fd;" onclick="setTheme('navy')">Navy Blue</div>
+              <div class="theme-pill ${currentTheme === 'purple' ? 'active' : ''}" style="background:#f5f0ff; color:#581c87;" onclick="setTheme('purple')">Very Light Purple</div>
+              <div class="theme-pill ${currentTheme === 'pink' ? 'active' : ''}" style="background:#fff0f5; color:#831843; grid-column: span 2;" onclick="setTheme('pink')">Light Pink</div>
+            </div>
+          `
+        },
+        {
+          title: 'Chat',
+          body: `
+            <div class="toggle-row"><span>Show Active Online Status</span><input type="checkbox" ${userPrefs.activeStatus ? 'checked' : ''} onchange="togglePref('activeStatus', this.checked)" /></div>
+            <div class="toggle-row"><span>Send Read Receipts</span><input type="checkbox" ${userPrefs.readReceipts ? 'checked' : ''} onchange="togglePref('readReceipts', this.checked)" /></div>
+          `
+        },
+        {
+          title: 'Explore',
+          body: `
+            <p>Discover trending creators and communities using the Quick Search bar at the bottom of your screen.</p>
+          `
+        },
+        {
+          title: 'Languages',
+          body: `
+            <select onchange="togglePref('language', this.value)">
+              <option ${userPrefs.language === 'English' ? 'selected' : ''}>English</option>
+              <option ${userPrefs.language === 'Kiswahili' ? 'selected' : ''}>Kiswahili</option>
+              <option ${userPrefs.language === 'French' ? 'selected' : ''}>French</option>
+              <option ${userPrefs.language === 'Spanish' ? 'selected' : ''}>Spanish</option>
+            </select>
+          `
+        },
+        {
+          title: 'Notifications',
+          body: `
+            <div class="toggle-row"><span>Likes &amp; Replies on Pulse</span><input type="checkbox" ${userPrefs.notifLikes ? 'checked' : ''} onchange="togglePref('notifLikes', this.checked)" /></div>
+            <div class="toggle-row"><span>New Private Messages</span><input type="checkbox" ${userPrefs.notifMessages ? 'checked' : ''} onchange="togglePref('notifMessages', this.checked)" /></div>
+          `
+        },
+        {
+          title: 'Privacy and safety',
+          body: `
+            <div class="toggle-row"><span>Private Account (Approve followers)</span><input type="checkbox" ${userPrefs.privateAccount ? 'checked' : ''} onchange="togglePref('privateAccount', this.checked)" /></div>
+            <button class="secondary" style="width:100%; margin-top:8px;" onclick="openLegalModal()">View Elaborate Terms &amp; Privacy Policy</button>
+          `
+        },
+        {
+          title: 'Security and access',
+          body: `
+            <p style="margin-bottom:8px;">Signed in as <strong>${currentUser.email}</strong></p>
+            <button class="danger-btn" onclick="logoutUser()">Log Out of RYKERLORD</button>
+          `
+        },
+        {
+          title: 'Storage and Data',
+          body: `
+            <div class="toggle-row"><span>Data Saver Mode</span><input type="checkbox" ${userPrefs.dataSaver ? 'checked' : ''} onchange="togglePref('dataSaver', this.checked)" /></div>
+            <button class="secondary" style="width:100%; margin-top:8px;" onclick="clearLocalCache()">Reset Local Demo Data</button>
+          `
+        },
+        {
+          title: 'Subscription',
+          body: `
+            <p><strong>Current Plan:</strong> RYKERLORD Free ($0/month)</p>
+            <p style="font-size:0.8rem; color:var(--muted); margin-top:4px;">Includes unlimited Pulse posts, Private Chats, and Community Groups.</p>
+          `
+        },
+        {
+          title: 'Timeline',
+          body: `
+            <label style="display:block; margin-bottom:6px;">Pulse Feed Sorting</label>
+            <select onchange="togglePref('timelineOrder', this.value); renderFeed();">
+              <option value="latest" ${userPrefs.timelineOrder === 'latest' ? 'selected' : ''}>Latest Posts First</option>
+              <option value="top" ${userPrefs.timelineOrder === 'top' ? 'selected' : ''}>Top Liked Posts First</option>
+            </select>
+          `
+        }
+      ];
+
+      // Strictly sort alphabetically A-Z by title
+      sections.sort((a, b) => a.title.localeCompare(b.title));
+
+      document.getElementById('alphabetical-settings-list').innerHTML = sections.map((s, idx) => `
+        <div class="settings-item" id="set-item-${idx}">
+          <div class="settings-header" onclick="document.getElementById('set-item-${idx}').classList.toggle('open')">
+            <span>${s.title}</span>
+            <span style="color:var(--muted);">&#9662;</span>
+          </div>
+          <div class="settings-body">${s.body}</div>
+        </div>
+      `).join('');
+    }
+
+    function saveAccountEdits() {
+      const name = document.getElementById('edit-name').value.trim();
+      const username = document.getElementById('edit-user').value.trim().replace(/^@/, '').toLowerCase();
+      const bio = document.getElementById('edit-bio').value.trim();
+      if (!name || !username) return;
+      currentUser.name = name;
+      currentUser.username = username;
+      currentUser.bio = bio;
+      document.getElementById('header-user-tag').textContent = '@' + username;
+      saveAll();
+      alert('Profile updated!');
+    }
+
+    function togglePref(key, val) {
+      userPrefs[key] = val;
+      saveAll();
+    }
+
+    function clearLocalCache() {
+      if (!confirm('Reset all local demo posts and chats?')) return;
+      localStorage.clear();
+      location.reload();
+    }
+
+    // LEGAL MODAL
+    function openLegalModal() { document.getElementById('legal-modal').classList.add('open'); }
+    function closeLegalModal() { document.getElementById('legal-modal').classList.remove('open'); }
+
+    // INIT
+    setTheme(currentTheme);
+    applyFontSize(userPrefs.fontSize);
+    if (currentUser) enterApp();
   </script>
 </body>
 </html>
