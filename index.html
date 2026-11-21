@@ -7,11 +7,12 @@
   <style>
     :root {
       --bg: #000000;
-      --surface: #111111;
-      --surface-2: #1c1c1e;
+      --surface: #0f0f11;
+      --surface-2: #1a1a1e;
+      --glass: rgba(15, 15, 17, 0.86);
       --text: #ffffff;
       --muted: #8e8e93;
-      --border: #2c2c2e;
+      --border: #27272a;
       --accent: #38bdf8;
       --accent-text: #000000;
       --msg-in: #1c1c1e;
@@ -24,6 +25,7 @@
       --bg: #ffffff;
       --surface: #f8fafc;
       --surface-2: #f1f5f9;
+      --glass: rgba(255, 255, 255, 0.88);
       --text: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
@@ -34,22 +36,24 @@
       --msg-out-text: #ffffff;
     }
     [data-theme="navy"] {
-      --bg: #071326;
-      --surface: #0d1f3c;
-      --surface-2: #142c54;
+      --bg: #061021;
+      --surface: #0c1c38;
+      --surface-2: #13294f;
+      --glass: rgba(12, 28, 56, 0.88);
       --text: #f1f5f9;
       --muted: #93c5fd;
       --border: #1e3a6e;
       --accent: #60a5fa;
-      --accent-text: #071326;
-      --msg-in: #142c54;
+      --accent-text: #061021;
+      --msg-in: #13294f;
       --msg-out: #2563eb;
       --msg-out-text: #ffffff;
     }
     [data-theme="purple"] {
-      --bg: #f5f0ff;
+      --bg: #f6f1ff;
       --surface: #ede4ff;
       --surface-2: #e2d4ff;
+      --glass: rgba(237, 228, 255, 0.9);
       --text: #2e1065;
       --muted: #6b21a8;
       --border: #d8b4fe;
@@ -60,340 +64,520 @@
       --msg-out-text: #ffffff;
     }
     [data-theme="pink"] {
-      --bg: #fff0f5;
-      --surface: #ffe4ee;
-      --surface-2: #ffd1e3;
+      --bg: #fff0f6;
+      --surface: #ffe4ef;
+      --surface-2: #ffd1e4;
+      --glass: rgba(255, 228, 239, 0.9);
       --text: #500724;
       --muted: #9d174d;
       --border: #fbcfe8;
       --accent: #db2777;
       --accent-text: #ffffff;
-      --msg-in: #ffd1e3;
+      --msg-in: #ffd1e4;
       --msg-out: #db2777;
       --msg-out-text: #ffffff;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body {
       background: var(--bg);
       color: var(--text);
       max-width: 480px;
       margin: 0 auto;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: background 0.2s, color 0.2s;
       font-size: 15px;
+      transition: background 0.2s, color 0.2s;
     }
     body.font-sm { font-size: 13px; }
     body.font-lg { font-size: 17px; }
 
-    /* Auth Screen */
-    #auth-screen {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 24px 18px;
-      gap: 16px;
+    /* AUTH & ONBOARDING SCREENS */
+    .full-overlay {
+      position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
+      background: var(--bg); z-index: 90; overflow-y: auto;
+      display: flex; flex-direction: column; justify-content: center; padding: 22px 18px;
     }
     .auth-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 11px;
     }
-    .auth-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
+    .auth-tabs { display: flex; gap: 8px; }
     .auth-tab {
       flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border);
       background: var(--surface-2); color: var(--text); font-weight: 700; cursor: pointer;
     }
     .auth-tab.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
-    /* Header */
+    /* Interest Chips */
+    .chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+    .interest-chip {
+      padding: 8px 13px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text); font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+    .interest-chip.selected { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+    /* TOP HEADER */
     header {
-      background: var(--surface);
-      padding: 12px 16px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      padding: 10px 14px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      min-height: 62px;
+      z-index: 25;
+      flex-shrink: 0;
     }
-    header h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: 1px; }
-    .header-right { display: flex; align-items: center; gap: 8px; }
-    .badge { background: var(--success); color: #052e16; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
-    .icon-btn {
-      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
-      padding: 6px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    .tl-left-stack {
+      display: flex; flex-direction: column; align-items: center; gap: 4px; width: 44px;
+    }
+    .menu-lines-btn {
+      background: none; border: none; color: var(--text); font-size: 1.25rem;
+      line-height: 1; cursor: pointer; padding: 2px 6px; font-weight: 800;
+    }
+    .avatar-circle {
+      width: 30px; height: 30px; border-radius: 50%; background: var(--accent);
+      color: var(--accent-text); font-weight: 800; font-size: 0.82rem;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      border: 2px solid var(--border);
+    }
+    .rl-brand-btn {
+      background: none; border: none; color: var(--text); font-size: 1.65rem;
+      font-weight: 900; letter-spacing: 2px; cursor: pointer;
+    }
+    .rl-brand-btn:active { transform: scale(0.94); color: var(--accent); }
+
+    /* Top Search Mode Bar (only when on Search page) */
+    #top-search-header {
+      display: none; width: 100%; align-items: center; gap: 8px;
+    }
+    .top-search-field {
+      flex: 1; background: var(--surface-2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 9px 14px; font-size: 0.9rem;
     }
 
-    main { flex: 1; padding: 12px 12px 124px; }
-    .section { display: none; }
-    .section.active { display: block; }
+    /* HORIZONTAL SWIPE VIEWPORT */
+    .swipe-viewport {
+      flex: 1;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    .swipe-viewport::-webkit-scrollbar { display: none; }
+    .swipe-page {
+      min-width: 100%;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-align: start;
+      padding: 12px 12px 92px;
+    }
 
-    /* Inputs & Buttons */
+    /* INPUTS & BUTTONS */
     input, textarea, select {
       width: 100%; background: var(--bg); color: var(--text);
       border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 0.92rem;
     }
     button.primary {
       background: var(--accent); color: var(--accent-text); border: none;
-      padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
+      padding: 10px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
     }
     button.secondary {
       background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
-      padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
+      padding: 7px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
     }
     button.danger-btn {
       background: var(--danger); color: #ffffff; border: none;
       padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
     }
+    .icon-btn {
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+      padding: 6px 10px; border-radius: 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    }
 
-    /* Cards */
+    /* CARDS & TL POSTS */
     .card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 13px; margin-bottom: 10px;
+      border-radius: 16px; padding: 13px; margin-bottom: 11px;
     }
-    .card-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 6px; }
-    .card-author { font-weight: 700; color: var(--text); }
-    .card-body { line-height: 1.42; word-break: break-word; }
-    .card-actions { display: flex; gap: 18px; margin-top: 10px; font-size: 0.84rem; color: var(--muted); }
-    .card-actions span { cursor: pointer; user-select: none; }
-
-    /* Theme Grid */
-    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px; }
-    .theme-pill {
-      padding: 10px; border-radius: 10px; border: 2px solid var(--border);
-      font-weight: 700; font-size: 0.82rem; cursor: pointer; text-align: center;
+    .post-top { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+    .post-author-wrap { flex: 1; cursor: pointer; }
+    .post-name { font-weight: 700; font-size: 0.92rem; }
+    .post-meta { font-size: 0.76rem; color: var(--muted); }
+    .post-text { line-height: 1.44; margin-bottom: 8px; word-break: break-word; }
+    .post-media {
+      width: 100%; max-height: 290px; object-fit: cover; border-radius: 12px;
+      border: 1px solid var(--border); margin-bottom: 8px; display: block;
     }
-    .theme-pill.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+    .post-tags-bar {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 8px;
+      background: var(--surface-2); border-radius: 9px; font-size: 0.76rem;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    .tag-pill { cursor: pointer; font-weight: 600; }
+    .card-actions { display: flex; gap: 18px; font-size: 0.84rem; color: var(--muted); }
+    .card-actions span { cursor: pointer; }
 
-    /* Chat */
-    .chat-list-item {
+    /* FLOATING POST BAR ON TL */
+    .fab-post {
+      position: fixed;
+      bottom: 68px;
+      right: 18px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--accent-text);
+      border: none;
+      font-size: 1.65rem;
+      font-weight: 800;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      cursor: pointer;
+      z-index: 28;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: left 0.2s, right 0.2s;
+    }
+    .fab-post.fab-left { right: auto; left: 18px; }
+
+    /* SEARCH HUB: WEATHER, EPL, IRL NEWS */
+    .weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .weather-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px;
+    }
+    .weather-city { font-size: 0.75rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+    .weather-temp { font-size: 1.35rem; font-weight: 800; margin: 2px 0; }
+    .weather-desc { font-size: 0.76rem; color: var(--accent); }
+
+    .epl-row {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 12px; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; margin-bottom: 8px; cursor: pointer;
+      padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.83rem;
     }
-    .chat-box { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; max-height: 50vh; overflow-y: auto; }
-    .msg { max-width: 78%; padding: 10px 12px; border-radius: 14px; font-size: 0.9rem; line-height: 1.35; }
-    .msg.in { background: var(--msg-in); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
-    .msg.out { background: var(--msg-out); color: var(--msg-out-text); align-self: flex-end; border-bottom-right-radius: 4px; }
-    .chat-input { display: flex; gap: 8px; }
+    .epl-row:last-child { border-bottom: none; }
+    .epl-badge {
+      background: var(--surface-2); border: 1px solid var(--border);
+      padding: 3px 7px; border-radius: 7px; font-size: 0.74rem; font-weight: 700; color: var(--accent);
+    }
 
-    /* Alphabetical Settings */
+    /* LEFT SLIDE-OUT DRAWERS (MENU & PROFILE) */
+    .drawer-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 60;
+    }
+    .drawer-backdrop.open { display: block; }
+    .left-drawer {
+      position: fixed; top: 0; bottom: 0; left: -100%; width: 86%; max-width: 380px;
+      background: var(--surface); border-right: 1px solid var(--border);
+      z-index: 70; overflow-y: auto; padding: 16px;
+      transition: left 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .left-drawer.open { left: 0; }
+
+    /* SETTINGS ACCORDION */
     .settings-item {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      margin-bottom: 8px; overflow: hidden;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 11px; margin-bottom: 7px; overflow: hidden;
     }
     .settings-header {
-      padding: 13px 14px; display: flex; justify-content: space-between; align-items: center;
-      font-weight: 700; cursor: pointer;
+      padding: 11px 12px; display: flex; justify-content: space-between; align-items: center;
+      font-weight: 700; font-size: 0.88rem; cursor: pointer;
     }
-    .settings-body {
-      display: none; padding: 12px 14px; border-top: 1px solid var(--border);
-      background: var(--surface-2); font-size: 0.88rem;
-    }
+    .settings-body { display: none; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--surface-2); font-size: 0.84rem; }
     .settings-item.open .settings-body { display: block; }
-    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
     .toggle-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 6px; }
+    .theme-pill { padding: 8px; border-radius: 8px; border: 2px solid var(--border); font-weight: 700; font-size: 0.78rem; cursor: pointer; text-align: center; }
+    .theme-pill.active { border-color: var(--accent); }
 
-    /* Bottom Dock: Quick Search + Nav */
-    .bottom-dock {
+    /* CHATS */
+    .chat-box { display: flex; flex-direction: column; gap: 8px; max-height: 52vh; overflow-y: auto; margin-bottom: 10px; }
+    .msg { max-width: 78%; padding: 9px 12px; border-radius: 14px; font-size: 0.88rem; line-height: 1.35; }
+    .msg.in { background: var(--msg-in); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.out { background: var(--msg-out); color: var(--msg-out-text); align-self: flex-end; border-bottom-right-radius: 4px; }
+
+    /* BASE NAVIGATION BAR: TL | Q | ₲ | ĐM͒ */
+    nav.base-nav {
       position: fixed; bottom: 0; width: 100%; max-width: 480px;
-      background: var(--surface); border-top: 1px solid var(--border);
-      z-index: 30; padding: 6px 10px 8px;
+      background: var(--glass); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border); display: flex; z-index: 30; height: 56px;
     }
-    .quick-search-wrap { position: relative; margin-bottom: 6px; }
-    .quick-search-input {
-      width: 100%; padding: 8px 12px; border-radius: 999px;
-      background: var(--bg); color: var(--text); border: 1px solid var(--border);
-      font-size: 0.86rem;
-    }
-    .quick-search-results {
-      display: none; position: absolute; bottom: 42px; left: 0; right: 0;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-      max-height: 260px; overflow-y: auto; padding: 8px;
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.35); z-index: 40;
-    }
-    .quick-search-results.open { display: block; }
-    .search-result-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 8px; border-bottom: 1px solid var(--border); gap: 8px;
-    }
-    .search-result-row:last-child { border-bottom: none; }
-    nav { display: flex; }
-    nav button {
+    nav.base-nav button {
       flex: 1; background: none; border: none; color: var(--muted);
-      padding: 6px 2px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      font-size: 1.05rem; font-weight: 800; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
     }
-    nav button.active { color: var(--accent); }
+    nav.base-nav button span.nav-sub { font-size: 0.64rem; font-weight: 600; }
+    nav.base-nav button.active { color: var(--accent); }
 
-    /* Modal for Terms & Privacy Policy */
+    /* MODAL */
     .modal-backdrop {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78);
       z-index: 100; justify-content: center; align-items: center; padding: 14px;
     }
     .modal-backdrop.open { display: flex; }
     .modal-card {
       background: var(--surface); color: var(--text); border: 1px solid var(--border);
-      border-radius: 16px; max-width: 450px; width: 100%; max-height: 84vh;
+      border-radius: 16px; max-width: 440px; width: 100%; max-height: 85vh;
       display: flex; flex-direction: column; overflow: hidden;
     }
     .modal-head {
-      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      padding: 13px 15px; border-bottom: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center; font-weight: 800;
     }
-    .modal-content {
-      padding: 16px; overflow-y: auto; font-size: 0.85rem; line-height: 1.5;
-    }
-    .modal-content h3 { margin: 12px 0 4px; color: var(--accent); font-size: 0.95rem; }
-    .modal-content p, .modal-content li { margin-bottom: 6px; color: var(--text); }
-    .modal-content ul { padding-left: 18px; }
+    .modal-content { padding: 14px; overflow-y: auto; font-size: 0.85rem; line-height: 1.48; }
   </style>
 </head>
 <body>
 
-  <!-- AUTHENTICATION GATE (SIGN UP / LOGIN) -->
-  <div id="auth-screen">
-    <div style="text-align:center;">
-      <h1 style="font-size:1.8rem; font-weight:900; letter-spacing:2px;">RYKERLORD</h1>
-      <p style="color:var(--muted); font-size:0.88rem; margin-top:4px;">Public Pulse &bull; Private Chats &bull; Real Communities</p>
+  <!-- 1. AUTHENTICATION SCREEN -->
+  <div id="auth-screen" class="full-overlay">
+    <div style="text-align:center; margin-bottom:14px;">
+      <div style="font-size:2.2rem; font-weight:900; letter-spacing:3px;">ᖇᒪ</div>
+      <div style="font-size:0.9rem; font-weight:700; letter-spacing:1.5px;">RYKERLORD</div>
+      <p style="color:var(--muted); font-size:0.8rem; margin-top:3px;">Slide &bull; Connect &bull; Real-Time IRL</p>
     </div>
 
     <div class="auth-box">
       <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-signup" onclick="switchAuthMode('signup')">Create Account</button>
+        <button class="auth-tab active" id="tab-signup" onclick="switchAuthMode('signup')">Sign Up</button>
         <button class="auth-tab" id="tab-login" onclick="switchAuthMode('login')">Log In</button>
       </div>
 
-      <div id="signup-fields" style="display:flex; flex-direction:column; gap:10px;">
+      <div id="signup-fields" style="display:flex; flex-direction:column; gap:9px;">
         <input id="reg-name" placeholder="Full Name (e.g. Alex Carter)" />
-        <input id="reg-user" placeholder="Choose Username (e.g. alexc)" />
+        <input id="reg-user" placeholder="Username (e.g. alexc)" />
         <input id="reg-bio" placeholder="Short Bio (optional)" />
       </div>
 
       <input id="auth-email" type="email" placeholder="Email address" />
-      <input id="auth-pass" type="password" placeholder="Password (min 6 characters)" />
+      <input id="auth-pass" type="password" placeholder="Password" />
 
-      <div id="terms-check-row" style="display:flex; align-items:flex-start; gap:8px; font-size:0.8rem; color:var(--muted);">
-        <input type="checkbox" id="agree-terms" style="width:18px; height:18px; margin-top:2px;" />
+      <div id="terms-check-row" style="display:flex; align-items:flex-start; gap:8px; font-size:0.78rem; color:var(--muted);">
+        <input type="checkbox" id="agree-terms" style="width:17px; height:17px; margin-top:2px;" />
         <label for="agree-terms">
           I agree to the <a href="#" onclick="openLegalModal(); return false;" style="color:var(--accent); font-weight:700;">Terms &amp; Conditions and Privacy Policy</a>.
         </label>
       </div>
 
-      <button class="primary" id="auth-submit-btn" onclick="submitAuth()">Create Account &amp; Enter</button>
-      <p id="auth-error" style="color:var(--danger); font-size:0.82rem; display:none;"></p>
-    </div>
-
-    <div style="text-align:center;">
-      <span style="font-size:0.78rem; color:var(--muted);">Theme: </span>
-      <button class="icon-btn" onclick="setTheme('black')">Black</button>
-      <button class="icon-btn" onclick="setTheme('white')">White</button>
-      <button class="icon-btn" onclick="setTheme('navy')">Navy</button>
-      <button class="icon-btn" onclick="setTheme('purple')">Purple</button>
-      <button class="icon-btn" onclick="setTheme('pink')">Pink</button>
+      <button class="primary" id="auth-submit-btn" onclick="submitAuth()">Create Account</button>
+      <p id="auth-error" style="color:var(--danger); font-size:0.8rem; display:none;"></p>
     </div>
   </div>
 
-  <!-- MAIN APP SHELL -->
-  <div id="app-shell" style="display:none; flex:1; flex-direction:column;">
-    <header>
+  <!-- 2. ONE-TIME INTERESTS PICKER (AFTER FIRST SIGNUP/LOGIN) -->
+  <div id="onboarding-screen" class="full-overlay" style="display:none;">
+    <div class="auth-box">
+      <div style="font-size:1.3rem; font-weight:900;">Personalize Your ᖇᒪ Timeline</div>
+      <p style="font-size:0.82rem; color:var(--muted);">Pick the topics you want to see most on your TL. (One-time setup)</p>
+
       <div>
-        <h1>RYKERLORD</h1>
-        <span id="header-user-tag" style="font-size:0.74rem; color:var(--muted);">@user</span>
+        <strong style="font-size:0.82rem; color:var(--accent);">Sports</strong>
+        <div class="chip-wrap" id="chips-sports"></div>
       </div>
-      <div class="header-right">
-        <button class="icon-btn" onclick="cycleTheme()">&#127912; Theme</button>
-        <span class="badge">LIVE v0.2</span>
+      <div>
+        <strong style="font-size:0.82rem; color:var(--accent);">Entertainment &amp; Lifestyle</strong>
+        <div class="chip-wrap" id="chips-ent"></div>
+      </div>
+      <div>
+        <strong style="font-size:0.82rem; color:var(--accent);">News, Tech &amp; Culture</strong>
+        <div class="chip-wrap" id="chips-tech"></div>
+      </div>
+
+      <button class="primary" onclick="finishOnboarding()">Save &amp; Enter TL</button>
+    </div>
+  </div>
+
+  <!-- 3. MAIN APP SHELL -->
+  <div id="app-shell" style="display:none; flex:1; flex-direction:column; height:100vh;">
+
+    <!-- DYNAMIC HEADER -->
+    <header>
+      <!-- TL / Standard Header -->
+      <div id="tl-header-content" style="display:flex; width:100%; align-items:center; justify-content:space-between;">
+        <div class="tl-left-stack" id="tl-left-controls">
+          <button class="menu-lines-btn" onclick="openMenuDrawer()" title="Menu">&#9776;</button>
+          <div class="avatar-circle" id="header-avatar" onclick="openProfileDrawer(currentUser.username)" title="My Profile">R</div>
+        </div>
+
+        <button class="rl-brand-btn" onclick="refreshTimeline()" title="Tap for latest updates">ᖇᒪ</button>
+
+        <div style="width:44px; text-align:right;">
+          <span id="view-alert-pill" style="display:none; background:var(--danger); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 7px; border-radius:999px; cursor:pointer;" onclick="openProfileDrawer(currentUser.username)">&#128065; 0</span>
+        </div>
+      </div>
+
+      <!-- Search Page Top Header (transforms when on Search tab) -->
+      <div id="top-search-header">
+        <span style="font-size:1.1rem; font-weight:900; color:var(--accent);">&#128269;</span>
+        <input id="globalSearchInput" class="top-search-field" placeholder="Search people, @tags, EPL, news, groups..." oninput="handleGlobalSearch(this.value)" />
       </div>
     </header>
 
-    <main>
-      <!-- 1. X-Style Public Pulse Feed -->
-      <div id="feed" class="section active">
-        <div class="card">
-          <textarea id="postInput" rows="3" placeholder="What's happening right now?"></textarea>
-          <button class="primary" style="margin-top:8px;" onclick="addPost()">Post to Pulse</button>
-        </div>
+    <!-- HORIZONTAL SWIPE PAGES: 0:TL | 1:Search | 2:Groups | 3:DM -->
+    <div class="swipe-viewport" id="swipeViewport" onscroll="onViewportScroll()">
+
+      <!-- PAGE 0: TL (TIMELINE) -->
+      <div class="swipe-page" id="page-tl">
+        <div id="tl-update-banner" style="display:none; text-align:center; padding:6px; margin-bottom:8px; background:var(--surface-2); border-radius:999px; font-size:0.78rem; color:var(--accent); font-weight:700;"></div>
         <div id="feedList"></div>
       </div>
 
-      <!-- 2. WhatsApp-Style Private Chats -->
-      <div id="chats" class="section">
-        <div id="chat-directory">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="font-size:0.95rem;">Direct Messages</strong>
-            <span style="font-size:0.78rem; color:var(--muted);">Tap a person to chat</span>
+      <!-- PAGE 1: SEARCH + IRL NEWS + EPL + DUAL WEATHER -->
+      <div class="swipe-page" id="page-search">
+        <div id="search-live-results" style="display:none; margin-bottom:12px;"></div>
+
+        <!-- Dual Weather Bar (Nairobi & New York + customizable) -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong style="font-size:0.86rem;" id="lbl-weather-title">Live IRL Weather</strong>
+          <button class="icon-btn" onclick="changeWeatherCities()">Switch Cities</button>
+        </div>
+        <div class="weather-grid" id="weatherGrid">
+          <div class="weather-card">
+            <div class="weather-city" id="w-city-1">Nairobi</div>
+            <div class="weather-temp" id="w-temp-1">--&deg;C</div>
+            <div class="weather-desc" id="w-desc-1">Loading weather...</div>
           </div>
+          <div class="weather-card">
+            <div class="weather-city" id="w-city-2">New York</div>
+            <div class="weather-temp" id="w-temp-2">--&deg;C</div>
+            <div class="weather-desc" id="w-desc-2">Loading weather...</div>
+          </div>
+        </div>
+
+        <!-- Upcoming EPL Games -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="font-size:0.9rem;">&#9917; Upcoming EPL Fixtures</strong>
+            <span style="font-size:0.72rem; color:var(--accent); font-weight:700;">Matchweek Live</span>
+          </div>
+          <div id="eplList"></div>
+        </div>
+
+        <!-- IRL Global & Local News -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.9rem;" id="lbl-news-title">&#127758; IRL Global &amp; Local News</strong>
+            <div style="display:flex; gap:4px;">
+              <button class="icon-btn" onclick="filterNews('all')">All</button>
+              <button class="icon-btn" onclick="filterNews('local')">Local</button>
+              <button class="icon-btn" onclick="filterNews('global')">Global</button>
+            </div>
+          </div>
+          <div id="newsList"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 2: GROUPS (₲) -->
+      <div class="swipe-page" id="page-groups">
+        <div class="card">
+          <strong style="display:block; margin-bottom:6px; font-size:0.9rem;">Create a Group (₲)</strong>
+          <input id="newGroupName" placeholder="Group name..." style="margin-bottom:6px;" />
+          <input id="newGroupDesc" placeholder="Description..." style="margin-bottom:6px;" />
+          <button class="primary" onclick="createGroup()">Create Group</button>
+        </div>
+
+        <div style="font-weight:800; font-size:0.88rem; margin:10px 0 6px;">Your Joined Groups</div>
+        <div id="joinedGroupsList"></div>
+
+        <div style="font-weight:800; font-size:0.88rem; margin:14px 0 6px; color:var(--accent);">Suggested For You (From People You Follow)</div>
+        <div id="suggestedGroupsList"></div>
+      </div>
+
+      <!-- PAGE 3: DIRECT MESSAGES (ĐM͒) -->
+      <div class="swipe-page" id="page-dm">
+        <div id="chat-directory">
+          <div style="font-weight:800; font-size:0.95rem; margin-bottom:8px;">Direct Messages (ĐM͒)</div>
           <div id="peopleChatList"></div>
         </div>
 
         <div id="chat-thread-view" style="display:none;">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-            <button class="secondary" onclick="closeChatThread()">&larr; Back</button>
-            <div>
+            <button class="secondary" onclick="closeChatThread()">&larr;</button>
+            <div style="cursor:pointer;" onclick="openProfileDrawer(activeChatPartner.username)">
               <strong id="active-chat-name">User</strong>
-              <div style="font-size:0.75rem; color:var(--success);">&#9679; Active now</div>
+              <div style="font-size:0.74rem; color:var(--success);">&#9679; Tap to view profile</div>
             </div>
           </div>
           <div class="card chat-box" id="chatBox"></div>
-          <div class="chat-input">
-            <input id="chatInput" placeholder="Write a private message..." />
+          <div style="display:flex; gap:8px;">
+            <input id="chatInput" placeholder="Write a DM..." />
             <button class="primary" style="width:auto;" onclick="sendMsg()">Send</button>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- 3. Facebook-Style Groups -->
-      <div id="groups" class="section">
-        <div class="card">
-          <strong style="display:block; margin-bottom:8px;">Create a New Community Group</strong>
-          <input id="newGroupName" placeholder="Group name (e.g. Tech Innovators)" style="margin-bottom:8px;" />
-          <input id="newGroupDesc" placeholder="Short description..." style="margin-bottom:8px;" />
-          <button class="primary" onclick="createGroup()">Create Group</button>
+    <!-- FLOATING POST BUTTON ON TL (Left or Right via Accessibility) -->
+    <button id="fabPostBtn" class="fab-post" onclick="openComposerModal()" title="New Post">+</button>
+
+    <!-- BASE NAVIGATION BAR: TL | Q | ₲ | ĐM͒ -->
+    <nav class="base-nav">
+      <button class="active" onclick="goToPage(0)"><span>TL</span><span class="nav-sub" id="nav-tl">Timeline</span></button>
+      <button onclick="goToPage(1)"><span>Q</span><span class="nav-sub" id="nav-search">Search</span></button>
+      <button onclick="goToPage(2)"><span>₲</span><span class="nav-sub" id="nav-groups">Groups</span></button>
+      <button onclick="goToPage(3)"><span>ĐM͒</span><span class="nav-sub" id="nav-dm">Chats</span></button>
+    </nav>
+  </div>
+
+  <!-- LEFT SLIDE-OUT DRAWER 1: MENU (☰) WITH ALPHABETICAL SETTINGS -->
+  <div id="menu-backdrop" class="drawer-backdrop" onclick="closeAllDrawers()"></div>
+  <div id="menu-drawer" class="left-drawer">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <strong style="font-size:1.1rem;">&#9776; Menu &amp; Settings</strong>
+      <button class="icon-btn" onclick="closeAllDrawers()">&times;</button>
+    </div>
+    <div style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">Alphabetical Settings (A &ndash; Z)</div>
+    <div id="alphabetical-settings-list"></div>
+  </div>
+
+  <!-- LEFT SLIDE-OUT DRAWER 2: USER PROFILE & ACTIVITY STALKER/VIEWER -->
+  <div id="profile-drawer" class="left-drawer">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <strong style="font-size:1rem;" id="drawer-prof-title">Profile</strong>
+      <button class="icon-btn" onclick="closeAllDrawers()">&times;</button>
+    </div>
+    <div id="profile-drawer-content"></div>
+  </div>
+
+  <!-- POST COMPOSER MODAL (Text, Photo, Video, People Tag, Location Tag) -->
+  <div id="composer-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span>Create Post on ᖇᒪ</span>
+        <button class="icon-btn" onclick="closeComposerModal()">&times;</button>
+      </div>
+      <div class="modal-content" style="display:flex; flex-direction:column; gap:10px;">
+        <textarea id="comp-text" rows="3" placeholder="Say something (optional if posting photo or video alone)..."></textarea>
+
+        <div style="display:flex; gap:8px;">
+          <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
+            &#128247; Add Photo
+            <input type="file" id="comp-img-file" accept="image/*" style="display:none;" onchange="handleMediaSelect(event, 'image')" />
+          </label>
+          <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
+            &#127909; Add Video
+            <input type="file" id="comp-vid-file" accept="video/*" style="display:none;" onchange="handleMediaSelect(event, 'video')" />
+          </label>
         </div>
-        <div id="groupList"></div>
-      </div>
 
-      <!-- 4. Alphabetical Settings (A - T) -->
-      <div id="settings" class="section">
-        <div style="margin-bottom:10px;">
-          <strong style="font-size:1rem;">Settings (A &ndash; Z)</strong>
-          <div style="font-size:0.78rem; color:var(--muted);">Tap any category to expand controls</div>
-        </div>
-        <div id="alphabetical-settings-list"></div>
-      </div>
-    </main>
+        <div id="comp-media-preview" style="display:none; position:relative;"></div>
 
-    <!-- BOTTOM DOCK: QUICK SEARCH BAR + NAVIGATION -->
-    <div class="bottom-dock">
-      <div class="quick-search-wrap">
-        <input
-          id="quickSearchInput"
-          class="quick-search-input"
-          placeholder="&#128269; Quick search people (@username), groups, or posts..."
-          oninput="runQuickSearch(this.value)"
-          onfocus="runQuickSearch(this.value)"
-        />
-        <div id="quickSearchResults" class="quick-search-results"></div>
+        <input id="comp-tag-people" placeholder="&#128100; Tag people in post/media (e.g. @mayatech, @dkimani)" />
+        <input id="comp-tag-place" placeholder="&#128205; Tag location / where taken (e.g. Nairobi, Kenya)" />
+
+        <button class="primary" onclick="publishRichPost()">Post to TL</button>
       </div>
-      <nav>
-        <button class="active" onclick="showTab('feed', this)">Pulse</button>
-        <button onclick="showTab('chats', this)">Chats</button>
-        <button onclick="showTab('groups', this)">Groups</button>
-        <button onclick="showTab('settings', this)">Settings</button>
-      </nav>
     </div>
   </div>
 
-  <!-- ELABORATE TERMS & CONDITIONS + PRIVACY POLICY MODAL -->
+  <!-- TERMS & PRIVACY POLICY MODAL -->
   <div id="legal-modal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-head">
@@ -401,93 +585,91 @@
         <button class="icon-btn" onclick="closeLegalModal()">Close &times;</button>
       </div>
       <div class="modal-content">
-        <p><strong>Effective Date:</strong> November 2026 &bull; <strong>Platform:</strong> RYKERLORD Social Network</p>
-        <p>Welcome to RYKERLORD. By creating an account, accessing, or interacting on RYKERLORD (including Pulse feeds, Private Chats, and Community Groups), you agree to be bound by these Terms &amp; Conditions and Privacy Policy.</p>
-
-        <h3>1. Eligibility &amp; Account Registration</h3>
-        <ul>
-          <li>You must be at least <strong>13 years of age</strong> (or the minimum legal age in your country) to register an account.</li>
-          <li>You agree to provide accurate registration details and maintain only one personal account unless authorized.</li>
-          <li>You are solely responsible for safeguarding your login password and all activity occurring under your handle.</li>
-        </ul>
-
-        <h3>2. Acceptable Use &amp; Prohibited Conduct</h3>
-        <p>To keep RYKERLORD safe for everyone, you strictly agree NOT to:</p>
-        <ul>
-          <li>Post or transmit hate speech, harassment, threats of violence, bullying, or sexually explicit/non-consensual material.</li>
-          <li>Impersonate any individual, brand, or RYKERLORD administrator, or create deceptive/spam accounts.</li>
-          <li>Share private personal data (doxxing), financial credentials, or confidential information of others without explicit consent.</li>
-          <li>Upload malware, phishing links, automated scraping bots, or attempt to disrupt platform infrastructure.</li>
-          <li>Infringe upon copyrights, trademarks, or intellectual property rights belonging to third parties.</li>
-        </ul>
-
-        <h3>3. User-Generated Content &amp; License</h3>
-        <ul>
-          <li><strong>Your Ownership:</strong> You retain full ownership of the text, messages, and media you create and post on RYKERLORD.</li>
-          <li><strong>Platform License:</strong> By posting public content on Pulse or Groups, you grant RYKERLORD a worldwide, non-exclusive, royalty-free license to host, store, display, reproduce, and distribute your content solely to operate and improve the service.</li>
-          <li>You may delete your posts or account at any time, though cached or reposted copies shared by other users may remain visible briefly.</li>
-        </ul>
-
-        <h3>4. Content Moderation &amp; Account Termination</h3>
-        <p>RYKERLORD reserves the right to remove any content, restrict visibility, or suspend/terminate accounts without prior notice if we determine a violation of these Terms or risk of harm to our community.</p>
-
-        <h3>5. Privacy Policy &amp; Data Collection</h3>
-        <ul>
-          <li><strong>Information We Collect:</strong> Account profile data (display name, username, email, bio), user posts, group memberships, direct messages, and basic technical preferences (selected theme, accessibility settings).</li>
-          <li><strong>How We Use Data:</strong> To authenticate your login, deliver messages and feeds, enable user search/discovery, prevent spam/abuse, and maintain platform reliability.</li>
-          <li><strong>No Sale of Personal Data:</strong> RYKERLORD does not sell your personal information or private messages to third-party data brokers.</li>
-        </ul>
-
-        <h3>6. Your Privacy Rights &amp; Controls</h3>
-        <ul>
-          <li><strong>Access &amp; Correction:</strong> You may view and edit your profile details anytime under <em>Settings &rarr; Account</em>.</li>
-          <li><strong>Privacy Controls:</strong> You can enable Private Account mode, manage Direct Message permissions, and block or mute other users under <em>Settings &rarr; Privacy and safety</em>.</li>
-          <li><strong>Deletion:</strong> You may clear local storage or request full account deletion at any time.</li>
-        </ul>
-
-        <h3>7. Disclaimers &amp; Limitation of Liability</h3>
-        <p>RYKERLORD is provided on an <strong>"AS IS" and "AS AVAILABLE"</strong> basis without warranties of uninterrupted availability. User posts represent the views of their respective authors, not RYKERLORD. To the maximum extent permitted by law, RYKERLORD shall not be liable for indirect, incidental, or consequential damages arising from platform use.</p>
-
-        <h3>8. Updates to Terms &amp; Governing Law</h3>
-        <p>We may revise these Terms &amp; Privacy Policy as new features launch. Continued use of RYKERLORD after updates constitutes acceptance of the revised terms.</p>
+        <p><strong>Effective Date:</strong> November 2026 &bull; <strong>Platform:</strong> RYKERLORD (ᖇᒪ)</p>
+        <p>By creating an account or interacting on RYKERLORD, you agree to these Terms &amp; Conditions and Privacy Policy.</p>
+        <h4 style="margin:10px 0 4px; color:var(--accent);">1. Eligibility &amp; Account Integrity</h4>
+        <p>Users must be at least 13 years old and maintain accurate account credentials. You are responsible for all activity on your profile.</p>
+        <h4 style="margin:10px 0 4px; color:var(--accent);">2. Media, Tagging &amp; Acceptable Use</h4>
+        <p>You retain ownership of all photos, videos, and text posted on TL. Do not upload illegal content, harassment, hate speech, non-consensual media, or spam. Location and user tags must be respectful and truthful.</p>
+        <h4 style="margin:10px 0 4px; color:var(--accent);">3. Profile Viewing &amp; Privacy Controls</h4>
+        <p>Under <em>Menu &rarr; Privacy and safety</em>, you control whether profile visits are anonymous (Stealth Mode) or notify the profile owner. RYKERLORD never sells your personal data or private ĐM͒ messages.</p>
+        <h4 style="margin:10px 0 4px; color:var(--accent);">4. Moderation &amp; Disclaimers</h4>
+        <p>RYKERLORD may remove violating content or suspend accounts to protect community safety. Service is provided "AS IS" without uninterrupted uptime warranties.</p>
       </div>
     </div>
   </div>
 
   <script>
-    const THEMES = ['black', 'white', 'navy', 'purple', 'pink'];
-    let currentTheme = localStorage.getItem('ryker_theme') || 'black';
-    let authMode = 'signup';
-    let currentUser = JSON.parse(localStorage.getItem('ryker_current_user') || 'null');
-
-    // Default Directory of Platform Individuals so user can interact immediately
-    let usersDB = JSON.parse(localStorage.getItem('ryker_users_db') || 'null') || [
-      { id: 'u1', name: 'Ryker Admin', username: 'rykerlord', bio: 'Founder of RYKERLORD. Building fast mobile communities.', email: 'admin@rykerlord.app', following: true },
-      { id: 'u2', name: 'Maya Lin', username: 'mayatech', bio: 'UI designer & mobile creator', email: 'maya@example.com', following: false },
-      { id: 'u3', name: 'David Kimani', username: 'dkimani', bio: 'Football, tech & photography', email: 'david@example.com', following: false },
-      { id: 'u4', name: 'Sofia Vance', username: 'sofiav', bio: 'Startup founder & writer', email: 'sofia@example.com', following: false }
-    ];
-
-    let posts = JSON.parse(localStorage.getItem('ryker_posts') || 'null') || [
-      { id: 1, author: 'Ryker Admin', username: 'rykerlord', time: 'Just now', text: 'Welcome to RYKERLORD v0.2! Use the Quick Search bar at the bottom to find people, switch themes in Settings, and start chatting.', likes: 4, liked: false, replies: [] },
-      { id: 2, author: 'Maya Lin', username: 'mayatech', time: '12m ago', text: 'Loving the Very Light Purple and Pure Black themes on mobile!', likes: 2, liked: false, replies: [] }
-    ];
-
-    let groups = JSON.parse(localStorage.getItem('ryker_groups') || 'null') || [
-      { id: 'g1', name: 'Builders & Creators', desc: 'Share apps, ideas & feedback', members: 142, joined: true },
-      { id: 'g2', name: 'Daily Campus & Career Hub', desc: 'Study notes, remote jobs & tips', members: 89, joined: false },
-      { id: 'g3', name: 'Photography & Visual Arts', desc: 'Mobile shots & editing tricks', members: 64, joined: false }
-    ];
-
-    let chatsDB = JSON.parse(localStorage.getItem('ryker_chats_db') || 'null') || {
-      rykerlord: [{ sender: 'in', text: 'Hey! Welcome to RYKERLORD. Tap any user in Quick Search to start a private chat.' }],
-      mayatech: [{ sender: 'in', text: 'Hi there! Glad to connect on RYKERLORD.' }]
+    // LANGUAGE DICTIONARY (English, Spanish, Kiswahili, Sheng')
+    const I18N = {
+      English: { tl: 'Timeline', search: 'Search', groups: 'Groups', dm: 'Chats', weather: 'Live IRL Weather', news: 'IRL Global & Local News' },
+      Spanish: { tl: 'Inicio', search: 'Buscar', groups: 'Grupos', dm: 'Mensajes', weather: 'Clima en Vivo', news: 'Noticias Globales y Locales' },
+      Kiswahili: { tl: 'Mlisho', search: 'Tafuta', groups: 'Vikundi', dm: 'Jumbe', weather: 'Hali ya Hewa', news: 'Habari za Ndani na Dunia' },
+      "Sheng'": { tl: 'Rada', search: 'Saka', groups: 'Mtaa', dm: 'Bonga', weather: 'Hewa Saa Hii', news: 'Form za Mtaa na Dunia' }
     };
 
-    let activeChatPartner = null;
+    const THEMES = ['black', 'white', 'navy', 'purple', 'pink'];
+    let currentTheme = localStorage.getItem('rl_theme') || 'black';
+    let authMode = 'signup';
+    let currentPageIndex = 0;
 
-    let userPrefs = JSON.parse(localStorage.getItem('ryker_prefs') || 'null') || {
+    let currentUser = JSON.parse(localStorage.getItem('rl_current_user') || 'null');
+
+    let usersDB = JSON.parse(localStorage.getItem('rl_users_db') || 'null') || [
+      { id: 'u1', name: 'Ryker Admin', username: 'rykerlord', bio: 'Founder of ᖇᒪ RYKERLORD. Building fast IRL social.', email: 'admin@rykerlord.app', following: true, interests: ['Football', 'Tech'], profileViews: [] },
+      { id: 'u2', name: 'Maya Lin', username: 'mayatech', bio: 'Design, EPL weekends & photography', email: 'maya@example.com', following: true, interests: ['Football', 'Music'], profileViews: [] },
+      { id: 'u3', name: 'David Kimani', username: 'dkimani', bio: 'Nairobi rugby & Premier League fan', email: 'david@example.com', following: false, interests: ['Rugby', 'Football'], profileViews: [] },
+      { id: 'u4', name: 'Sofia Vance', username: 'sofiav', bio: 'Entertainment & global culture', email: 'sofia@example.com', following: true, interests: ['Movies', 'Fashion'], profileViews: [] }
+    ];
+
+    let posts = JSON.parse(localStorage.getItem('rl_posts') || 'null') || [
+      {
+        id: 101,
+        author: 'Ryker Admin',
+        username: 'rykerlord',
+        time: 'Just now',
+        category: 'Tech',
+        text: 'Welcome to ᖇᒪ v0.3! Swipe left/right to move between TL, Q, ₲, and ĐM͒. Tap ᖇᒪ at the top anytime for fresh updates.',
+        mediaType: null,
+        mediaUrl: null,
+        taggedPeople: ['@mayatech', '@dkimani'],
+        location: 'Nairobi, Kenya',
+        likes: 9,
+        liked: false,
+        replies: []
+      },
+      {
+        id: 102,
+        author: 'David Kimani',
+        username: 'dkimani',
+        time: '18m ago',
+        category: 'Football',
+        text: 'Matchday vibes! Who is taking the 3 points in the Premier League today?',
+        mediaType: null,
+        mediaUrl: null,
+        taggedPeople: ['@rykerlord'],
+        location: 'Westlands, Nairobi',
+        likes: 5,
+        liked: false,
+        replies: []
+      }
+    ];
+
+    let groups = JSON.parse(localStorage.getItem('rl_groups') || 'null') || [
+      { id: 'g1', name: 'EPL & Football Banter', desc: 'Live Premier League matchday reactions', members: 310, joined: true, memberHandles: ['mayatech', 'dkimani', 'rykerlord'] },
+      { id: 'g2', name: 'Kenya Rugby & Sports Hub', desc: 'Shujaa, Kenya Cup & global rugby updates', members: 185, joined: false, memberHandles: ['dkimani', 'rykerlord'] },
+      { id: 'g3', name: 'Nairobi Creators & Tech', desc: 'Builders, photographers & campus hustles', members: 240, joined: false, memberHandles: ['mayatech', 'sofiav'] },
+      { id: 'g4', name: 'Afrobeats, Gengetone & Cinema', desc: 'Music drops, series & entertainment', members: 412, joined: false, memberHandles: ['sofiav', 'mayatech'] }
+    ];
+
+    let chatsDB = JSON.parse(localStorage.getItem('rl_chats_db') || 'null') || {
+      rykerlord: [{ sender: 'in', text: 'Karibu ᖇᒪ! Tap any user icon to check their activity or message them.' }],
+      mayatech: [{ sender: 'in', text: 'Hey! Have you checked the new EPL fixtures in Search?' }]
+    };
+
+    let userPrefs = JSON.parse(localStorage.getItem('rl_prefs') || 'null') || {
       privateAccount: false,
+      stealthView: false, // false = notify profile owner when viewed; true = silent stealth mode
       activeStatus: true,
       readReceipts: true,
       notifLikes: true,
@@ -495,47 +677,76 @@
       timelineOrder: 'latest',
       language: 'English',
       dataSaver: false,
-      fontSize: 'md'
+      fontSize: 'md',
+      fabSide: 'right',
+      city1: { name: 'Nairobi', lat: -1.2864, lon: 36.8172 },
+      city2: { name: 'New York', lat: 40.7128, lon: -74.0060 }
     };
 
+    const EPL_FIXTURES = [
+      { home: 'Arsenal', away: 'Chelsea', time: 'Sat 18:30 EAT', comp: 'EPL' },
+      { home: 'Liverpool', away: 'Man City', time: 'Sun 19:30 EAT', comp: 'EPL' },
+      { home: 'Man United', away: 'Tottenham', time: 'Sun 17:00 EAT', comp: 'EPL' },
+      { home: 'Newcastle', away: 'Aston Villa', time: 'Sat 21:00 EAT', comp: 'EPL' }
+    ];
+
+    const IRL_NEWS = [
+      { scope: 'local', tag: 'Kenya IRL', title: 'Nairobi tech hubs expand mobile creator & AI innovation programs across East Africa.' },
+      { scope: 'global', tag: 'World News', title: 'Global renewable energy capacity hits a new milestone heading into late 2026.' },
+      { scope: 'local', tag: 'Local Sports', title: 'Kenyan athletics and rugby squads intensify preparations ahead of international fixtures.' },
+      { scope: 'global', tag: 'Global Tech', title: 'Next-gen mobile web apps bridge instant real-time social and live event feeds.' }
+    ];
+
+    let activeChatPartner = null;
+    let pendingMedia = { type: null, url: null };
+    let selectedInterests = [];
+
     function saveAll() {
-      localStorage.setItem('ryker_users_db', JSON.stringify(usersDB));
-      localStorage.setItem('ryker_posts', JSON.stringify(posts));
-      localStorage.setItem('ryker_groups', JSON.stringify(groups));
-      localStorage.setItem('ryker_chats_db', JSON.stringify(chatsDB));
-      localStorage.setItem('ryker_prefs', JSON.stringify(userPrefs));
-      if (currentUser) localStorage.setItem('ryker_current_user', JSON.stringify(currentUser));
+      localStorage.setItem('rl_users_db', JSON.stringify(usersDB));
+      localStorage.setItem('rl_posts', JSON.stringify(posts));
+      localStorage.setItem('rl_groups', JSON.stringify(groups));
+      localStorage.setItem('rl_chats_db', JSON.stringify(chatsDB));
+      localStorage.setItem('rl_prefs', JSON.stringify(userPrefs));
+      if (currentUser) localStorage.setItem('rl_current_user', JSON.stringify(currentUser));
     }
 
     function setTheme(theme) {
       currentTheme = theme;
       if (theme === 'black') document.documentElement.removeAttribute('data-theme');
       else document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('ryker_theme', theme);
+      localStorage.setItem('rl_theme', theme);
       renderSettings();
     }
 
-    function cycleTheme() {
-      const next = THEMES[(THEMES.indexOf(currentTheme) + 1) % THEMES.length];
-      setTheme(next);
-    }
-
-    function applyFontSize(size) {
-      userPrefs.fontSize = size;
+    function applyAccessibility() {
       document.body.classList.remove('font-sm', 'font-lg');
-      if (size === 'sm') document.body.classList.add('font-sm');
-      if (size === 'lg') document.body.classList.add('font-lg');
-      saveAll();
+      if (userPrefs.fontSize === 'sm') document.body.classList.add('font-sm');
+      if (userPrefs.fontSize === 'lg') document.body.classList.add('font-lg');
+
+      const fab = document.getElementById('fabPostBtn');
+      if (fab) {
+        fab.classList.toggle('fab-left', userPrefs.fabSide === 'left');
+      }
     }
 
-    // AUTHENTICATION FLOW
+    function applyLanguage() {
+      const dict = I18N[userPrefs.language] || I18N.English;
+      document.getElementById('nav-tl').textContent = dict.tl;
+      document.getElementById('nav-search').textContent = dict.search;
+      document.getElementById('nav-groups').textContent = dict.groups;
+      document.getElementById('nav-dm').textContent = dict.dm;
+      document.getElementById('lbl-weather-title').textContent = dict.weather;
+      document.getElementById('lbl-news-title').textContent = dict.news;
+    }
+
+    // AUTH & ONE-TIME ONBOARDING
     function switchAuthMode(mode) {
       authMode = mode;
       document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
       document.getElementById('tab-login').classList.toggle('active', mode === 'login');
       document.getElementById('signup-fields').style.display = mode === 'signup' ? 'flex' : 'none';
       document.getElementById('terms-check-row').style.display = mode === 'signup' ? 'flex' : 'none';
-      document.getElementById('auth-submit-btn').textContent = mode === 'signup' ? 'Create Account & Enter' : 'Log In to RYKERLORD';
+      document.getElementById('auth-submit-btn').textContent = mode === 'signup' ? 'Create Account' : 'Log In';
       document.getElementById('auth-error').style.display = 'none';
     }
 
@@ -545,118 +756,262 @@
       const errEl = document.getElementById('auth-error');
 
       if (!email || !pass || pass.length < 4) {
-        errEl.textContent = 'Please enter a valid email and password (at least 4 characters).';
+        errEl.textContent = 'Enter a valid email and password (min 4 characters).';
         errEl.style.display = 'block';
         return;
       }
 
       if (authMode === 'signup') {
         const name = document.getElementById('reg-name').value.trim();
-        const rawUser = document.getElementById('reg-user').value.trim().replace(/^@/, '').toLowerCase();
-        const bio = document.getElementById('reg-bio').value.trim() || 'New member on RYKERLORD';
-        const agreed = document.getElementById('agree-terms').checked;
-
-        if (!name || !rawUser) {
-          errEl.textContent = 'Please enter your Full Name and choose a Username.';
+        const username = document.getElementById('reg-user').value.trim().replace(/^@/, '').toLowerCase();
+        const bio = document.getElementById('reg-bio').value.trim() || 'On ᖇᒪ RYKERLORD';
+        if (!name || !username) {
+          errEl.textContent = 'Full Name and Username are required.';
           errEl.style.display = 'block';
           return;
         }
-        if (!agreed) {
-          errEl.textContent = 'You must agree to the Terms & Conditions and Privacy Policy to create an account.';
+        if (!document.getElementById('agree-terms').checked) {
+          errEl.textContent = 'Please agree to the Terms & Conditions and Privacy Policy.';
           errEl.style.display = 'block';
           return;
         }
-
-        const newUser = { id: 'u_' + Date.now(), name, username: rawUser, bio, email, password: pass };
-        usersDB = usersDB.filter(u => u.username !== rawUser);
+        const newUser = {
+          id: 'u_' + Date.now(), name, username, bio, email, password: pass,
+          onboarded: false, interests: [], profileViews: []
+        };
+        usersDB = usersDB.filter(u => u.username !== username);
         usersDB.unshift(newUser);
         currentUser = newUser;
+        saveAll();
+        openOnboarding();
       } else {
-        const found = usersDB.find(u => u.email === email || u.username === email);
-        if (found) {
-          currentUser = found;
-        } else {
-          // Allow instant login demo if user enters email
+        let found = usersDB.find(u => u.email === email || u.username === email);
+        if (!found) {
           const handle = email.split('@')[0];
-          currentUser = { id: 'u_' + Date.now(), name: handle, username: handle, bio: 'RYKERLORD Member', email };
-          usersDB.unshift(currentUser);
+          found = { id: 'u_' + Date.now(), name: handle, username: handle, bio: 'ᖇᒪ Member', email, onboarded: false, interests: [], profileViews: [] };
+          usersDB.unshift(found);
         }
+        currentUser = found;
+        saveAll();
+        if (!currentUser.onboarded) openOnboarding();
+        else enterApp();
       }
+    }
 
+    function openOnboarding() {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('onboarding-screen').style.display = 'flex';
+      const groupsMap = {
+        'chips-sports': ['Football', 'Rugby', 'Basketball', 'Athletics', 'Formula 1'],
+        'chips-ent': ['Music', 'Movies', 'Gaming', 'Comedy', 'Fashion'],
+        'chips-tech': ['Tech', 'IRL News', 'Business', 'Photography']
+      };
+      Object.entries(groupsMap).forEach(([elId, list]) => {
+        document.getElementById(elId).innerHTML = list.map(item => `
+          <div class="interest-chip" onclick="toggleInterest(this, '${item}')">${item}</div>
+        `).join('');
+      });
+    }
+
+    function toggleInterest(el, item) {
+      el.classList.toggle('selected');
+      if (selectedInterests.includes(item)) selectedInterests = selectedInterests.filter(x => x !== item);
+      else selectedInterests.push(item);
+    }
+
+    function finishOnboarding() {
+      currentUser.interests = selectedInterests.length ? selectedInterests : ['Football', 'IRL News'];
+      currentUser.onboarded = true;
+      const idx = usersDB.findIndex(u => u.username === currentUser.username);
+      if (idx > -1) usersDB[idx] = currentUser;
       saveAll();
+      document.getElementById('onboarding-screen').style.display = 'none';
       enterApp();
     }
 
     function logoutUser() {
+      closeAllDrawers();
       currentUser = null;
-      localStorage.removeItem('ryker_current_user');
+      localStorage.removeItem('rl_current_user');
       document.getElementById('app-shell').style.display = 'none';
       document.getElementById('auth-screen').style.display = 'flex';
     }
 
     function enterApp() {
       document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('onboarding-screen').style.display = 'none';
       document.getElementById('app-shell').style.display = 'flex';
-      document.getElementById('header-user-tag').textContent = '@' + currentUser.username;
+      document.getElementById('header-avatar').textContent = (currentUser.name || 'R')[0].toUpperCase();
+      updateViewAlertBadge();
+      applyAccessibility();
+      applyLanguage();
       renderFeed();
-      renderChatDirectory();
+      renderEPL();
+      renderNews('all');
+      fetchDualWeather();
       renderGroups();
+      renderChatDirectory();
       renderSettings();
+      goToPage(0);
     }
 
-    // NAVIGATION
-    function showTab(tabId, btn) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (btn) btn.classList.add('active');
-      document.getElementById('quickSearchResults').classList.remove('open');
+    // HORIZONTAL SWIPE + HEADER TRANSFORMATION
+    function goToPage(index) {
+      const vp = document.getElementById('swipeViewport');
+      vp.scrollTo({ left: vp.clientWidth * index, behavior: 'smooth' });
+      updateActivePageUI(index);
     }
 
-    // PULSE FEED
+    function onViewportScroll() {
+      const vp = document.getElementById('swipeViewport');
+      const idx = Math.round(vp.scrollLeft / vp.clientWidth);
+      if (idx !== currentPageIndex) updateActivePageUI(idx);
+    }
+
+    function updateActivePageUI(idx) {
+      currentPageIndex = idx;
+      document.querySelectorAll('nav.base-nav button').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+      const tlHeader = document.getElementById('tl-header-content');
+      const searchHeader = document.getElementById('top-search-header');
+      const fab = document.getElementById('fabPostBtn');
+
+      if (idx === 1) {
+        // Search page: transform top bar into Search bar
+        tlHeader.style.display = 'none';
+        searchHeader.style.display = 'flex';
+        fab.style.display = 'none';
+      } else {
+        tlHeader.style.display = 'flex';
+        searchHeader.style.display = 'none';
+        // Menu & Profile stack only on TL (idx === 0)
+        document.getElementById('tl-left-controls').style.visibility = (idx === 0) ? 'visible' : 'hidden';
+        fab.style.display = (idx === 0) ? 'flex' : 'none';
+      }
+    }
+
+    function refreshTimeline() {
+      goToPage(0);
+      document.getElementById('page-tl').scrollTo({ top: 0, behavior: 'smooth' });
+      const banner = document.getElementById('tl-update-banner');
+      banner.textContent = '✓ Timeline refreshed with latest posts';
+      banner.style.display = 'block';
+      renderFeed();
+      setTimeout(() => { banner.style.display = 'none'; }, 1800);
+    }
+
+    // TL FEED & MEDIA COMPOSER
     function renderFeed() {
-      const list = document.getElementById('feedList');
-      const ordered = userPrefs.timelineOrder === 'top'
-        ? [...posts].sort((a, b) => b.likes - a.likes)
-        : posts;
+      const interests = currentUser.interests || [];
+      let list = [...posts];
+      if (userPrefs.timelineOrder === 'top') {
+        list.sort((a, b) => b.likes - a.likes);
+      } else if (interests.length) {
+        // Boost posts matching user's chosen onboarding interests while keeping newest at top
+        list.sort((a, b) => {
+          const aMatch = interests.includes(a.category) ? 1 : 0;
+          const bMatch = interests.includes(b.category) ? 1 : 0;
+          return (b.id + bMatch * 1000) - (a.id + aMatch * 1000);
+        });
+      }
 
-      list.innerHTML = ordered.map(p => `
+      document.getElementById('feedList').innerHTML = list.map(p => `
         <div class="card">
-          <div class="card-header">
-            <span class="card-author">${p.name || p.author} <span style="color:var(--muted); font-weight:400;">@${p.username}</span></span>
-            <span>${p.time}</span>
+          <div class="post-top">
+            <div class="avatar-circle" onclick="openProfileDrawer('${p.username}')">${(p.author || 'U')[0].toUpperCase()}</div>
+            <div class="post-author-wrap" onclick="openProfileDrawer('${p.username}')">
+              <div class="post-name">${p.author} <span style="color:var(--muted); font-weight:400;">@${p.username}</span></div>
+              <div class="post-meta">${p.time} ${p.category ? '&bull; ' + p.category : ''}</div>
+            </div>
           </div>
-          <div class="card-body">${p.text}</div>
+
+          ${p.text ? `<div class="post-text">${p.text}</div>` : ''}
+          ${p.mediaType === 'image' && p.mediaUrl ? `<img src="${p.mediaUrl}" class="post-media" alt="Post photo" />` : ''}
+          ${p.mediaType === 'video' && p.mediaUrl ? `<video src="${p.mediaUrl}" class="post-media" controls playsinline></video>` : ''}
+
+          ${((p.taggedPeople && p.taggedPeople.length) || p.location) ? `
+            <div class="post-tags-bar">
+              ${p.location ? `<span>&#128205; ${p.location}</span>` : ''}
+              ${(p.taggedPeople || []).map(tag => {
+                const clean = tag.replace(/^@/, '');
+                return `<span class="tag-pill" onclick="openProfileDrawer('${clean}')">&#128100; @${clean}</span>`;
+              }).join('')}
+            </div>
+          ` : ''}
+
           <div class="card-actions">
             <span onclick="toggleLike(${p.id})" style="color:${p.liked ? 'var(--accent)' : 'inherit'}">&#9829; ${p.likes}</span>
-            <span onclick="replyPost(${p.id})">&#128172; Reply (${(p.replies || []).length})</span>
-            <span onclick="startChatWith('${p.username}')">&#9993; Message</span>
+            <span onclick="replyPost(${p.id})">&#128172; ${(p.replies || []).length}</span>
+            <span onclick="startChatWith('${p.username}')">&#9993; ĐM͒</span>
           </div>
+
           ${(p.replies && p.replies.length) ? `
             <div style="margin-top:8px; padding-left:10px; border-left:2px solid var(--border); font-size:0.82rem;">
-              ${p.replies.map(r => `<div style="margin-top:4px;"><strong>@${r.username}:</strong> ${r.text}</div>`).join('')}
+              ${p.replies.map(r => `<div style="margin-top:4px;"><strong style="cursor:pointer;" onclick="openProfileDrawer('${r.username}')">@${r.username}:</strong> ${r.text}</div>`).join('')}
             </div>
           ` : ''}
         </div>
       `).join('');
     }
 
-    function addPost() {
-      const input = document.getElementById('postInput');
-      const text = input.value.trim();
-      if (!text) return;
+    function openComposerModal() {
+      pendingMedia = { type: null, url: null };
+      document.getElementById('comp-text').value = '';
+      document.getElementById('comp-tag-people').value = '';
+      document.getElementById('comp-tag-place').value = '';
+      document.getElementById('comp-media-preview').style.display = 'none';
+      document.getElementById('composer-modal').classList.add('open');
+    }
+
+    function closeComposerModal() {
+      document.getElementById('composer-modal').classList.remove('open');
+    }
+
+    function handleMediaSelect(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      pendingMedia = { type, url };
+      const prev = document.getElementById('comp-media-preview');
+      prev.style.display = 'block';
+      prev.innerHTML = type === 'image'
+        ? `<img src="${url}" class="post-media" />`
+        : `<video src="${url}" class="post-media" controls></video>`;
+    }
+
+    function publishRichPost() {
+      const text = document.getElementById('comp-text').value.trim();
+      const rawTags = document.getElementById('comp-tag-people').value.trim();
+      const location = document.getElementById('comp-tag-place').value.trim();
+
+      // Supports word alone, pic alone, video alone, or any combination
+      if (!text && !pendingMedia.url) {
+        alert('Add text, a photo, or a video to post.');
+        return;
+      }
+
+      const taggedPeople = rawTags
+        ? rawTags.split(/[\s,]+/).filter(Boolean).map(t => t.startsWith('@') ? t : '@' + t)
+        : [];
+
       posts.unshift({
         id: Date.now(),
         author: currentUser.name,
         username: currentUser.username,
         time: 'Just now',
+        category: (currentUser.interests && currentUser.interests[0]) || 'General',
         text,
+        mediaType: pendingMedia.type,
+        mediaUrl: pendingMedia.url,
+        taggedPeople,
+        location,
         likes: 0,
         liked: false,
         replies: []
       });
-      input.value = '';
+
       saveAll();
+      closeComposerModal();
       renderFeed();
     }
 
@@ -670,7 +1025,7 @@
     }
 
     function replyPost(id) {
-      const text = prompt('Write your reply:');
+      const text = prompt('Reply to post:');
       if (!text || !text.trim()) return;
       const p = posts.find(x => x.id === id);
       if (!p) return;
@@ -680,32 +1035,299 @@
       renderFeed();
     }
 
-    // CHATS
+    // LEFT DRAWERS: MENU (☰) & PROFILE ACTIVITY / STEALTH VIEWER
+    function openMenuDrawer() {
+      closeAllDrawers();
+      renderSettings();
+      document.getElementById('menu-backdrop').classList.add('open');
+      document.getElementById('menu-drawer').classList.add('open');
+    }
+
+    function openProfileDrawer(username) {
+      closeAllDrawers();
+      const cleanUser = username.replace(/^@/, '').toLowerCase();
+      let target = usersDB.find(u => u.username === cleanUser);
+      if (!target) {
+        target = { id: 'u_' + cleanUser, name: cleanUser, username: cleanUser, bio: 'ᖇᒪ Member', following: false, profileViews: [] };
+        usersDB.push(target);
+      }
+
+      const isSelf = target.username === currentUser.username;
+
+      // Record Profile View unless Stealth Mode is ON
+      if (!isSelf && !userPrefs.stealthView) {
+        target.profileViews = target.profileViews || [];
+        target.profileViews.unshift({ viewer: currentUser.username, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+        saveAll();
+      }
+
+      const userPosts = posts.filter(p => p.username === target.username);
+      const userGroups = groups.filter(g => (g.memberHandles || []).includes(target.username) || (isSelf && g.joined));
+
+      document.getElementById('drawer-prof-title').textContent = isSelf ? 'My Profile' : `@${target.username}`;
+
+      let followBtnHtml = '';
+      if (!isSelf) {
+        const label = target.following ? 'Following (Tap to Unfollow)' : 'Follow';
+        followBtnHtml = `<button class="${target.following ? 'secondary' : 'primary'}" style="margin-top:8px;" onclick="toggleFollowUser('${target.username}')">${label}</button>`;
+      }
+
+      let viewsSectionHtml = '';
+      if (isSelf) {
+        const views = target.profileViews || [];
+        viewsSectionHtml = `
+          <div class="card" style="margin-top:10px;">
+            <strong style="font-size:0.84rem;">&#128065; Recent Profile Visitors (${views.length})</strong>
+            <div style="font-size:0.75rem; color:var(--muted); margin-bottom:6px;">
+              ${userPrefs.stealthView ? 'Stealth Mode is ON (your visits to others are hidden).' : 'Visible because Profile View Alerts are active.'}
+            </div>
+            ${views.length
+              ? views.slice(0, 6).map(v => `<div style="font-size:0.8rem; padding:4px 0; border-bottom:1px solid var(--border);"><strong>@${v.viewer}</strong> viewed your profile &bull; ${v.time}</div>`).join('')
+              : `<div style="font-size:0.8rem; color:var(--muted);">No recent profile visits logged yet.</div>`
+            }
+          </div>
+        `;
+      }
+
+      document.getElementById('profile-drawer-content').innerHTML = `
+        <div class="card">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="avatar-circle" style="width:46px; height:46px; font-size:1.2rem;">${target.name[0].toUpperCase()}</div>
+            <div>
+              <strong style="font-size:1rem;">${target.name}</strong>
+              <div style="font-size:0.8rem; color:var(--muted);">@${target.username}</div>
+            </div>
+          </div>
+          <p style="font-size:0.84rem; margin-top:8px;">${target.bio || ''}</p>
+          <div style="display:flex; gap:14px; margin-top:8px; font-size:0.78rem; color:var(--muted);">
+            <span><strong>${userPosts.length}</strong> Posts</span>
+            <span><strong>${userGroups.length}</strong> Groups</span>
+          </div>
+          ${followBtnHtml}
+          ${!isSelf ? `<button class="secondary" style="width:100%; margin-top:6px;" onclick="closeAllDrawers(); startChatWith('${target.username}')">Message ĐM͒</button>` : ''}
+        </div>
+
+        ${viewsSectionHtml}
+
+        <div style="font-weight:800; font-size:0.85rem; margin:10px 0 6px;">Account Activity &bull; Posts (${userPosts.length})</div>
+        ${userPosts.length
+          ? userPosts.map(p => `
+              <div class="card" style="padding:10px;">
+                <div style="font-size:0.74rem; color:var(--muted);">${p.time} ${p.location ? '&bull; ' + p.location : ''}</div>
+                <div style="font-size:0.84rem; margin-top:4px;">${p.text || '[Media Post]'}</div>
+              </div>
+            `).join('')
+          : `<div style="font-size:0.82rem; color:var(--muted);">No posts yet.</div>`
+        }
+
+        <div style="font-weight:800; font-size:0.85rem; margin:10px 0 6px;">Communities Joined (${userGroups.length})</div>
+        ${userGroups.map(g => `<div class="card" style="padding:8px 10px; font-size:0.82rem;"><strong>₲ ${g.name}</strong></div>`).join('')}
+      `;
+
+      document.getElementById('menu-backdrop').classList.add('open');
+      document.getElementById('profile-drawer').classList.add('open');
+    }
+
+    function toggleFollowUser(username) {
+      const u = usersDB.find(x => x.username === username);
+      if (!u) return;
+      u.following = !u.following;
+      saveAll();
+      renderGroups();
+      openProfileDrawer(username);
+    }
+
+    function updateViewAlertBadge() {
+      const views = (currentUser && currentUser.profileViews) ? currentUser.profileViews.length : 0;
+      const pill = document.getElementById('view-alert-pill');
+      if (views > 0) {
+        pill.textContent = `👁 ${views}`;
+        pill.style.display = 'inline-block';
+      } else {
+        pill.style.display = 'none';
+      }
+    }
+
+    function closeAllDrawers() {
+      document.getElementById('menu-backdrop').classList.remove('open');
+      document.getElementById('menu-drawer').classList.remove('open');
+      document.getElementById('profile-drawer').classList.remove('open');
+    }
+
+    // SEARCH HUB: LIVE WEATHER (NAIROBI & NEW YORK), EPL, NEWS
+    async function fetchDualWeather() {
+      const cities = [userPrefs.city1, userPrefs.city2];
+      for (let i = 0; i < 2; i++) {
+        const c = cities[i];
+        document.getElementById(`w-city-${i + 1}`).textContent = c.name;
+        try {
+          const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true`);
+          const data = await res.json();
+          const cw = data.current_weather;
+          document.getElementById(`w-temp-${i + 1}`).innerHTML = `${Math.round(cw.temperature)}&deg;C`;
+          document.getElementById(`w-desc-${i + 1}`).textContent = `Wind ${cw.windspeed} km/h • Live`;
+        } catch (e) {
+          document.getElementById(`w-temp-${i + 1}`).innerHTML = i === 0 ? `23&deg;C` : `11&deg;C`;
+          document.getElementById(`w-desc-${i + 1}`).textContent = i === 0 ? 'Partly Cloudy' : 'Clear Sky';
+        }
+      }
+    }
+
+    function changeWeatherCities() {
+      const presets = [
+        { c1: { name: 'Nairobi', lat: -1.2864, lon: 36.8172 }, c2: { name: 'New York', lat: 40.7128, lon: -74.0060 } },
+        { c1: { name: 'Mombasa', lat: -4.0435, lon: 39.6682 }, c2: { name: 'London', lat: 51.5072, lon: -0.1276 } },
+        { c1: { name: 'Kisumu', lat: -0.0917, lon: 34.7680 }, c2: { name: 'Tokyo', lat: 35.6762, lon: 139.6503 } }
+      ];
+      const nextIdx = (presets.findIndex(p => p.c1.name === userPrefs.city1.name) + 1) % presets.length;
+      userPrefs.city1 = presets[nextIdx].c1;
+      userPrefs.city2 = presets[nextIdx].c2;
+      saveAll();
+      fetchDualWeather();
+    }
+
+    function renderEPL() {
+      document.getElementById('eplList').innerHTML = EPL_FIXTURES.map(m => `
+        <div class="epl-row">
+          <div><strong>${m.home}</strong> vs <strong>${m.away}</strong></div>
+          <span class="epl-badge">${m.time}</span>
+        </div>
+      `).join('');
+    }
+
+    function filterNews(scope) {
+      renderNews(scope);
+    }
+
+    function renderNews(scope) {
+      const items = scope === 'all' ? IRL_NEWS : IRL_NEWS.filter(n => n.scope === scope);
+      document.getElementById('newsList').innerHTML = items.map(n => `
+        <div style="padding:8px 0; border-bottom:1px solid var(--border);">
+          <span style="font-size:0.7rem; font-weight:800; color:var(--accent); text-transform:uppercase;">${n.tag}</span>
+          <div style="font-size:0.84rem; margin-top:2px;">${n.title}</div>
+        </div>
+      `).join('');
+    }
+
+    function handleGlobalSearch(q) {
+      const box = document.getElementById('search-live-results');
+      const query = q.trim().toLowerCase().replace(/^@/, '');
+      if (!query) {
+        box.style.display = 'none';
+        return;
+      }
+
+      const matchedUsers = usersDB.filter(u => u.username !== currentUser.username && (u.name.toLowerCase().includes(query) || u.username.toLowerCase().includes(query)));
+      const matchedGroups = groups.filter(g => g.name.toLowerCase().includes(query));
+
+      let html = `<div class="card"><strong style="font-size:0.82rem; color:var(--accent);">Search Results</strong>`;
+      matchedUsers.forEach(u => {
+        html += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border);">
+            <div style="cursor:pointer;" onclick="openProfileDrawer('${u.username}')">
+              <strong>${u.name}</strong> <span style="color:var(--muted);">@${u.username}</span>
+            </div>
+            <button class="secondary" style="padding:4px 9px; font-size:0.75rem;" onclick="openProfileDrawer('${u.username}')">Profile</button>
+          </div>
+        `;
+      });
+      matchedGroups.forEach(g => {
+        html += `<div style="padding:8px 0; font-size:0.84rem;"><strong>₲ ${g.name}</strong> &bull; ${g.members} members</div>`;
+      });
+      if (!matchedUsers.length && !matchedGroups.length) {
+        html += `<div style="font-size:0.82rem; color:var(--muted); padding-top:6px;">No matching people or groups found.</div>`;
+      }
+      html += `</div>`;
+      box.innerHTML = html;
+      box.style.display = 'block';
+    }
+
+    // GROUPS (₲): JOINED + NETWORK SUGGESTIONS
+    function renderGroups() {
+      const joined = groups.filter(g => g.joined);
+      const suggested = groups.filter(g => !g.joined);
+      const followingHandles = usersDB.filter(u => u.following).map(u => u.username);
+
+      document.getElementById('joinedGroupsList').innerHTML = joined.length
+        ? joined.map(g => `
+            <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+              <div>
+                <strong>₲ ${g.name}</strong>
+                <div style="font-size:0.8rem; color:var(--muted);">${g.desc}</div>
+                <div style="font-size:0.74rem; color:var(--accent);">${g.members} members</div>
+              </div>
+              <button class="secondary" onclick="toggleGroup('${g.id}')">Joined ✓</button>
+            </div>
+          `).join('')
+        : `<div style="font-size:0.82rem; color:var(--muted);">You haven't joined any groups yet.</div>`;
+
+      document.getElementById('suggestedGroupsList').innerHTML = suggested.map(g => {
+        const mutuals = (g.memberHandles || []).filter(h => followingHandles.includes(h));
+        const reason = mutuals.length
+          ? `Followed by @${mutuals[0]}${mutuals.length > 1 ? ` + ${mutuals.length - 1} more` : ''}`
+          : 'Popular in your area';
+        return `
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <div>
+              <strong>₲ ${g.name}</strong>
+              <div style="font-size:0.78rem; color:var(--muted);">${g.desc}</div>
+              <div style="font-size:0.73rem; color:var(--accent); margin-top:2px;">&#128101; ${reason} &bull; ${g.members} members</div>
+            </div>
+            <button class="primary" style="width:auto;" onclick="toggleGroup('${g.id}')">Join</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function createGroup() {
+      const name = document.getElementById('newGroupName').value.trim();
+      const desc = document.getElementById('newGroupDesc').value.trim() || 'Community group';
+      if (!name) return;
+      groups.unshift({ id: 'g_' + Date.now(), name, desc, members: 1, joined: true, memberHandles: [currentUser.username] });
+      document.getElementById('newGroupName').value = '';
+      document.getElementById('newGroupDesc').value = '';
+      saveAll();
+      renderGroups();
+    }
+
+    function toggleGroup(id) {
+      const g = groups.find(x => x.id === id);
+      if (!g) return;
+      g.joined = !g.joined;
+      g.members += g.joined ? 1 : -1;
+      saveAll();
+      renderGroups();
+    }
+
+    // DIRECT MESSAGES (ĐM͒)
     function renderChatDirectory() {
       const others = usersDB.filter(u => u.username !== currentUser.username);
       document.getElementById('peopleChatList').innerHTML = others.map(u => {
         const thread = chatsDB[u.username] || [];
-        const lastMsg = thread.length ? thread[thread.length - 1].text : 'Tap to start a private chat';
+        const preview = thread.length ? thread[thread.length - 1].text : 'Tap to message';
         return `
-          <div class="chat-list-item" onclick="startChatWith('${u.username}')">
-            <div>
-              <strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.82rem;">@${u.username}</span>
-              <div style="font-size:0.8rem; color:var(--muted); margin-top:2px;">${lastMsg}</div>
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="startChatWith('${u.username}')">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="avatar-circle">${u.name[0].toUpperCase()}</div>
+              <div>
+                <strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.8rem;">@${u.username}</span>
+                <div style="font-size:0.78rem; color:var(--muted);">${preview}</div>
+              </div>
             </div>
-            <span style="color:var(--accent); font-weight:700; font-size:0.82rem;">Chat &rarr;</span>
+            <span style="color:var(--accent); font-weight:800;">ĐM͒</span>
           </div>
         `;
       }).join('');
     }
 
     function startChatWith(username) {
-      if (username === currentUser.username) return;
-      const partner = usersDB.find(u => u.username === username) || { name: username, username };
-      activeChatPartner = partner;
-      showTab('chats', document.querySelectorAll('nav button')[1]);
+      const clean = username.replace(/^@/, '').toLowerCase();
+      if (clean === currentUser.username) return;
+      activeChatPartner = usersDB.find(u => u.username === clean) || { name: clean, username: clean };
+      goToPage(3);
       document.getElementById('chat-directory').style.display = 'none';
       document.getElementById('chat-thread-view').style.display = 'block';
-      document.getElementById('active-chat-name').textContent = `${partner.name} (@${partner.username})`;
+      document.getElementById('active-chat-name').textContent = `${activeChatPartner.name} (@${activeChatPartner.username})`;
       renderChatMessages();
     }
 
@@ -722,7 +1344,7 @@
       const box = document.getElementById('chatBox');
       box.innerHTML = thread.length
         ? thread.map(m => `<div class="msg ${m.sender}">${m.text}</div>`).join('')
-        : `<div style="color:var(--muted); font-size:0.84rem; text-align:center; padding:16px;">Say hello to @${activeChatPartner.username}!</div>`;
+        : `<div style="text-align:center; color:var(--muted); font-size:0.82rem; padding:14px;">Start a ĐM͒ with @${activeChatPartner.username}</div>`;
       box.scrollTop = box.scrollHeight;
     }
 
@@ -738,233 +1360,133 @@
       renderChatMessages();
     }
 
-    // GROUPS
-    function renderGroups() {
-      document.getElementById('groupList').innerHTML = groups.map(g => `
-        <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-          <div>
-            <strong>${g.name}</strong>
-            <div style="font-size:0.82rem; color:var(--muted);">${g.desc}</div>
-            <div style="font-size:0.76rem; color:var(--accent); margin-top:3px;">${g.members} members</div>
-          </div>
-          <button class="${g.joined ? 'secondary' : 'primary'}" style="width:auto;" onclick="toggleGroup('${g.id}')">
-            ${g.joined ? 'Joined ✓' : 'Join'}
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function createGroup() {
-      const name = document.getElementById('newGroupName').value.trim();
-      const desc = document.getElementById('newGroupDesc').value.trim() || 'Community discussion group';
-      if (!name) return;
-      groups.unshift({ id: 'g_' + Date.now(), name, desc, members: 1, joined: true });
-      document.getElementById('newGroupName').value = '';
-      document.getElementById('newGroupDesc').value = '';
-      saveAll();
-      renderGroups();
-    }
-
-    function toggleGroup(id) {
-      const g = groups.find(x => x.id === id);
-      if (!g) return;
-      g.joined = !g.joined;
-      g.members += g.joined ? 1 : -1;
-      saveAll();
-      renderGroups();
-    }
-
-    // QUICK SEARCH BAR (Individuals, Groups, Posts)
-    function runQuickSearch(query) {
-      const box = document.getElementById('quickSearchResults');
-      const q = query.trim().toLowerCase().replace(/^@/, '');
-      if (!q) {
-        box.classList.remove('open');
-        return;
-      }
-
-      const matchedUsers = usersDB.filter(u =>
-        u.username !== currentUser.username &&
-        (u.name.toLowerCase().includes(q) || u.username.toLowerCase().includes(q) || (u.bio && u.bio.toLowerCase().includes(q)))
-      );
-      const matchedGroups = groups.filter(g => g.name.toLowerCase().includes(q) || g.desc.toLowerCase().includes(q));
-      const matchedPosts = posts.filter(p => p.text.toLowerCase().includes(q));
-
-      let html = '';
-
-      if (matchedUsers.length) {
-        html += `<div style="font-size:0.74rem; font-weight:800; color:var(--muted); padding:4px 6px;">PEOPLE ON RYKERLORD</div>`;
-        html += matchedUsers.map(u => `
-          <div class="search-result-row">
-            <div>
-              <strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.8rem;">@${u.username}</span>
-              <div style="font-size:0.75rem; color:var(--muted);">${u.bio || ''}</div>
-            </div>
-            <div style="display:flex; gap:6px;">
-              <button class="secondary" style="padding:5px 8px; font-size:0.75rem;" onclick="toggleFollow('${u.username}')">${u.following ? 'Following' : 'Follow'}</button>
-              <button class="primary" style="padding:5px 8px; font-size:0.75rem; width:auto;" onclick="startChatWith('${u.username}')">Chat</button>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      if (matchedGroups.length) {
-        html += `<div style="font-size:0.74rem; font-weight:800; color:var(--muted); padding:6px 6px 2px;">GROUPS</div>`;
-        html += matchedGroups.map(g => `
-          <div class="search-result-row">
-            <div><strong>${g.name}</strong><div style="font-size:0.75rem; color:var(--muted);">${g.members} members</div></div>
-            <button class="secondary" style="padding:5px 8px; font-size:0.75rem;" onclick="showTab('groups', document.querySelectorAll('nav button')[2])">View</button>
-          </div>
-        `).join('');
-      }
-
-      if (matchedPosts.length) {
-        html += `<div style="font-size:0.74rem; font-weight:800; color:var(--muted); padding:6px 6px 2px;">POSTS</div>`;
-        html += matchedPosts.slice(0, 3).map(p => `
-          <div class="search-result-row" onclick="showTab('feed', document.querySelectorAll('nav button')[0])" style="cursor:pointer;">
-            <div style="font-size:0.8rem;"><strong>@${p.username}:</strong> ${p.text.slice(0, 55)}...</div>
-          </div>
-        `).join('');
-      }
-
-      if (!html) {
-        html = `<div style="padding:10px; text-align:center; color:var(--muted); font-size:0.82rem;">No people, groups, or posts matched "${query}"</div>`;
-      }
-
-      box.innerHTML = html;
-      box.classList.add('open');
-    }
-
-    function toggleFollow(username) {
-      const u = usersDB.find(x => x.username === username);
-      if (!u) return;
-      u.following = !u.following;
-      saveAll();
-      runQuickSearch(document.getElementById('quickSearchInput').value);
-    }
-
-    // ALPHABETICAL SETTINGS RENDERER (A - T)
+    // ALPHABETICAL SETTINGS INSIDE MENU (☰)
     function renderSettings() {
       const sections = [
         {
           title: 'Accessibility',
           body: `
-            <label style="display:block; margin-bottom:6px;">Text Size</label>
-            <select onchange="applyFontSize(this.value)">
-              <option value="sm" ${userPrefs.fontSize === 'sm' ? 'selected' : ''}>Small (Compact)</option>
+            <label style="display:block; margin-bottom:4px;">Text Size</label>
+            <select style="margin-bottom:8px;" onchange="userPrefs.fontSize=this.value; saveAll(); applyAccessibility();">
+              <option value="sm" ${userPrefs.fontSize === 'sm' ? 'selected' : ''}>Small</option>
               <option value="md" ${userPrefs.fontSize === 'md' ? 'selected' : ''}>Medium (Default)</option>
-              <option value="lg" ${userPrefs.fontSize === 'lg' ? 'selected' : ''}>Large (Easy Read)</option>
+              <option value="lg" ${userPrefs.fontSize === 'lg' ? 'selected' : ''}>Large</option>
+            </select>
+            <label style="display:block; margin-bottom:4px;">Floating Post (+) Button Side</label>
+            <select onchange="userPrefs.fabSide=this.value; saveAll(); applyAccessibility();">
+              <option value="right" ${userPrefs.fabSide === 'right' ? 'selected' : ''}>Right Side (Right-Handed)</option>
+              <option value="left" ${userPrefs.fabSide === 'left' ? 'selected' : ''}>Left Side (Left-Handed)</option>
             </select>
           `
         },
         {
           title: 'Account',
           body: `
-            <div style="display:flex; flex-direction:column; gap:8px;">
-              <input id="edit-name" value="${currentUser.name}" placeholder="Display Name" />
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <input id="edit-name" value="${currentUser.name}" placeholder="Name" />
               <input id="edit-user" value="${currentUser.username}" placeholder="Username" />
               <input id="edit-bio" value="${currentUser.bio || ''}" placeholder="Bio" />
-              <button class="primary" onclick="saveAccountEdits()">Save Profile Changes</button>
+              <button class="primary" onclick="saveAccountEdits()">Save Profile</button>
             </div>
           `
         },
         {
           title: 'Additional resources',
           body: `
-            <p style="margin-bottom:8px;">RYKERLORD Platform v0.2 &bull; Built for fast mobile communities.</p>
-            <button class="secondary" style="width:100%;" onclick="openLegalModal()">Read Full Terms &amp; Conditions and Privacy Policy</button>
+            <p style="margin-bottom:6px;">ᖇᒪ RYKERLORD v0.3</p>
+            <button class="secondary" style="width:100%;" onclick="openLegalModal()">Terms &amp; Conditions and Privacy Policy</button>
           `
         },
         {
           title: 'Appearance',
           body: `
-            <div>Choose your platform color theme:</div>
             <div class="theme-grid">
               <div class="theme-pill ${currentTheme === 'black' ? 'active' : ''}" style="background:#000; color:#fff;" onclick="setTheme('black')">Pure Black</div>
               <div class="theme-pill ${currentTheme === 'white' ? 'active' : ''}" style="background:#fff; color:#0f172a;" onclick="setTheme('white')">Crisp White</div>
-              <div class="theme-pill ${currentTheme === 'navy' ? 'active' : ''}" style="background:#071326; color:#93c5fd;" onclick="setTheme('navy')">Navy Blue</div>
-              <div class="theme-pill ${currentTheme === 'purple' ? 'active' : ''}" style="background:#f5f0ff; color:#581c87;" onclick="setTheme('purple')">Very Light Purple</div>
-              <div class="theme-pill ${currentTheme === 'pink' ? 'active' : ''}" style="background:#fff0f5; color:#831843; grid-column: span 2;" onclick="setTheme('pink')">Light Pink</div>
+              <div class="theme-pill ${currentTheme === 'navy' ? 'active' : ''}" style="background:#061021; color:#93c5fd;" onclick="setTheme('navy')">Navy Blue</div>
+              <div class="theme-pill ${currentTheme === 'purple' ? 'active' : ''}" style="background:#f6f1ff; color:#581c87;" onclick="setTheme('purple')">Light Purple</div>
+              <div class="theme-pill ${currentTheme === 'pink' ? 'active' : ''}" style="background:#fff0f6; color:#831843; grid-column:span 2;" onclick="setTheme('pink')">Light Pink</div>
             </div>
           `
         },
         {
           title: 'Chat',
           body: `
-            <div class="toggle-row"><span>Show Active Online Status</span><input type="checkbox" ${userPrefs.activeStatus ? 'checked' : ''} onchange="togglePref('activeStatus', this.checked)" /></div>
-            <div class="toggle-row"><span>Send Read Receipts</span><input type="checkbox" ${userPrefs.readReceipts ? 'checked' : ''} onchange="togglePref('readReceipts', this.checked)" /></div>
+            <div class="toggle-row"><span>Active Online Status</span><input type="checkbox" ${userPrefs.activeStatus ? 'checked' : ''} onchange="userPrefs.activeStatus=this.checked; saveAll();" /></div>
+            <div class="toggle-row"><span>Read Receipts</span><input type="checkbox" ${userPrefs.readReceipts ? 'checked' : ''} onchange="userPrefs.readReceipts=this.checked; saveAll();" /></div>
           `
         },
         {
           title: 'Explore',
-          body: `
-            <p>Discover trending creators and communities using the Quick Search bar at the bottom of your screen.</p>
-          `
+          body: `<p>Swipe right to <strong>Q (Search)</strong> for live Nairobi &amp; New York weather, EPL fixtures, and IRL news.</p>`
         },
         {
           title: 'Languages',
           body: `
-            <select onchange="togglePref('language', this.value)">
-              <option ${userPrefs.language === 'English' ? 'selected' : ''}>English</option>
-              <option ${userPrefs.language === 'Kiswahili' ? 'selected' : ''}>Kiswahili</option>
-              <option ${userPrefs.language === 'French' ? 'selected' : ''}>French</option>
-              <option ${userPrefs.language === 'Spanish' ? 'selected' : ''}>Spanish</option>
+            <label style="display:block; margin-bottom:4px;">App Language</label>
+            <select onchange="userPrefs.language=this.value; saveAll(); applyLanguage();">
+              <option value="English" ${userPrefs.language === 'English' ? 'selected' : ''}>English</option>
+              <option value="Spanish" ${userPrefs.language === 'Spanish' ? 'selected' : ''}>Spanish (Español)</option>
+              <option value="Kiswahili" ${userPrefs.language === 'Kiswahili' ? 'selected' : ''}>Kiswahili</option>
+              <option value="Sheng'" ${userPrefs.language === "Sheng'" ? 'selected' : ''}>Sheng'</option>
             </select>
           `
         },
         {
           title: 'Notifications',
           body: `
-            <div class="toggle-row"><span>Likes &amp; Replies on Pulse</span><input type="checkbox" ${userPrefs.notifLikes ? 'checked' : ''} onchange="togglePref('notifLikes', this.checked)" /></div>
-            <div class="toggle-row"><span>New Private Messages</span><input type="checkbox" ${userPrefs.notifMessages ? 'checked' : ''} onchange="togglePref('notifMessages', this.checked)" /></div>
+            <div class="toggle-row"><span>TL Likes &amp; Replies</span><input type="checkbox" ${userPrefs.notifLikes ? 'checked' : ''} onchange="userPrefs.notifLikes=this.checked; saveAll();" /></div>
+            <div class="toggle-row"><span>New ĐM͒ Alerts</span><input type="checkbox" ${userPrefs.notifMessages ? 'checked' : ''} onchange="userPrefs.notifMessages=this.checked; saveAll();" /></div>
           `
         },
         {
           title: 'Privacy and safety',
           body: `
-            <div class="toggle-row"><span>Private Account (Approve followers)</span><input type="checkbox" ${userPrefs.privateAccount ? 'checked' : ''} onchange="togglePref('privateAccount', this.checked)" /></div>
-            <button class="secondary" style="width:100%; margin-top:8px;" onclick="openLegalModal()">View Elaborate Terms &amp; Privacy Policy</button>
+            <div class="toggle-row">
+              <span>Stealth Profile Viewing (View others silently without notifying them)</span>
+              <input type="checkbox" ${userPrefs.stealthView ? 'checked' : ''} onchange="userPrefs.stealthView=this.checked; saveAll();" />
+            </div>
+            <div class="toggle-row">
+              <span>Private Account</span>
+              <input type="checkbox" ${userPrefs.privateAccount ? 'checked' : ''} onchange="userPrefs.privateAccount=this.checked; saveAll();" />
+            </div>
+            <button class="secondary" style="width:100%; margin-top:6px;" onclick="openLegalModal()">Read Terms &amp; Privacy Policy</button>
           `
         },
         {
           title: 'Security and access',
           body: `
-            <p style="margin-bottom:8px;">Signed in as <strong>${currentUser.email}</strong></p>
-            <button class="danger-btn" onclick="logoutUser()">Log Out of RYKERLORD</button>
+            <p style="margin-bottom:8px;">Logged in as <strong>${currentUser.email}</strong></p>
+            <button class="danger-btn" onclick="logoutUser()">Log Out</button>
           `
         },
         {
           title: 'Storage and Data',
           body: `
-            <div class="toggle-row"><span>Data Saver Mode</span><input type="checkbox" ${userPrefs.dataSaver ? 'checked' : ''} onchange="togglePref('dataSaver', this.checked)" /></div>
-            <button class="secondary" style="width:100%; margin-top:8px;" onclick="clearLocalCache()">Reset Local Demo Data</button>
+            <div class="toggle-row"><span>Data Saver</span><input type="checkbox" ${userPrefs.dataSaver ? 'checked' : ''} onchange="userPrefs.dataSaver=this.checked; saveAll();" /></div>
+            <button class="secondary" style="width:100%; margin-top:6px;" onclick="if(confirm('Reset local data?')){localStorage.clear();location.reload();}">Reset App Cache</button>
           `
         },
         {
           title: 'Subscription',
-          body: `
-            <p><strong>Current Plan:</strong> RYKERLORD Free ($0/month)</p>
-            <p style="font-size:0.8rem; color:var(--muted); margin-top:4px;">Includes unlimited Pulse posts, Private Chats, and Community Groups.</p>
-          `
+          body: `<p><strong>Plan:</strong> ᖇᒪ Free Tier ($0/mo)</p>`
         },
         {
           title: 'Timeline',
           body: `
-            <label style="display:block; margin-bottom:6px;">Pulse Feed Sorting</label>
-            <select onchange="togglePref('timelineOrder', this.value); renderFeed();">
-              <option value="latest" ${userPrefs.timelineOrder === 'latest' ? 'selected' : ''}>Latest Posts First</option>
-              <option value="top" ${userPrefs.timelineOrder === 'top' ? 'selected' : ''}>Top Liked Posts First</option>
+            <select onchange="userPrefs.timelineOrder=this.value; saveAll(); renderFeed();">
+              <option value="latest" ${userPrefs.timelineOrder === 'latest' ? 'selected' : ''}>Latest &amp; Interests First</option>
+              <option value="top" ${userPrefs.timelineOrder === 'top' ? 'selected' : ''}>Most Liked First</option>
             </select>
           `
         }
       ];
 
-      // Strictly sort alphabetically A-Z by title
       sections.sort((a, b) => a.title.localeCompare(b.title));
 
       document.getElementById('alphabetical-settings-list').innerHTML = sections.map((s, idx) => `
-        <div class="settings-item" id="set-item-${idx}">
-          <div class="settings-header" onclick="document.getElementById('set-item-${idx}').classList.toggle('open')">
+        <div class="settings-item" id="set-acc-${idx}">
+          <div class="settings-header" onclick="document.getElementById('set-acc-${idx}').classList.toggle('open')">
             <span>${s.title}</span>
             <span style="color:var(--muted);">&#9662;</span>
           </div>
@@ -981,30 +1503,20 @@
       currentUser.name = name;
       currentUser.username = username;
       currentUser.bio = bio;
-      document.getElementById('header-user-tag').textContent = '@' + username;
+      document.getElementById('header-avatar').textContent = name[0].toUpperCase();
       saveAll();
-      alert('Profile updated!');
+      alert('Profile saved!');
     }
 
-    function togglePref(key, val) {
-      userPrefs[key] = val;
-      saveAll();
-    }
-
-    function clearLocalCache() {
-      if (!confirm('Reset all local demo posts and chats?')) return;
-      localStorage.clear();
-      location.reload();
-    }
-
-    // LEGAL MODAL
     function openLegalModal() { document.getElementById('legal-modal').classList.add('open'); }
     function closeLegalModal() { document.getElementById('legal-modal').classList.remove('open'); }
 
-    // INIT
+    // BOOT
     setTheme(currentTheme);
-    applyFontSize(userPrefs.fontSize);
-    if (currentUser) enterApp();
+    if (currentUser) {
+      if (!currentUser.onboarded) openOnboarding();
+      else enterApp();
+    }
   </script>
 </body>
 </html>
