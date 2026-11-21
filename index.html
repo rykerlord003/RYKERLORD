@@ -1924,3 +1924,426 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>RYKERLORD v0.4</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #0f0f12;
+      --surface-2: #1a1a20;
+      --glass: rgba(15, 15, 18, 0.88);
+      --text: #ffffff;
+      --muted: #8e8e93;
+      --border: #27272a;
+      --accent: #38bdf8;
+      --accent-text: #000000;
+      --msg-in: #1c1c1e;
+      --msg-out: #0284c7;
+      --msg-out-text: #ffffff;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --gold: #f59e0b;
+    }
+    [data-theme="white"] {
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --surface-2: #f1f5f9;
+      --glass: rgba(255, 255, 255, 0.9);
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #0284c7;
+      --accent-text: #ffffff;
+      --msg-in: #e2e8f0;
+      --msg-out: #0284c7;
+      --msg-out-text: #ffffff;
+    }
+    [data-theme="navy"] {
+      --bg: #061021;
+      --surface: #0c1c38;
+      --surface-2: #13294f;
+      --glass: rgba(12, 28, 56, 0.9);
+      --text: #f1f5f9;
+      --muted: #93c5fd;
+      --border: #1e3a6e;
+      --accent: #60a5fa;
+      --accent-text: #061021;
+      --msg-in: #13294f;
+      --msg-out: #2563eb;
+      --msg-out-text: #ffffff;
+    }
+    [data-theme="purple"] {
+      --bg: #f6f1ff;
+      --surface: #ede4ff;
+      --surface-2: #e2d4ff;
+      --glass: rgba(237, 228, 255, 0.92);
+      --text: #2e1065;
+      --muted: #6b21a8;
+      --border: #d8b4fe;
+      --accent: #7e22ce;
+      --accent-text: #ffffff;
+      --msg-in: #e2d4ff;
+      --msg-out: #7e22ce;
+      --msg-out-text: #ffffff;
+    }
+    [data-theme="pink"] {
+      --bg: #fff0f6;
+      --surface: #ffe4ef;
+      --surface-2: #ffd1e4;
+      --glass: rgba(255, 228, 239, 0.92);
+      --text: #500724;
+      --muted: #9d174d;
+      --border: #fbcfe8;
+      --accent: #db2777;
+      --accent-text: #ffffff;
+      --msg-in: #ffd1e4;
+      --msg-out: #db2777;
+      --msg-out-text: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      max-width: 480px;
+      margin: 0 auto;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-size: 15px;
+      transition: background 0.2s, color 0.2s;
+    }
+    body.font-sm { font-size: 13px; }
+    body.font-lg { font-size: 17px; }
+
+    .full-overlay {
+      position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
+      background: var(--bg); z-index: 90; overflow-y: auto;
+      display: flex; flex-direction: column; justify-content: center; padding: 20px 16px;
+    }
+    .standalone-page {
+      position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
+      background: var(--bg); z-index: 55; overflow-y: auto;
+      display: none; flex-direction: column; padding-bottom: 40px;
+    }
+    .standalone-page.open { display: flex; }
+
+    .auth-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .auth-tabs { display: flex; gap: 8px; }
+    .auth-tab {
+      flex: 1; padding: 9px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text); font-weight: 700; cursor: pointer;
+    }
+    .auth-tab.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+    .chip-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin: 8px 0 12px; }
+    .interest-chip {
+      padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text); font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+    .interest-chip.selected { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+    /* HEADER WITH CENTERED LOGO */
+    header {
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      min-height: 58px;
+      z-index: 25;
+      flex-shrink: 0;
+    }
+    #tl-header-content {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: 100%;
+    }
+    .header-left-slot { display: flex; align-items: center; justify-content: flex-start; }
+    .header-center-slot { display: flex; align-items: center; justify-content: center; }
+    .header-right-slot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+
+    .menu-lines-btn {
+      background: none; border: none; color: var(--text); font-size: 1.35rem;
+      line-height: 1; cursor: pointer; padding: 4px; font-weight: 800;
+    }
+    .rl-brand-btn {
+      background: none; border: none; color: var(--text); font-size: 1.65rem;
+      font-weight: 900; letter-spacing: 2px; cursor: pointer; text-align: center;
+    }
+    .avatar-circle {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--accent);
+      color: var(--accent-text); font-weight: 800; font-size: 0.86rem;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      border: 2px solid var(--border); flex-shrink: 0;
+    }
+    #top-search-header { display: none; width: 100%; align-items: center; gap: 8px; }
+    .top-search-field {
+      flex: 1; background: var(--surface-2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 999px; padding: 9px 14px; font-size: 0.9rem;
+    }
+
+    /* SWIPE VIEWPORT */
+    .swipe-viewport {
+      flex: 1; display: flex; overflow-x: auto;
+      scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
+    }
+    .swipe-viewport::-webkit-scrollbar { display: none; }
+    .swipe-page {
+      min-width: 100%; width: 100%; height: 100%;
+      overflow-y: auto; scroll-snap-align: start; padding: 12px 12px 100px;
+    }
+
+    @keyframes shimmer { 0% { opacity: 0.45; } 50% { opacity: 0.9; } 100% { opacity: 0.45; } }
+    .skeleton-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 14px; margin-bottom: 10px; animation: shimmer 1.2s infinite;
+    }
+    .skel-line { height: 12px; background: var(--surface-2); border-radius: 6px; margin-bottom: 8px; }
+
+    input, textarea, select {
+      width: 100%; background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; font-size: 0.9rem;
+    }
+    button.primary {
+      background: var(--accent); color: var(--accent-text); border: none;
+      padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
+    }
+    button.secondary {
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+      padding: 7px 11px; border-radius: 10px; font-weight: 600; cursor: pointer;
+    }
+    button.danger-btn {
+      background: var(--danger); color: #ffffff; border: none;
+      padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
+    }
+    .icon-btn {
+      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+      padding: 6px 10px; border-radius: 10px; font-size: 0.76rem; font-weight: 700; cursor: pointer;
+    }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 13px; margin-bottom: 11px; position: relative;
+    }
+    .post-top { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+    .post-author-wrap { flex: 1; cursor: pointer; }
+    .post-name { font-weight: 700; font-size: 0.92rem; }
+    .post-meta { font-size: 0.75rem; color: var(--muted); }
+    .post-text { line-height: 1.44; margin-bottom: 8px; word-break: break-word; }
+    .post-media {
+      width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px;
+      border: 1px solid var(--border); margin-bottom: 8px; display: block;
+    }
+    .spoiler-blur { filter: blur(6px); cursor: pointer; }
+    .sensitive-overlay {
+      background: var(--surface-2); border: 1px dashed var(--border);
+      border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 8px;
+    }
+    .post-tags-bar {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 8px;
+      background: var(--surface-2); border-radius: 9px; font-size: 0.75rem;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    .poll-opt {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px;
+      padding: 8px 10px; margin-bottom: 6px; cursor: pointer;
+      display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600;
+    }
+    .poll-opt.voted { border-color: var(--accent); color: var(--accent); }
+
+    .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.82rem; color: var(--muted); position: relative; }
+    .action-btn { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; border-radius: 8px; }
+    .emoji-picker-pop {
+      display: none; position: absolute; bottom: 34px; left: 0;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 999px; padding: 5px 10px; gap: 10px; font-size: 1.25rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45); z-index: 20;
+    }
+    .emoji-picker-pop.open { display: flex; }
+    .emoji-picker-pop span { cursor: pointer; }
+
+    .speed-dial-wrap {
+      position: fixed; bottom: 68px; left: 16px; z-index: 28;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    }
+    .speed-dial-wrap.fab-right { left: auto; right: 16px; align-items: flex-end; }
+    .speed-dial-items { display: none; flex-direction: column; gap: 7px; }
+    .speed-dial-wrap.open .speed-dial-items { display: flex; }
+    .sd-pill {
+      background: var(--surface); color: var(--text); border: 1px solid var(--accent);
+      padding: 8px 13px; border-radius: 999px; font-size: 0.82rem; font-weight: 700;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4); cursor: pointer; white-space: nowrap;
+    }
+    .fab-main {
+      width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
+      color: var(--accent-text); border: none; font-size: 1.65rem; font-weight: 800;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45); cursor: pointer;
+    }
+
+    .highlights-strip { display: flex; gap: 10px; overflow-x: auto; padding: 6px 0 10px; scrollbar-width: none; }
+    .highlights-strip::-webkit-scrollbar { display: none; }
+    .highlight-card { min-width: 145px; max-width: 145px; background: var(--surface-2); border: 1px solid var(--accent); border-radius: 12px; padding: 9px; font-size: 0.78rem; flex-shrink: 0; }
+    .activity-thumb { width: 58px; height: 58px; border-radius: 9px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
+
+    .weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .weather-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px; }
+    .epl-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+    .epl-row:last-child { border-bottom: none; }
+
+    .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.68); z-index: 60; }
+    .drawer-backdrop.open { display: block; }
+    .left-drawer {
+      position: fixed; top: 0; bottom: 0; left: -100%; width: 86%; max-width: 380px;
+      background: var(--surface); border-right: 1px solid var(--border);
+      z-index: 70; overflow-y: auto; padding: 16px; transition: left 0.25s ease;
+    }
+    .left-drawer.open { left: 0; }
+
+    .settings-item { background: var(--bg); border: 1px solid var(--border); border-radius: 11px; margin-bottom: 7px; overflow: hidden; }
+    .settings-header { padding: 11px 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.86rem; cursor: pointer; }
+    .settings-body { display: none; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--surface-2); font-size: 0.83rem; }
+    .settings-item.open .settings-body { display: block; }
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; gap: 8px; }
+    .toggle-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 6px; }
+    .theme-pill { padding: 8px; border-radius: 8px; border: 2px solid var(--border); font-weight: 700; font-size: 0.78rem; cursor: pointer; text-align: center; }
+    .theme-pill.active { border-color: var(--accent); }
+
+    .chat-box { display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow-y: auto; margin-bottom: 10px; }
+    .msg { max-width: 78%; padding: 9px 12px; border-radius: 14px; font-size: 0.88rem; }
+    .msg.in { background: var(--msg-in); color: var(--text); align-self: flex-start; }
+    .msg.out { background: var(--msg-out); color: var(--msg-out-text); align-self: flex-end; }
+
+    .live-stage-box { background: #090d16; border: 2px solid var(--danger); border-radius: 16px; padding: 12px; text-align: center; margin-bottom: 10px; }
+    video#irlLiveVideo { width: 100%; height: 220px; background: #000; border-radius: 12px; object-fit: cover; margin: 8px 0; }
+
+    nav.base-nav {
+      position: fixed; bottom: 0; width: 100%; max-width: 480px;
+      background: var(--glass); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border); display: flex; z-index: 30; height: 56px;
+    }
+    nav.base-nav button {
+      flex: 1; background: none; border: none; color: var(--muted);
+      font-size: 1.05rem; font-weight: 800; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    }
+    nav.base-nav button span.nav-sub { font-size: 0.64rem; font-weight: 600; }
+    nav.base-nav button.active { color: var(--accent); }
+
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      z-index: 100; justify-content: center; align-items: center; padding: 14px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: 16px; max-width: 440px; width: 100%; max-height: 86vh;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .modal-head {
+      padding: 12px 15px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; font-weight: 800;
+    }
+    .modal-content { padding: 14px; overflow-y: auto; font-size: 0.85rem; line-height: 1.45; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. AUTH SCREEN -->
+  <div id="auth-screen" class="full-overlay">
+    <div style="text-align:center; margin-bottom:14px;">
+      <div style="font-size:2.2rem; font-weight:900; letter-spacing:3px;">ᖇᒪ</div>
+      <div style="font-size:0.9rem; font-weight:700; letter-spacing:1.5px;">RYKERLORD v0.4</div>
+      <p style="color:var(--muted); font-size:0.8rem; margin-top:3px;">Live IRL &bull; Threaded Media &bull; Instant Tips</p>
+    </div>
+
+    <div class="auth-box">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signup" onclick="switchAuthMode('signup')">Sign Up</button>
+        <button class="auth-tab" id="tab-login" onclick="switchAuthMode('login')">Log In</button>
+      </div>
+
+      <div id="signup-fields" style="display:flex; flex-direction:column; gap:8px;">
+        <input id="reg-name" placeholder="Full Name" />
+        <input id="reg-user" placeholder="Username" />
+        <input id="reg-bio" placeholder="Short Bio (optional)" />
+      </div>
+
+      <input id="auth-email" type="email" placeholder="Email address" />
+      <input id="auth-pass" type="password" placeholder="Password" />
+
+      <div id="terms-check-row" style="display:flex; align-items:flex-start; gap:8px; font-size:0.78rem; color:var(--muted);">
+        <input type="checkbox" id="agree-terms" style="width:17px; height:17px; margin-top:2px;" />
+        <label for="agree-terms">
+          I agree to the <a href="#" onclick="openLegalModal(); return false;" style="color:var(--accent); font-weight:700;">Terms &amp; Conditions and Privacy Policy</a>.
+        </label>
+      </div>
+
+      <button class="primary" id="auth-submit-btn" onclick="submitAuth()">Create Account</button>
+      <p id="auth-error" style="color:var(--danger); font-size:0.8rem; display:none;"></p>
+    </div>
+  </div>
+
+  <!-- 2. VIBES PICKER (14+ VIBES, NO "SHOWN ONCE..." OR USER LISTS) -->
+  <div id="onboarding-screen" class="full-overlay" style="display:none;">
+    <div class="auth-box">
+      <div style="font-size:1.25rem; font-weight:900;">Pick Your Vibes</div>
+      <div class="chip-wrap" id="vibes-chips-grid"></div>
+      <button class="primary" onclick="finishOnboarding()">Continue</button>
+    </div>
+  </div>
+
+  <!-- 3. MAIN APP SHELL -->
+  <div id="app-shell" style="display:none; flex:1; flex-direction:column; height:100vh;">
+
+    <!-- HEADER: Menu (☰) Left | ᖇᒪ Logo Centered | LIVE & Avatar Right -->
+    <header>
+      <div id="tl-header-content">
+        <div class="header-left-slot">
+          <button class="menu-lines-btn" id="tl-menu-trigger" onclick="openMenuDrawer()" title="Menu">&#9776;</button>
+        </div>
+        <div class="header-center-slot">
+          <button class="rl-brand-btn" onclick="refreshTimeline()" title="Tap for latest feeds">ᖇᒪ</button>
+        </div>
+        <div class="header-right-slot">
+          <button class="icon-btn" style="border-color:var(--danger); color:var(--danger);" onclick="openIrlLiveModal('solo')">&#128308; LIVE</button>
+          <span id="view-alert-pill" style="display:none; background:var(--danger); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 7px; border-radius:999px; cursor:pointer;" onclick="openProfilePage(currentUser.username)">&#128065; 0</span>
+          <div class="avatar-circle" id="header-avatar" onclick="openProfilePage(currentUser.username)" title="My Profile">R</div>
+        </div>
+      </div>
+
+      <div id="top-search-header">
+        <span style="font-size:1.1rem; font-weight:900; color:var(--accent);">&#128269;</span>
+        <input id="globalSearchInput" class="top-search-field" placeholder="Search people, @tags, EPL, news, groups..." oninput="handleGlobalSearch(this.value)" />
+      </div>
+    </header>
+
+    <!-- HORIZONTAL SWIPE VIEWPORT -->
+    <div class="swipe-viewport" id="swipeViewport" onscroll="onViewportScroll()">
+
+      <!-- PAGE 0: TL -->
+      <div class="swipe-page" id="page-tl">
+        <div id="tl-update-banner" style="display:none; text-align:center; padding:6px; margin-bottom:8px; background:var(--surface-2); border-radius:999px; font-size:0.78rem; color:var(--accent); font-weight:700;"></div>
+        <div id="feedList"></div>
+      </div>
+
+      <!-- PAGE 1: SEARCH + FOR YOU (MOST TALKED ABOUT IN VIBES) + WEATHER + EPL + NEWS -->
+      <div class="swipe-page" id="page-search">
+        <div id="search-live-results" style="display:none; margin-bottom:12px;"></div>
+
+        <!-- For You Feed: What Most People Are Talking About in Chosen Vibes -->
+        <div class="card" style="border-color:var(--accent);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="font-size:0.9rem; color:var(--accent);">&#10024; For You &bull; Hot in Your Vibes
