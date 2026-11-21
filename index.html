@@ -95,1932 +95,6 @@
     body.font-sm { font-size: 13px; }
     body.font-lg { font-size: 17px; }
 
-    /* OVERLAYS & SCREENS */
-    .full-overlay {
-      position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
-      background: var(--bg); z-index: 90; overflow-y: auto;
-      display: flex; flex-direction: column; justify-content: center; padding: 20px 16px;
-    }
-    .standalone-page {
-      position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
-      background: var(--bg); z-index: 55; overflow-y: auto;
-      display: none; flex-direction: column; padding-bottom: 40px;
-    }
-    .standalone-page.open { display: flex; }
-
-    .auth-box {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px;
-    }
-    .auth-tabs { display: flex; gap: 8px; }
-    .auth-tab {
-      flex: 1; padding: 9px; border-radius: 10px; border: 1px solid var(--border);
-      background: var(--surface-2); color: var(--text); font-weight: 700; cursor: pointer;
-    }
-    .auth-tab.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-
-    .chip-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin: 6px 0; }
-    .interest-chip {
-      padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border);
-      background: var(--surface-2); color: var(--text); font-size: 0.8rem; font-weight: 600; cursor: pointer;
-    }
-    .interest-chip.selected { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-
-    /* HEADER */
-    header {
-      background: var(--glass);
-      backdrop-filter: blur(12px);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      min-height: 58px;
-      z-index: 25;
-      flex-shrink: 0;
-    }
-    .header-left-pair { display: flex; align-items: center; gap: 10px; }
-    .menu-lines-btn {
-      background: none; border: none; color: var(--text); font-size: 1.35rem;
-      line-height: 1; cursor: pointer; padding: 4px; font-weight: 800;
-    }
-    .rl-brand-btn {
-      background: none; border: none; color: var(--text); font-size: 1.6rem;
-      font-weight: 900; letter-spacing: 2px; cursor: pointer;
-    }
-    .avatar-circle {
-      width: 34px; height: 34px; border-radius: 50%; background: var(--accent);
-      color: var(--accent-text); font-weight: 800; font-size: 0.86rem;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      border: 2px solid var(--border); flex-shrink: 0;
-    }
-    #top-search-header { display: none; width: 100%; align-items: center; gap: 8px; }
-    .top-search-field {
-      flex: 1; background: var(--surface-2); color: var(--text);
-      border: 1px solid var(--border); border-radius: 999px; padding: 9px 14px; font-size: 0.9rem;
-    }
-
-    /* SWIPE VIEWPORT */
-    .swipe-viewport {
-      flex: 1; display: flex; overflow-x: auto;
-      scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
-    }
-    .swipe-viewport::-webkit-scrollbar { display: none; }
-    .swipe-page {
-      min-width: 100%; width: 100%; height: 100%;
-      overflow-y: auto; scroll-snap-align: start; padding: 12px 12px 100px;
-    }
-
-    /* SKELETON LOADING */
-    @keyframes shimmer { 0% { opacity: 0.45; } 50% { opacity: 0.9; } 100% { opacity: 0.45; } }
-    .skeleton-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 14px; margin-bottom: 10px; animation: shimmer 1.2s infinite;
-    }
-    .skel-line { height: 12px; background: var(--surface-2); border-radius: 6px; margin-bottom: 8px; }
-
-    /* INPUTS & BUTTONS */
-    input, textarea, select {
-      width: 100%; background: var(--bg); color: var(--text);
-      border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; font-size: 0.9rem;
-    }
-    button.primary {
-      background: var(--accent); color: var(--accent-text); border: none;
-      padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
-    }
-    button.secondary {
-      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
-      padding: 7px 11px; border-radius: 10px; font-weight: 600; cursor: pointer;
-    }
-    button.danger-btn {
-      background: var(--danger); color: #ffffff; border: none;
-      padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%;
-    }
-    .icon-btn {
-      background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
-      padding: 6px 10px; border-radius: 10px; font-size: 0.76rem; font-weight: 700; cursor: pointer;
-    }
-
-    /* CARDS, SENSITIVE BLUR & REACTIONS */
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 13px; margin-bottom: 11px; position: relative;
-    }
-    .post-top { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
-    .post-author-wrap { flex: 1; cursor: pointer; }
-    .post-name { font-weight: 700; font-size: 0.92rem; }
-    .post-meta { font-size: 0.75rem; color: var(--muted); }
-    .post-text { line-height: 1.44; margin-bottom: 8px; word-break: break-word; }
-    .post-media {
-      width: 100%; max-height: 280px; object-fit: cover; border-radius: 12px;
-      border: 1px solid var(--border); margin-bottom: 8px; display: block;
-    }
-    .sensitive-blur { filter: blur(14px); pointer-events: none; user-select: none; }
-    .spoiler-blur { filter: blur(6px); cursor: pointer; }
-    .sensitive-overlay {
-      background: var(--surface-2); border: 1px dashed var(--border);
-      border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 8px;
-    }
-    .post-tags-bar {
-      display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 8px;
-      background: var(--surface-2); border-radius: 9px; font-size: 0.75rem;
-      color: var(--accent); margin-bottom: 8px;
-    }
-
-    /* Poll Box */
-    .poll-opt {
-      background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px;
-      padding: 8px 10px; margin-bottom: 6px; cursor: pointer;
-      display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 600;
-    }
-    .poll-opt.voted { border-color: var(--accent); color: var(--accent); }
-
-    /* Emoji Reaction Pop-up */
-    .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.82rem; color: var(--muted); position: relative; }
-    .action-btn { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; border-radius: 8px; }
-    .action-btn:active { background: var(--surface-2); }
-    .emoji-picker-pop {
-      display: none; position: absolute; bottom: 34px; left: 0;
-      background: var(--surface-2); border: 1px solid var(--border);
-      border-radius: 999px; padding: 5px 10px; gap: 10px; font-size: 1.25rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.45); z-index: 20;
-    }
-    .emoji-picker-pop.open { display: flex; }
-    .emoji-picker-pop span { cursor: pointer; transition: transform 0.12s; }
-    .emoji-picker-pop span:active { transform: scale(1.3); }
-
-    /* SPEED DIAL FAB (Bottom-Left Default or Right via Accessibility) */
-    .speed-dial-wrap {
-      position: fixed; bottom: 68px; left: 16px; z-index: 28;
-      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
-    }
-    .speed-dial-wrap.fab-right { left: auto; right: 16px; align-items: flex-end; }
-    .speed-dial-items { display: none; flex-direction: column; gap: 7px; }
-    .speed-dial-wrap.open .speed-dial-items { display: flex; }
-    .sd-pill {
-      background: var(--surface); color: var(--text); border: 1px solid var(--accent);
-      padding: 8px 13px; border-radius: 999px; font-size: 0.82rem; font-weight: 700;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.4); cursor: pointer; white-space: nowrap;
-    }
-    .fab-main {
-      width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
-      color: var(--accent-text); border: none; font-size: 1.65rem; font-weight: 800;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.45); cursor: pointer;
-    }
-
-    /* PROFILE HIGHLIGHTS & MEDIA THUMBNAILS */
-    .highlights-strip {
-      display: flex; gap: 10px; overflow-x: auto; padding: 6px 0 10px; scrollbar-width: none;
-    }
-    .highlights-strip::-webkit-scrollbar { display: none; }
-    .highlight-card {
-      min-width: 145px; max-width: 145px; background: var(--surface-2);
-      border: 1px solid var(--accent); border-radius: 12px; padding: 9px; font-size: 0.78rem; flex-shrink: 0;
-    }
-    .activity-thumb {
-      width: 58px; height: 58px; border-radius: 9px; object-fit: cover;
-      border: 1px solid var(--border); flex-shrink: 0;
-    }
-
-    /* WEATHER & EPL */
-    .weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .weather-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px; }
-    .epl-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
-    .epl-row:last-child { border-bottom: none; }
-
-    /* LEFT DRAWER (MENU ONLY) */
-    .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.68); z-index: 60; }
-    .drawer-backdrop.open { display: block; }
-    .left-drawer {
-      position: fixed; top: 0; bottom: 0; left: -100%; width: 86%; max-width: 380px;
-      background: var(--surface); border-right: 1px solid var(--border);
-      z-index: 70; overflow-y: auto; padding: 16px; transition: left 0.25s ease;
-    }
-    .left-drawer.open { left: 0; }
-
-    /* SETTINGS ACCORDION */
-    .settings-item { background: var(--bg); border: 1px solid var(--border); border-radius: 11px; margin-bottom: 7px; overflow: hidden; }
-    .settings-header { padding: 11px 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.86rem; cursor: pointer; }
-    .settings-body { display: none; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--surface-2); font-size: 0.83rem; }
-    .settings-item.open .settings-body { display: block; }
-    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; gap: 8px; }
-    .toggle-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
-    .theme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 6px; }
-    .theme-pill { padding: 8px; border-radius: 8px; border: 2px solid var(--border); font-weight: 700; font-size: 0.78rem; cursor: pointer; text-align: center; }
-    .theme-pill.active { border-color: var(--accent); }
-
-    /* CHATS & IRL LIVE STAGE */
-    .chat-box { display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow-y: auto; margin-bottom: 10px; }
-    .msg { max-width: 78%; padding: 9px 12px; border-radius: 14px; font-size: 0.88rem; }
-    .msg.in { background: var(--msg-in); color: var(--text); align-self: flex-start; }
-    .msg.out { background: var(--msg-out); color: var(--msg-out-text); align-self: flex-end; }
-
-    .live-stage-box {
-      background: #090d16; border: 2px solid var(--danger); border-radius: 16px;
-      padding: 12px; text-align: center; margin-bottom: 10px;
-    }
-    video#irlLiveVideo {
-      width: 100%; height: 220px; background: #000; border-radius: 12px;
-      object-fit: cover; margin: 8px 0;
-    }
-
-    /* BASE NAV */
-    nav.base-nav {
-      position: fixed; bottom: 0; width: 100%; max-width: 480px;
-      background: var(--glass); backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border); display: flex; z-index: 30; height: 56px;
-    }
-    nav.base-nav button {
-      flex: 1; background: none; border: none; color: var(--muted);
-      font-size: 1.05rem; font-weight: 800; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-    }
-    nav.base-nav button span.nav-sub { font-size: 0.64rem; font-weight: 600; }
-    nav.base-nav button.active { color: var(--accent); }
-
-    /* MODALS */
-    .modal-backdrop {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      z-index: 100; justify-content: center; align-items: center; padding: 14px;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal-card {
-      background: var(--surface); color: var(--text); border: 1px solid var(--border);
-      border-radius: 16px; max-width: 440px; width: 100%; max-height: 86vh;
-      display: flex; flex-direction: column; overflow: hidden;
-    }
-    .modal-head {
-      padding: 12px 15px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center; font-weight: 800;
-    }
-    .modal-content { padding: 14px; overflow-y: auto; font-size: 0.85rem; line-height: 1.45; }
-  </style>
-</head>
-<body>
-
-  <!-- 1. AUTH SCREEN -->
-  <div id="auth-screen" class="full-overlay">
-    <div style="text-align:center; margin-bottom:14px;">
-      <div style="font-size:2.2rem; font-weight:900; letter-spacing:3px;">ᖇᒪ</div>
-      <div style="font-size:0.9rem; font-weight:700; letter-spacing:1.5px;">RYKERLORD v0.4</div>
-      <p style="color:var(--muted); font-size:0.8rem; margin-top:3px;">Live IRL &bull; Threaded Media &bull; Instant Tips</p>
-    </div>
-
-    <div class="auth-box">
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-signup" onclick="switchAuthMode('signup')">Sign Up</button>
-        <button class="auth-tab" id="tab-login" onclick="switchAuthMode('login')">Log In</button>
-      </div>
-
-      <div id="signup-fields" style="display:flex; flex-direction:column; gap:8px;">
-        <input id="reg-name" placeholder="Full Name (e.g. Alex Carter)" />
-        <input id="reg-user" placeholder="Username (e.g. alexc)" />
-        <input id="reg-bio" placeholder="Short Bio (optional)" />
-      </div>
-
-      <input id="auth-email" type="email" placeholder="Email address" />
-      <input id="auth-pass" type="password" placeholder="Password" />
-
-      <div id="terms-check-row" style="display:flex; align-items:flex-start; gap:8px; font-size:0.78rem; color:var(--muted);">
-        <input type="checkbox" id="agree-terms" style="width:17px; height:17px; margin-top:2px;" />
-        <label for="agree-terms">
-          I agree to the <a href="#" onclick="openLegalModal(); return false;" style="color:var(--accent); font-weight:700;">Terms &amp; Conditions and Privacy Policy</a>.
-        </label>
-      </div>
-
-      <button class="primary" id="auth-submit-btn" onclick="submitAuth()">Create Account</button>
-      <p id="auth-error" style="color:var(--danger); font-size:0.8rem; display:none;"></p>
-    </div>
-  </div>
-
-  <!-- 2. ONE-TIME INTERESTS PICKER -->
-  <div id="onboarding-screen" class="full-overlay" style="display:none;">
-    <div class="auth-box">
-      <div style="font-size:1.25rem; font-weight:900;">Pick Your Favorite Vibes</div>
-      <p style="font-size:0.8rem; color:var(--muted);">Shown once after account creation to tune your ᖇᒪ timeline.</p>
-      <div><strong style="font-size:0.8rem; color:var(--accent);">Sports</strong><div class="chip-wrap" id="chips-sports"></div></div>
-      <div><strong style="font-size:0.8rem; color:var(--accent);">Entertainment</strong><div class="chip-wrap" id="chips-ent"></div></div>
-      <div><strong style="font-size:0.8rem; color:var(--accent);">Tech &amp; IRL</strong><div class="chip-wrap" id="chips-tech"></div></div>
-      <button class="primary" onclick="finishOnboarding()">Enter ᖇᒪ Timeline</button>
-    </div>
-  </div>
-
-  <!-- 3. MAIN APP SHELL -->
-  <div id="app-shell" style="display:none; flex:1; flex-direction:column; height:100vh;">
-
-    <!-- HEADER: Menu (☰) shifted left next to ᖇᒪ logo; Profile icon separated on right -->
-    <header>
-      <div id="tl-header-content" style="display:flex; width:100%; align-items:center; justify-content:space-between;">
-        <div class="header-left-pair">
-          <button class="menu-lines-btn" id="tl-menu-trigger" onclick="openMenuDrawer()" title="Menu">&#9776;</button>
-          <button class="rl-brand-btn" onclick="refreshTimeline()" title="Tap for latest feeds">ᖇᒪ</button>
-        </div>
-
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button class="icon-btn" style="border-color:var(--danger); color:var(--danger);" onclick="openIrlLiveModal('solo')">&#128308; LIVE</button>
-          <span id="view-alert-pill" style="display:none; background:var(--danger); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 7px; border-radius:999px; cursor:pointer;" onclick="openProfilePage(currentUser.username)">&#128065; 0</span>
-          <div class="avatar-circle" id="header-avatar" onclick="openProfilePage(currentUser.username)" title="My Profile">R</div>
-        </div>
-      </div>
-
-      <!-- Search Page Top Bar -->
-      <div id="top-search-header">
-        <span style="font-size:1.1rem; font-weight:900; color:var(--accent);">&#128269;</span>
-        <input id="globalSearchInput" class="top-search-field" placeholder="Search people, @tags, EPL, news, groups..." oninput="handleGlobalSearch(this.value)" />
-      </div>
-    </header>
-
-    <!-- HORIZONTAL SWIPE VIEWPORT -->
-    <div class="swipe-viewport" id="swipeViewport" onscroll="onViewportScroll()">
-
-      <!-- PAGE 0: TL -->
-      <div class="swipe-page" id="page-tl">
-        <div id="tl-update-banner" style="display:none; text-align:center; padding:6px; margin-bottom:8px; background:var(--surface-2); border-radius:999px; font-size:0.78rem; color:var(--accent); font-weight:700;"></div>
-        <div id="feedList"></div>
-      </div>
-
-      <!-- PAGE 1: SEARCH / EXPLORE -->
-      <div class="swipe-page" id="page-search">
-        <div id="search-live-results" style="display:none; margin-bottom:12px;"></div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <strong style="font-size:0.86rem;" id="lbl-weather-title">Live IRL Weather</strong>
-          <button class="icon-btn" onclick="changeWeatherCities()">Switch Cities</button>
-        </div>
-        <div class="weather-grid" id="weatherGrid">
-          <div class="weather-card">
-            <div style="font-size:0.74rem; color:var(--muted); font-weight:700;" id="w-city-1">NAIROBI</div>
-            <div style="font-size:1.3rem; font-weight:800;" id="w-temp-1">--&deg;C</div>
-            <div style="font-size:0.74rem; color:var(--accent);" id="w-desc-1">Loading...</div>
-          </div>
-          <div class="weather-card">
-            <div style="font-size:0.74rem; color:var(--muted); font-weight:700;" id="w-city-2">NEW YORK</div>
-            <div style="font-size:1.3rem; font-weight:800;" id="w-temp-2">--&deg;C</div>
-            <div style="font-size:0.74rem; color:var(--accent);" id="w-desc-2">Loading...</div>
-          </div>
-        </div>
-
-        <!-- Upcoming EPL Fixtures (Auto-converted to device local timezone + Spoiler Toggle) -->
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <strong style="font-size:0.88rem;">&#9917; EPL Fixtures (Local Time)</strong>
-            <button class="icon-btn" onclick="userPrefs.spoilerBlur=!userPrefs.spoilerBlur; saveAll(); renderEPL();">
-              ${userPrefs.spoilerBlur ? '&#128065; Spoilers Blurred' : 'Spoilers Visible'}
-            </button>
-          </div>
-          <div id="eplList"></div>
-        </div>
-
-        <!-- IRL News -->
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:0.88rem;" id="lbl-news-title">&#127758; IRL Global &amp; Local News</strong>
-            <div style="display:flex; gap:4px;">
-              <button class="icon-btn" onclick="renderNews('all')">All</button>
-              <button class="icon-btn" onclick="renderNews('local')">Local</button>
-              <button class="icon-btn" onclick="renderNews('global')">Global</button>
-            </div>
-          </div>
-          <div id="newsList"></div>
-        </div>
-      </div>
-
-      <!-- PAGE 2: GROUPS (₲ - VIKUNDI) -->
-      <div class="swipe-page" id="page-groups">
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <strong style="font-size:0.9rem;">Create Group (₲)</strong>
-            <button class="icon-btn" style="border-color:var(--danger); color:var(--danger);" onclick="openIrlLiveModal('group')">&#127909; Group Live Room</button>
-          </div>
-          <input id="newGroupName" placeholder="Group name..." style="margin-bottom:6px;" />
-          <input id="newGroupDesc" placeholder="Description..." style="margin-bottom:6px;" />
-          <button class="primary" onclick="createGroup()">Create Group (You = Admin)</button>
-        </div>
-
-        <div style="font-weight:800; font-size:0.86rem; margin:10px 0 6px;">Your Joined Groups &amp; Roles</div>
-        <div id="joinedGroupsList"></div>
-
-        <div style="font-weight:800; font-size:0.86rem; margin:12px 0 6px; color:var(--accent);">Suggested For You</div>
-        <div id="suggestedGroupsList"></div>
-      </div>
-
-      <!-- PAGE 3: DIRECT MESSAGES (ĐM͒) -->
-      <div class="swipe-page" id="page-dm">
-        <div id="chat-directory">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:0.95rem;">Direct Messages (ĐM͒)</strong>
-            <button class="icon-btn" onclick="openIrlLiveModal('personal')">&#128222; IRL Voice/Video Call</button>
-          </div>
-          <div id="peopleChatList"></div>
-        </div>
-
-        <div id="chat-thread-view" style="display:none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <button class="secondary" onclick="closeChatThread()">&larr;</button>
-              <strong style="cursor:pointer;" id="active-chat-name" onclick="openProfilePage(activeChatPartner.username)">User</strong>
-            </div>
-            <div style="display:flex; gap:6px;">
-              <button class="icon-btn" onclick="openIrlLiveModal('personal', activeChatPartner.name)">&#127908; Voice</button>
-              <button class="icon-btn" onclick="openIrlLiveModal('personal', activeChatPartner.name)">&#127909; Video</button>
-            </div>
-          </div>
-          <div class="card chat-box" id="chatBox"></div>
-          <div style="display:flex; gap:8px;">
-            <input id="chatInput" placeholder="Write a ĐM͒..." />
-            <button class="primary" style="width:auto;" onclick="sendMsg()">Send</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SPEED DIAL FLOATING ACTION BUTTON -->
-    <div class="speed-dial-wrap" id="speedDialWrap">
-      <div class="speed-dial-items">
-        <button class="sd-pill" onclick="toggleSpeedDial(); openComposerModal('text')">&#9997;&#65039; Create Text Post</button>
-        <button class="sd-pill" onclick="toggleSpeedDial(); openComposerModal('media')">&#128247; Upload Media</button>
-        <button class="sd-pill" onclick="toggleSpeedDial(); openComposerModal('poll')">&#128202; Create Poll</button>
-        <button class="sd-pill" style="border-color:var(--danger); color:var(--danger);" onclick="toggleSpeedDial(); openIrlLiveModal('solo')">&#128308; Go Live (IRL)</button>
-      </div>
-      <button class="fab-main" onclick="toggleSpeedDial()">+</button>
-    </div>
-
-    <!-- BASE NAVIGATION BAR -->
-    <nav class="base-nav">
-      <button class="active" onclick="goToPage(0)"><span>TL</span><span class="nav-sub" id="nav-tl">Timeline</span></button>
-      <button onclick="goToPage(1)"><span>Q</span><span class="nav-sub" id="nav-search">Search</span></button>
-      <button onclick="goToPage(2)"><span>₲</span><span class="nav-sub" id="nav-groups">Groups</span></button>
-      <button onclick="goToPage(3)"><span>ĐM͒</span><span class="nav-sub" id="nav-dm">Chats</span></button>
-    </nav>
-  </div>
-
-  <!-- STANDALONE FULL-PAGE PROFILE VIEW -->
-  <div id="profile-standalone-page" class="standalone-page">
-    <header>
-      <div style="display:flex; align-items:center; gap:10px;">
-        <button class="secondary" onclick="closeProfilePage()">&larr; Back</button>
-        <strong id="prof-page-header">Profile</strong>
-      </div>
-      <button class="icon-btn" style="border-color:var(--gold); color:var(--gold);" id="prof-tip-btn">&#128176; Tip</button>
-    </header>
-    <div id="profile-page-body" style="padding:14px;"></div>
-  </div>
-
-  <!-- STANDALONE FULL-PAGE THREADED REPLIES VIEW (Text, Voice Note, Photo, Video, Nested Replies) -->
-  <div id="thread-standalone-page" class="standalone-page">
-    <header>
-      <div style="display:flex; align-items:center; gap:10px;">
-        <button class="secondary" onclick="closeThreadPage()">&larr; Back to TL</button>
-        <strong>Post Thread &amp; Replies</strong>
-      </div>
-    </header>
-    <div id="thread-page-body" style="padding:14px; flex:1; overflow-y:auto;"></div>
-  </div>
-
-  <!-- LEFT DRAWER: MENU (☰) WITH IRL LIVE, TIPPING & ALPHABETICAL SETTINGS -->
-  <div id="menu-backdrop" class="drawer-backdrop" onclick="closeMenuDrawer()"></div>
-  <div id="menu-drawer" class="left-drawer">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <strong style="font-size:1.1rem;">&#9776; ᖇᒪ Menu</strong>
-      <button class="icon-btn" onclick="closeMenuDrawer()">&times;</button>
-    </div>
-
-    <!-- IRL Live Video & Voice Hub inside Menu -->
-    <div class="card" style="border-color:var(--danger);">
-      <strong style="font-size:0.88rem; color:var(--danger);">&#128308; Live IRL Video &amp; Voice</strong>
-      <p style="font-size:0.76rem; color:var(--muted); margin:4px 0 8px;">Start real-time video or voice sessions for personal calls or groups.</p>
-      <div style="display:flex; flex-direction:column; gap:6px;">
-        <button class="secondary" onclick="closeMenuDrawer(); openIrlLiveModal('personal')">&#128222; Personal 1-on-1 Video / Voice</button>
-        <button class="secondary" onclick="closeMenuDrawer(); openIrlLiveModal('group')">&#128101; Group Live Video / Voice Stage</button>
-        <button class="primary" style="background:var(--danger); color:#fff;" onclick="closeMenuDrawer(); openIrlLiveModal('solo')">&#127909; Go Live to Followers</button>
-      </div>
-    </div>
-
-    <!-- Creator Tipping Shortcut inside Menu -->
-    <div class="card" style="border-color:var(--gold);">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <strong style="font-size:0.88rem; color:var(--gold);">&#128176; Creator Tipping Wallet</strong>
-          <div style="font-size:0.75rem; color:var(--muted);">M-Pesa STK &amp; Card/Crypto</div>
-        </div>
-        <button class="icon-btn" style="border-color:var(--gold); color:var(--gold);" onclick="closeMenuDrawer(); openTipModal('rykerlord')">Send Tip</button>
-      </div>
-    </div>
-
-    <div style="font-size:0.76rem; color:var(--muted); margin:10px 0 6px;">Settings (Alphabetical A &ndash; Z)</div>
-    <div id="alphabetical-settings-list"></div>
-  </div>
-
-  <!-- POST COMPOSER MODAL (Supports Text, Media, Poll, Tags, Anonymous, Sensitive Warning) -->
-  <div id="composer-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-head">
-        <span id="comp-modal-title">Create Post on ᖇᒪ</span>
-        <button class="icon-btn" onclick="closeComposerModal()">&times;</button>
-      </div>
-      <div class="modal-content" style="display:flex; flex-direction:column; gap:9px;">
-        <textarea id="comp-text" rows="3" placeholder="What's happening? (Optional if posting photo/video alone)"></textarea>
-
-        <div style="display:flex; gap:8px;">
-          <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
-            &#128247; Photo
-            <input type="file" accept="image/*" style="display:none;" onchange="handleMediaSelect(event, 'image')" />
-          </label>
-          <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
-            &#127909; Video
-            <input type="file" accept="video/*" style="display:none;" onchange="handleMediaSelect(event, 'video')" />
-          </label>
-        </div>
-
-        <div id="comp-media-preview" style="display:none;"></div>
-
-        <!-- Optional Poll Fields -->
-        <div id="comp-poll-fields" style="display:none; flex-direction:column; gap:6px; background:var(--surface-2); padding:8px; border-radius:10px;">
-          <strong style="font-size:0.8rem;">Poll Options</strong>
-          <input id="poll-opt-1" placeholder="Option 1 (e.g. Arsenal)" />
-          <input id="poll-opt-2" placeholder="Option 2 (e.g. Chelsea)" />
-        </div>
-
-        <input id="comp-tag-people" placeholder="&#128100; Tag people (e.g. @mayatech, @dkimani)" />
-        <input id="comp-tag-place" placeholder="&#128205; Tag location (e.g. Nairobi, Kenya)" />
-
-        <div class="toggle-row" style="font-size:0.82rem;">
-          <span>&#128373;&#65039; Post Anonymously (Hides your name publicly; ID logged for safety)</span>
-          <input type="checkbox" id="comp-anon" />
-        </div>
-        <div class="toggle-row" style="font-size:0.82rem;">
-          <span>&#9888;&#65039; Mark as Sensitive Content (Blurs until tapped)</span>
-          <input type="checkbox" id="comp-sensitive" />
-        </div>
-
-        <button class="primary" onclick="publishRichPost()">Publish to TL</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TIPPING MODAL (M-PESA STK PUSH + CARD/CRYPTO) -->
-  <div id="tip-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-head">
-        <span>&#128176; Tip <span id="tip-target-name">@creator</span></span>
-        <button class="icon-btn" onclick="closeTipModal()">&times;</button>
-      </div>
-      <div class="modal-content" style="display:flex; flex-direction:column; gap:10px;">
-        <div class="auth-tabs">
-          <button class="auth-tab active" id="tip-tab-mpesa" onclick="switchTipMethod('mpesa')">M-Pesa (STK Push)</button>
-          <button class="auth-tab" id="tip-tab-card" onclick="switchTipMethod('card')">Card / Crypto</button>
-        </div>
-
-        <div id="tip-mpesa-box" style="display:flex; flex-direction:column; gap:8px;">
-          <label style="font-size:0.8rem; color:var(--muted);">Safaricom M-Pesa Phone Number</label>
-          <input id="tip-phone" placeholder="07XXXXXXXX or 2547XXXXXXXX" />
-          <label style="font-size:0.8rem; color:var(--muted);">Amount (KES)</label>
-          <input id="tip-amount-kes" type="number" value="100" />
-          <button class="primary" style="background:#16a34a; color:#fff;" onclick="simulateMpesaStk()">Send M-Pesa STK Prompt</button>
-        </div>
-
-        <div id="tip-card-box" style="display:none; flex-direction:column; gap:8px;">
-          <label style="font-size:0.8rem; color:var(--muted);">Amount (USD)</label>
-          <input id="tip-amount-usd" type="number" value="5" />
-          <input placeholder="Card Number (Stripe Checkout Simulation)" />
-          <button class="primary" onclick="simulateCardTip()">Pay via Stripe / Crypto</button>
-        </div>
-
-        <div id="tip-status-msg" style="font-size:0.82rem; color:var(--success); display:none; padding:8px; background:var(--surface-2); border-radius:9px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- IRL LIVE VIDEO & VOICE MODAL (SOLO, GROUP ROOM, PERSONAL 1-ON-1) -->
-  <div id="irl-live-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-head">
-        <span id="irl-modal-title">&#128308; IRL Live Room</span>
-        <button class="icon-btn" onclick="closeIrlLiveModal()">End &times;</button>
-      </div>
-      <div class="modal-content">
-        <div class="auth-tabs" style="margin-bottom:8px;">
-          <button class="auth-tab active" id="live-mode-video" onclick="setLiveMediaMode('video')">&#127909; Video + Voice</button>
-          <button class="auth-tab" id="live-mode-voice" onclick="setLiveMediaMode('voice')">&#127908; Voice Only</button>
-        </div>
-
-        <div class="live-stage-box">
-          <div style="font-size:0.78rem; color:#f87171; font-weight:800;" id="irl-live-status">CONNECTING CAMERA / MIC...</div>
-          <video id="irlLiveVideo" autoplay muted playsinline></video>
-          <div id="irlVoiceAvatar" style="display:none; padding:28px 0; font-size:2.4rem;">&#127908; <div style="font-size:0.85rem; color:#93c5fd; margin-top:6px;">Live Voice Stage Active</div></div>
-          <div style="display:flex; justify-content:center; gap:8px; margin-top:6px;">
-            <button class="secondary" onclick="toggleLiveMute()" id="btn-live-mute">Mute Mic</button>
-            <button class="danger-btn" style="width:auto;" onclick="closeIrlLiveModal()">Leave Room</button>
-          </div>
-        </div>
-
-        <div style="font-size:0.78rem; color:var(--muted); margin-bottom:4px;">Live Room Chat</div>
-        <div id="live-room-chat" style="max-height:95px; overflow-y:auto; font-size:0.8rem; margin-bottom:6px; background:var(--bg); padding:6px; border-radius:8px;">
-          <div><strong>@mayatech:</strong> Audio &amp; video super clear! &#128293;</div>
-        </div>
-        <div style="display:flex; gap:6px;">
-          <input id="liveChatInput" placeholder="Say something live..." />
-          <button class="primary" style="width:auto;" onclick="sendLiveChat()">Send</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LEGAL MODAL -->
-  <div id="legal-modal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-head">
-        <span>RYKERLORD Terms &amp; Privacy Policy</span>
-        <button class="icon-btn" onclick="closeLegalModal()">Close &times;</button>
-      </div>
-      <div class="modal-content">
-        <p><strong>Effective Date:</strong> November 2026 &bull; <strong>Platform:</strong> RYKERLORD (ᖇᒪ)</p>
-        <p>By using RYKERLORD, you agree to respectful conduct, lawful media sharing, and transparent moderation. Anonymous posts retain internal author IDs solely to prevent severe abuse. Privacy controls in Settings govern profile view alerts and account visibility.</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const I18N = {
-      English: { tl: 'Timeline', search: 'Search', groups: 'Groups', dm: 'Chats', weather: 'Live IRL Weather', news: 'IRL Global & Local News' },
-      Spanish: { tl: 'Inicio', search: 'Buscar', groups: 'Grupos', dm: 'Mensajes', weather: 'Clima en Vivo', news: 'Noticias Globales y Locales' },
-      Kiswahili: { tl: 'Mlisho', search: 'Tafuta', groups: 'Vikundi', dm: 'Jumbe', weather: 'Hali ya Hewa', news: 'Habari za Ndani na Dunia' },
-      "Sheng'": { tl: 'Rada', search: 'Saka', groups: 'Mtaa', dm: 'Bonga', weather: 'Hewa Saa Hii', news: 'Form za Mtaa na Dunia' }
-    };
-
-    const EMOJIS = ['😂', '🔥', '😲', '🏆', '❤️'];
-    let currentTheme = localStorage.getItem('rl_theme') || 'black';
-    let authMode = 'signup';
-    let currentPageIndex = 0;
-    let currentUser = JSON.parse(localStorage.getItem('rl_current_user') || 'null');
-
-    let usersDB = JSON.parse(localStorage.getItem('rl_users_db') || 'null') || [
-      { id: 'u1', name: 'Ryker Admin', username: 'rykerlord', bio: 'Founder of ᖇᒪ RYKERLORD. Building IRL social & M-Pesa creator tools.', email: 'admin@rykerlord.app', following: true, interests: ['Football', 'Tech'], pinnedPostIds: [101], profileViews: [] },
-      { id: 'u2', name: 'Maya Lin', username: 'mayatech', bio: 'Design, EPL weekends & street photography', email: 'maya@example.com', following: true, interests: ['Football', 'Music'], pinnedPostIds: [], profileViews: [] },
-      { id: 'u3', name: 'David Kimani', username: 'dkimani', bio: 'Nairobi rugby & Premier League analyst', email: 'david@example.com', following: false, interests: ['Rugby', 'Football'], pinnedPostIds: [], profileViews: [] },
-      { id: 'u4', name: 'Sofia Vance', username: 'sofiav', bio: 'Cinema, Afrobeats & global culture', email: 'sofia@example.com', following: true, interests: ['Movies', 'Fashion'], pinnedPostIds: [], profileViews: [] }
-    ];
-
-    let posts = JSON.parse(localStorage.getItem('rl_posts_v4') || 'null') || [
-      {
-        id: 101,
-        author: 'Ryker Admin',
-        username: 'rykerlord',
-        realAuthorId: 'u1',
-        anonymous: false,
-        sensitive: false,
-        revealed: true,
-        time: 'Just now',
-        category: 'Tech',
-        text: 'Welcome to ᖇᒪ v0.4! Try the 5-emoji reactions below, tap Reply for voice-note & nested threads, or hit 🔴 LIVE in the header/menu.',
-        mediaType: null,
-        mediaUrl: null,
-        poll: null,
-        taggedPeople: ['@mayatech', '@dkimani'],
-        location: 'Nairobi, Kenya',
-        reactions: { '😂': 1, '🔥': 6, '😲': 1, '🏆': 2, '❤️': 8 },
-        userReaction: null,
-        replies: [
-          {
-            id: 501,
-            author: 'Maya Lin',
-            username: 'mayatech',
-            text: 'The voice note replies and full-page profile highlights feel super smooth!',
-            mediaType: null,
-            mediaUrl: null,
-            subReplies: [
-              { id: 601, username: 'dkimani', text: 'Agreed! Loving the local timezone EPL conversion too.' }
-            ]
-          }
-        ]
-      },
-      {
-        id: 102,
-        author: 'David Kimani',
-        username: 'dkimani',
-        realAuthorId: 'u3',
-        anonymous: false,
-        sensitive: false,
-        revealed: true,
-        time: '15m ago',
-        category: 'Football',
-        text: 'Big Premier League clash this weekend—who takes all 3 points?',
-        mediaType: null,
-        mediaUrl: null,
-        poll: { opt1: 'Arsenal', votes1: 14, opt2: 'Chelsea', votes2: 9, voted: null },
-        taggedPeople: ['@rykerlord'],
-        location: 'Westlands, Nairobi',
-        reactions: { '😂': 0, '🔥': 4, '😲': 0, '🏆': 3, '❤️': 2 },
-        userReaction: null,
-        replies: []
-      }
-    ];
-
-    let groups = JSON.parse(localStorage.getItem('rl_groups_v4') || 'null') || [
-      { id: 'g1', name: 'EPL & Football Banter', desc: 'Live Premier League reactions', members: 312, joined: true, roles: { rykerlord: 'Admin', mayatech: 'Moderator', dkimani: 'Member' } },
-      { id: 'g2', name: 'Kenya Rugby & Sports Hub', desc: 'Shujaa, Kenya Cup & global rugby', members: 189, joined: false, roles: { dkimani: 'Admin', rykerlord: 'Member' } },
-      { id: 'g3', name: 'Nairobi Creators & Tech', desc: 'Builders, photographers & AI startups', members: 245, joined: false, roles: { mayatech: 'Admin', sofiav: 'Moderator' } }
-    ];
-
-    let chatsDB = JSON.parse(localStorage.getItem('rl_chats_db') || 'null') || {
-      rykerlord: [{ sender: 'in', text: 'Karibu ᖇᒪ v0.4! Tap the video or voice button above to test a live call.' }],
-      mayatech: [{ sender: 'in', text: 'Hey! Check out my profile page highlights!' }]
-    };
-
-    let userPrefs = JSON.parse(localStorage.getItem('rl_prefs_v4') || 'null') || {
-      privateAccount: false,
-      stealthView: false,
-      spoilerBlur: true,
-      activeStatus: true,
-      readReceipts: true,
-      notifLikes: true,
-      notifMessages: true,
-      timelineOrder: 'latest',
-      language: 'English',
-      dataSaver: false,
-      fontSize: 'md',
-      fabSide: 'left',
-      city1: { name: 'Nairobi', lat: -1.2864, lon: 36.8172 },
-      city2: { name: 'New York', lat: 40.7128, lon: -74.0060 }
-    };
-
-    // EPL Fixtures stored in EAT (UTC+3) ISO format for automatic local timezone conversion
-    const EPL_FIXTURES = [
-      { home: 'Arsenal', away: 'Chelsea', score: '2 - 1', isoEat: '2026-11-21T18:30:00+03:00' },
-      { home: 'Liverpool', away: 'Man City', score: '1 - 1', isoEat: '2026-11-22T19:30:00+03:00' },
-      { home: 'Man United', away: 'Tottenham', score: '3 - 2', isoEat: '2026-11-22T17:00:00+03:00' }
-    ];
-
-    const IRL_NEWS = [
-      { scope: 'local', tag: 'Kenya IRL', title: 'Nairobi mobile creators embrace instant M-Pesa micro-tipping across social platforms.' },
-      { scope: 'global', tag: 'World News', title: 'Global renewable energy capacity reaches record highs heading into late 2026.' },
-      { scope: 'local', tag: 'Local Sports', title: 'Kenya Sevens rugby squad intensifies preparations ahead of international tournament.' },
-      { scope: 'global', tag: 'Global Tech', title: 'Real-time mobile audio/video rooms surge in popularity among youth communities.' }
-    ];
-
-    let activeChatPartner = null;
-    let activeThreadPostId = null;
-    let pendingMedia = { type: null, url: null };
-    let pendingReplyMedia = { type: null, url: null };
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let isRecordingVoice = false;
-    let activeLiveStream = null;
-    let selectedInterests = [];
-    let isLoadingFeed = false;
-
-    function saveAll() {
-      localStorage.setItem('rl_users_db', JSON.stringify(usersDB));
-      localStorage.setItem('rl_posts_v4', JSON.stringify(posts));
-      localStorage.setItem('rl_groups_v4', JSON.stringify(groups));
-      localStorage.setItem('rl_chats_db', JSON.stringify(chatsDB));
-      localStorage.setItem('rl_prefs_v4', JSON.stringify(userPrefs));
-      if (currentUser) localStorage.setItem('rl_current_user', JSON.stringify(currentUser));
-    }
-
-    function setTheme(theme) {
-      currentTheme = theme;
-      if (theme === 'black') document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('rl_theme', theme);
-      renderSettings();
-    }
-
-    function applyAccessibility() {
-      document.body.classList.remove('font-sm', 'font-lg');
-      if (userPrefs.fontSize === 'sm') document.body.classList.add('font-sm');
-      if (userPrefs.fontSize === 'lg') document.body.classList.add('font-lg');
-      const sd = document.getElementById('speedDialWrap');
-      if (sd) sd.classList.toggle('fab-right', userPrefs.fabSide === 'right');
-    }
-
-    function applyLanguage() {
-      const dict = I18N[userPrefs.language] || I18N.English;
-      document.getElementById('nav-tl').textContent = dict.tl;
-      document.getElementById('nav-search').textContent = dict.search;
-      document.getElementById('nav-groups').textContent = dict.groups;
-      document.getElementById('nav-dm').textContent = dict.dm;
-      document.getElementById('lbl-weather-title').textContent = dict.weather;
-      document.getElementById('lbl-news-title').textContent = dict.news;
-    }
-
-    // AUTH & ONBOARDING
-    function switchAuthMode(mode) {
-      authMode = mode;
-      document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
-      document.getElementById('tab-login').classList.toggle('active', mode === 'login');
-      document.getElementById('signup-fields').style.display = mode === 'signup' ? 'flex' : 'none';
-      document.getElementById('terms-check-row').style.display = mode === 'signup' ? 'flex' : 'none';
-      document.getElementById('auth-submit-btn').textContent = mode === 'signup' ? 'Create Account' : 'Log In';
-    }
-
-    function submitAuth() {
-      const email = document.getElementById('auth-email').value.trim().toLowerCase();
-      const pass = document.getElementById('auth-pass').value.trim();
-      const errEl = document.getElementById('auth-error');
-      if (!email || pass.length < 4) {
-        errEl.textContent = 'Enter a valid email and password (min 4 chars).';
-        errEl.style.display = 'block';
-        return;
-      }
-      if (authMode === 'signup') {
-        const name = document.getElementById('reg-name').value.trim();
-        const username = document.getElementById('reg-user').value.trim().replace(/^@/, '').toLowerCase();
-        const bio = document.getElementById('reg-bio').value.trim() || 'On ᖇᒪ RYKERLORD';
-        if (!name || !username || !document.getElementById('agree-terms').checked) {
-          errEl.textContent = 'Complete all fields and agree to the Terms & Privacy Policy.';
-          errEl.style.display = 'block';
-          return;
-        }
-        const newUser = { id: 'u_' + Date.now(), name, username, bio, email, password: pass, onboarded: false, interests: [], pinnedPostIds: [], profileViews: [] };
-        usersDB = usersDB.filter(u => u.username !== username);
-        usersDB.unshift(newUser);
-        currentUser = newUser;
-        saveAll();
-        openOnboarding();
-      } else {
-        let found = usersDB.find(u => u.email === email || u.username === email);
-        if (!found) {
-          const handle = email.split('@')[0];
-          found = { id: 'u_' + Date.now(), name: handle, username: handle, bio: 'ᖇᒪ Member', email, onboarded: false, interests: [], pinnedPostIds: [], profileViews: [] };
-          usersDB.unshift(found);
-        }
-        currentUser = found;
-        saveAll();
-        if (!currentUser.onboarded) openOnboarding();
-        else enterApp();
-      }
-    }
-
-    function openOnboarding() {
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('onboarding-screen').style.display = 'flex';
-      const groupsMap = {
-        'chips-sports': ['Football', 'Rugby', 'Basketball', 'Athletics', 'Formula 1'],
-        'chips-ent': ['Music', 'Movies', 'Gaming', 'Comedy', 'Fashion'],
-        'chips-tech': ['Tech', 'IRL News', 'Business', 'Photography']
-      };
-      Object.entries(groupsMap).forEach(([elId, list]) => {
-        document.getElementById(elId).innerHTML = list.map(item => `<div class="interest-chip" onclick="toggleInterest(this, '${item}')">${item}</div>`).join('');
-      });
-    }
-
-    function toggleInterest(el, item) {
-      el.classList.toggle('selected');
-      selectedInterests = selectedInterests.includes(item) ? selectedInterests.filter(x => x !== item) : [...selectedInterests, item];
-    }
-
-    function finishOnboarding() {
-      currentUser.interests = selectedInterests.length ? selectedInterests : ['Football', 'IRL News'];
-      currentUser.onboarded = true;
-      const idx = usersDB.findIndex(u => u.username === currentUser.username);
-      if (idx > -1) usersDB[idx] = currentUser;
-      saveAll();
-      document.getElementById('onboarding-screen').style.display = 'none';
-      enterApp();
-    }
-
-    function logoutUser() {
-      closeMenuDrawer();
-      currentUser = null;
-      localStorage.removeItem('rl_current_user');
-      document.getElementById('app-shell').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-    }
-
-    function enterApp() {
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('onboarding-screen').style.display = 'none';
-      document.getElementById('app-shell').style.display = 'flex';
-      document.getElementById('header-avatar').textContent = (currentUser.name || 'R')[0].toUpperCase();
-      updateViewAlertBadge();
-      applyAccessibility();
-      applyLanguage();
-      triggerSkeletonLoad();
-      renderEPL();
-      renderNews('all');
-      fetchDualWeather();
-      renderGroups();
-      renderChatDirectory();
-      renderSettings();
-      goToPage(0);
-    }
-
-    function triggerSkeletonLoad() {
-      isLoadingFeed = true;
-      document.getElementById('feedList').innerHTML = [1, 2, 3].map(() => `
-        <div class="skeleton-card">
-          <div class="skel-line" style="width:45%;"></div>
-          <div class="skel-line" style="width:92%;"></div>
-          <div class="skel-line" style="width:74%;"></div>
-        </div>
-      `).join('');
-      setTimeout(() => { isLoadingFeed = false; renderFeed(); }, 450);
-    }
-
-    // NAVIGATION & SWIPE
-    function goToPage(index) {
-      const vp = document.getElementById('swipeViewport');
-      vp.scrollTo({ left: vp.clientWidth * index, behavior: 'smooth' });
-      updateActivePageUI(index);
-    }
-
-    function onViewportScroll() {
-      const vp = document.getElementById('swipeViewport');
-      const idx = Math.round(vp.scrollLeft / vp.clientWidth);
-      if (idx !== currentPageIndex) updateActivePageUI(idx);
-    }
-
-    function updateActivePageUI(idx) {
-      currentPageIndex = idx;
-      document.querySelectorAll('nav.base-nav button').forEach((b, i) => b.classList.toggle('active', i === idx));
-      const tlHeader = document.getElementById('tl-header-content');
-      const searchHeader = document.getElementById('top-search-header');
-      const sd = document.getElementById('speedDialWrap');
-
-      if (idx === 1) {
-        tlHeader.style.display = 'none';
-        searchHeader.style.display = 'flex';
-        sd.style.display = 'none';
-      } else {
-        tlHeader.style.display = 'flex';
-        searchHeader.style.display = 'none';
-        document.getElementById('tl-menu-trigger').style.visibility = (idx === 0) ? 'visible' : 'hidden';
-        sd.style.display = (idx === 0) ? 'flex' : 'none';
-      }
-    }
-
-    function refreshTimeline() {
-      goToPage(0);
-      document.getElementById('page-tl').scrollTo({ top: 0, behavior: 'smooth' });
-      const banner = document.getElementById('tl-update-banner');
-      banner.textContent = '✓ Timeline updated with latest feeds';
-      banner.style.display = 'block';
-      triggerSkeletonLoad();
-      setTimeout(() => { banner.style.display = 'none'; }, 1800);
-    }
-
-    // TL RENDERING (5-Emoji Reactions, Tip, Auto-Translate, Polls, Sensitive Content, Anonymous)
-    function renderFeed() {
-      if (isLoadingFeed) return;
-      const list = [...posts];
-      if (userPrefs.timelineOrder === 'top') {
-        list.sort((a, b) => totalReactions(b) - totalReactions(a));
-      }
-
-      document.getElementById('feedList').innerHTML = list.map(p => {
-        const dispAuthor = p.anonymous ? 'Anonymous User' : p.author;
-        const dispHandle = p.anonymous ? 'anonymous' : p.username;
-        const avatarChar = p.anonymous ? '?' : (p.author || 'U')[0].toUpperCase();
-        const isBlurred = p.sensitive && !p.revealed;
-        const rx = p.reactions || { '😂': 0, '🔥': 0, '😲': 0, '🏆': 0, '❤️': 0 };
-        const topEmoji = p.userReaction || '❤️';
-
-        return `
-          <div class="card">
-            <div class="post-top">
-              <div class="avatar-circle" onclick="${p.anonymous ? '' : `openProfilePage('${p.username}')`}">${avatarChar}</div>
-              <div class="post-author-wrap" onclick="${p.anonymous ? '' : `openProfilePage('${p.username}')`}">
-                <div class="post-name">${dispAuthor} <span style="color:var(--muted); font-weight:400;">@${dispHandle}</span></div>
-                <div class="post-meta">${p.time} ${p.category ? '&bull; ' + p.category : ''}</div>
-              </div>
-              ${!p.anonymous ? `<button class="icon-btn" style="border-color:var(--gold); color:var(--gold);" onclick="openTipModal('${p.username}')">&#128176; Tip</button>` : ''}
-            </div>
-
-            ${isBlurred ? `
-              <div class="sensitive-overlay">
-                <div style="font-weight:800; margin-bottom:4px;">&#9888;&#65039; Sensitive Content / Spoiler</div>
-                <div style="font-size:0.78rem; color:var(--muted); margin-bottom:8px;">This post was marked sensitive by the author.</div>
-                <button class="secondary" onclick="revealSensitive(${p.id})">Show Content</button>
-              </div>
-            ` : `
-              ${p.text ? `<div class="post-text" id="post-txt-${p.id}">${p.translatedText || p.text}</div>` : ''}
-              ${p.text ? `<div style="margin-bottom:8px;"><span style="font-size:0.74rem; color:var(--accent); cursor:pointer; font-weight:600;" onclick="translatePost(${p.id})">&#127760; ${p.translatedText ? 'Show Original' : 'Translate'}</span></div>` : ''}
-              ${p.mediaType === 'image' && p.mediaUrl ? `<img src="${p.mediaUrl}" class="post-media" />` : ''}
-              ${p.mediaType === 'video' && p.mediaUrl ? `<video src="${p.mediaUrl}" class="post-media" controls playsinline></video>` : ''}
-            `}
-
-            ${p.poll ? `
-              <div style="margin:6px 0;">
-                <div class="poll-opt ${p.poll.voted === 1 ? 'voted' : ''}" onclick="votePoll(${p.id}, 1)">
-                  <span>${p.poll.opt1}</span><span>${p.poll.votes1} votes</span>
-                </div>
-                <div class="poll-opt ${p.poll.voted === 2 ? 'voted' : ''}" onclick="votePoll(${p.id}, 2)">
-                  <span>${p.poll.opt2}</span><span>${p.poll.votes2} votes</span>
-                </div>
-              </div>
-            ` : ''}
-
-            ${((p.taggedPeople && p.taggedPeople.length) || p.location) ? `
-              <div class="post-tags-bar">
-                ${p.location ? `<span>&#128205; ${p.location}</span>` : ''}
-                ${(p.taggedPeople || []).map(t => `<span style="cursor:pointer; font-weight:600;" onclick="openProfilePage('${t.replace(/^@/,'')}')">&#128100; ${t}</span>`).join('')}
-              </div>
-            ` : ''}
-
-            <div class="card-actions">
-              <div class="emoji-picker-pop" id="emoji-pop-${p.id}">
-                ${EMOJIS.map(em => `<span onclick="reactToPost(${p.id}, '${em}')">${em}</span>`).join('')}
-              </div>
-              <span class="action-btn" onclick="toggleEmojiPop(${p.id})" style="color:${p.userReaction ? 'var(--accent)' : 'inherit'}">
-                ${topEmoji} ${totalReactions(p)}
-              </span>
-              <span class="action-btn" onclick="openThreadPage(${p.id})">&#128172; ${(p.replies || []).length} Replies</span>
-              ${!p.anonymous ? `<span class="action-btn" onclick="startChatWith('${p.username}')">&#9993; ĐM͒</span>` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function totalReactions(p) {
-      const rx = p.reactions || {};
-      return Object.values(rx).reduce((a, b) => a + b, 0);
-    }
-
-    function toggleEmojiPop(id) {
-      const el = document.getElementById(`emoji-pop-${id}`);
-      const wasOpen = el.classList.contains('open');
-      document.querySelectorAll('.emoji-picker-pop').forEach(x => x.classList.remove('open'));
-      if (!wasOpen) el.classList.add('open');
-    }
-
-    function reactToPost(id, emoji) {
-      const p = posts.find(x => x.id === id);
-      if (!p) return;
-      p.reactions = p.reactions || { '😂': 0, '🔥': 0, '😲': 0, '🏆': 0, '❤️': 0 };
-      if (p.userReaction === emoji) {
-        p.reactions[emoji] = Math.max(0, p.reactions[emoji] - 1);
-        p.userReaction = null;
-      } else {
-        if (p.userReaction) p.reactions[p.userReaction] = Math.max(0, p.reactions[p.userReaction] - 1);
-        p.reactions[emoji] = (p.reactions[emoji] || 0) + 1;
-        p.userReaction = emoji;
-      }
-      saveAll();
-      renderFeed();
-    }
-
-    function revealSensitive(id) {
-      const p = posts.find(x => x.id === id);
-      if (p) { p.revealed = true; renderFeed(); }
-    }
-
-    function translatePost(id) {
-      const p = posts.find(x => x.id === id);
-      if (!p) return;
-      if (p.translatedText) {
-        p.translatedText = null;
-      } else {
-        const lang = userPrefs.language || 'English';
-        p.translatedText = `[Translated to ${lang}]: ${p.text}`;
-      }
-      renderFeed();
-    }
-
-    function votePoll(id, optNum) {
-      const p = posts.find(x => x.id === id);
-      if (!p || !p.poll || p.poll.voted) return;
-      p.poll.voted = optNum;
-      if (optNum === 1) p.poll.votes1++;
-      else p.poll.votes2++;
-      saveAll();
-      renderFeed();
-    }
-
-    // SPEED DIAL & RICH COMPOSER
-    function toggleSpeedDial() {
-      document.getElementById('speedDialWrap').classList.toggle('open');
-    }
-
-    function openComposerModal(mode) {
-      pendingMedia = { type: null, url: null };
-      document.getElementById('comp-text').value = '';
-      document.getElementById('comp-tag-people').value = '';
-      document.getElementById('comp-tag-place').value = '';
-      document.getElementById('comp-anon').checked = false;
-      document.getElementById('comp-sensitive').checked = false;
-      document.getElementById('comp-media-preview').style.display = 'none';
-      document.getElementById('comp-poll-fields').style.display = (mode === 'poll') ? 'flex' : 'none';
-      document.getElementById('composer-modal').classList.add('open');
-    }
-
-    function closeComposerModal() { document.getElementById('composer-modal').classList.remove('open'); }
-
-    function handleMediaSelect(event, type) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      pendingMedia = { type, url };
-      const prev = document.getElementById('comp-media-preview');
-      prev.style.display = 'block';
-      prev.innerHTML = type === 'image' ? `<img src="${url}" class="post-media" />` : `<video src="${url}" class="post-media" controls></video>`;
-    }
-
-    function publishRichPost() {
-      const text = document.getElementById('comp-text').value.trim();
-      const rawTags = document.getElementById('comp-tag-people').value.trim();
-      const location = document.getElementById('comp-tag-place').value.trim();
-      const anonymous = document.getElementById('comp-anon').checked;
-      const sensitive = document.getElementById('comp-sensitive').checked;
-      const opt1 = document.getElementById('poll-opt-1').value.trim();
-      const opt2 = document.getElementById('poll-opt-2').value.trim();
-
-      if (!text && !pendingMedia.url && !(opt1 && opt2)) {
-        alert('Add text, media, or poll options.');
-        return;
-      }
-
-      const taggedPeople = rawTags ? rawTags.split(/[\s,]+/).filter(Boolean).map(t => t.startsWith('@') ? t : '@' + t) : [];
-      const poll = (opt1 && opt2) ? { opt1, votes1: 0, opt2, votes2: 0, voted: null } : null;
-
-      posts.unshift({
-        id: Date.now(),
-        author: currentUser.name,
-        username: currentUser.username,
-        realAuthorId: currentUser.id, // Always saved internally even when anonymous is true
-        anonymous,
-        sensitive,
-        revealed: !sensitive,
-        time: 'Just now',
-        category: (currentUser.interests && currentUser.interests[0]) || 'General',
-        text,
-        mediaType: pendingMedia.type,
-        mediaUrl: pendingMedia.url,
-        poll,
-        taggedPeople,
-        location,
-        reactions: { '😂': 0, '🔥': 0, '😲': 0, '🏆': 0, '❤️': 0 },
-        userReaction: null,
-        replies: []
-      });
-
-      saveAll();
-      closeComposerModal();
-      renderFeed();
-    }
-
-    // FULL THREADED REPLIES PAGE (Text, Voice Note, Photo, Video + Nested Replies)
-    function openThreadPage(postId) {
-      activeThreadPostId = postId;
-      pendingReplyMedia = { type: null, url: null };
-      document.getElementById('thread-standalone-page').classList.add('open');
-      renderThreadPage();
-    }
-
-    function closeThreadPage() {
-      document.getElementById('thread-standalone-page').classList.remove('open');
-      renderFeed();
-    }
-
-    function renderThreadPage() {
-      const p = posts.find(x => x.id === activeThreadPostId);
-      if (!p) return;
-
-      const repliesHtml = (p.replies || []).map(r => `
-        <div class="card" style="padding:10px; margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-            <strong style="cursor:pointer;" onclick="closeThreadPage(); openProfilePage('${r.username}')">@${r.username}</strong>
-            <span style="color:var(--accent); cursor:pointer; font-weight:700;" onclick="replyToComment(${p.id}, ${r.id})">Reply</span>
-          </div>
-          ${r.text ? `<div style="margin-top:4px; font-size:0.88rem;">${r.text}</div>` : ''}
-          ${r.mediaType === 'audio' && r.mediaUrl ? `<audio src="${r.mediaUrl}" controls style="width:100%; margin-top:6px;"></audio>` : ''}
-          ${r.mediaType === 'image' && r.mediaUrl ? `<img src="${r.mediaUrl}" class="post-media" style="margin-top:6px;" />` : ''}
-          ${r.mediaType === 'video' && r.mediaUrl ? `<video src="${r.mediaUrl}" class="post-media" controls style="margin-top:6px;"></video>` : ''}
-
-          ${(r.subReplies && r.subReplies.length) ? `
-            <div style="margin-top:8px; padding-left:10px; border-left:2px solid var(--accent);">
-              ${r.subReplies.map(sr => `
-                <div style="font-size:0.82rem; margin-bottom:5px;">
-                  <strong>@${sr.username}:</strong> ${sr.text}
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-        </div>
-      `).join('');
-
-      document.getElementById('thread-page-body').innerHTML = `
-        <div class="card">
-          <strong>${p.anonymous ? 'Anonymous User' : p.author}</strong>
-          <div style="margin-top:6px;">${p.text || '[Media Post]'}</div>
-        </div>
-
-        <div class="card" style="border-color:var(--accent);">
-          <strong style="font-size:0.84rem; display:block; margin-bottom:6px;">Add a Reply (Text, Voice Note, Photo, or Video)</strong>
-          <textarea id="replyTextInput" rows="2" placeholder="Write a comment..."></textarea>
-          <div style="display:flex; gap:6px; margin:8px 0;">
-            <button class="secondary" style="flex:1;" id="voiceRecBtn" onclick="toggleVoiceNoteRecord()">&#127908; Record Voice</button>
-            <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
-              &#128247; Pic
-              <input type="file" accept="image/*" style="display:none;" onchange="handleReplyMedia(event, 'image')" />
-            </label>
-            <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
-              &#127909; Video
-              <input type="file" accept="video/*" style="display:none;" onchange="handleReplyMedia(event, 'video')" />
-            </label>
-          </div>
-          <div id="replyMediaStatus" style="font-size:0.78rem; color:var(--accent); margin-bottom:6px;"></div>
-          <button class="primary" onclick="submitThreadReply()">Post Reply</button>
-        </div>
-
-        <div style="font-weight:800; font-size:0.86rem; margin:10px 0 6px;">Comments (${(p.replies || []).length})</div>
-        ${repliesHtml || `<div style="color:var(--muted); font-size:0.82rem;">No comments yet. Start the thread!</div>`}
-      `;
-    }
-
-    async function toggleVoiceNoteRecord() {
-      const btn = document.getElementById('voiceRecBtn');
-      const status = document.getElementById('replyMediaStatus');
-      if (!isRecordingVoice) {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          mediaRecorder = new MediaRecorder(stream);
-          audioChunks = [];
-          mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-          mediaRecorder.onstop = () => {
-            const blob = new Blob(audioChunks, { type: 'audio/webm' });
-            const url = URL.createObjectURL(blob);
-            pendingReplyMedia = { type: 'audio', url };
-            status.textContent = '✓ Voice note attached and ready to post!';
-            stream.getTracks().forEach(t => t.stop());
-          };
-          mediaRecorder.start();
-          isRecordingVoice = true;
-          btn.textContent = '⏹ Stop Recording';
-          btn.style.borderColor = 'var(--danger)';
-        } catch (err) {
-          alert('Microphone access is required for voice notes.');
-        }
-      } else {
-        mediaRecorder.stop();
-        isRecordingVoice = false;
-        btn.textContent = '🎤 Record Voice';
-      }
-    }
-
-    function handleReplyMedia(event, type) {
-      const file = event.target.files[0];
-      if (!file) return;
-      pendingReplyMedia = { type, url: URL.createObjectURL(file) };
-      document.getElementById('replyMediaStatus').textContent = `✓ ${type.toUpperCase()} attached!`;
-    }
-
-    function submitThreadReply() {
-      const p = posts.find(x => x.id === activeThreadPostId);
-      const text = document.getElementById('replyTextInput').value.trim();
-      if (!p || (!text && !pendingReplyMedia.url)) return;
-
-      p.replies = p.replies || [];
-      p.replies.unshift({
-        id: Date.now(),
-        author: currentUser.name,
-        username: currentUser.username,
-        text,
-        mediaType: pendingReplyMedia.type,
-        mediaUrl: pendingReplyMedia.url,
-        subReplies: []
-      });
-      pendingReplyMedia = { type: null, url: null };
-      saveAll();
-      renderThreadPage();
-    }
-
-    function replyToComment(postId, replyId) {
-      const txt = prompt('Write a nested reply to this comment:');
-      if (!txt || !txt.trim()) return;
-      const p = posts.find(x => x.id === postId);
-      const r = p && p.replies.find(x => x.id === replyId);
-      if (!r) return;
-      r.subReplies = r.subReplies || [];
-      r.subReplies.push({ id: Date.now(), username: currentUser.username, text: txt.trim() });
-      saveAll();
-      renderThreadPage();
-    }
-
-    // STANDALONE FULL-PAGE PROFILE (Highlights + Real Media Thumbnails)
-    function openProfilePage(username) {
-      const cleanUser = username.replace(/^@/, '').toLowerCase();
-      let target = usersDB.find(u => u.username === cleanUser);
-      if (!target) {
-        target = { id: 'u_' + cleanUser, name: cleanUser, username: cleanUser, bio: 'ᖇᒪ Member', following: false, pinnedPostIds: [], profileViews: [] };
-        usersDB.push(target);
-      }
-
-      const isSelf = target.username === currentUser.username;
-      if (!isSelf && !userPrefs.stealthView) {
-        target.profileViews = target.profileViews || [];
-        target.profileViews.unshift({ viewer: currentUser.username, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
-        saveAll();
-      }
-
-      const userPosts = posts.filter(p => p.username === target.username && !p.anonymous);
-      const pinnedIds = target.pinnedPostIds || [];
-      const pinnedPosts = userPosts.filter(p => pinnedIds.includes(p.id));
-
-      document.getElementById('prof-page-header').textContent = isSelf ? 'My Profile' : `@${target.username}`;
-      document.getElementById('prof-tip-btn').onclick = () => openTipModal(target.username);
-
-      document.getElementById('profile-page-body').innerHTML = `
-        <div class="card">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div class="avatar-circle" style="width:54px; height:54px; font-size:1.3rem;">${target.name[0].toUpperCase()}</div>
-            <div style="flex:1;">
-              <strong style="font-size:1.05rem;">${target.name}</strong>
-              <div style="font-size:0.8rem; color:var(--muted);">@${target.username}</div>
-              <p style="font-size:0.84rem; margin-top:4px;">${target.bio || ''}</p>
-            </div>
-          </div>
-
-          ${!isSelf ? `
-            <div style="display:flex; gap:8px; margin-top:10px;">
-              <button class="${target.following ? 'secondary' : 'primary'}" style="flex:1;" onclick="toggleFollowUser('${target.username}')">
-                ${target.following ? 'Following (Unfollow)' : 'Follow'}
-              </button>
-              <button class="secondary" style="flex:1;" onclick="closeProfilePage(); startChatWith('${target.username}')">Message ĐM͒</button>
-            </div>
-          ` : ''}
-        </div>
-
-        <!-- Horizontal Scrollable Highlights -->
-        <div style="font-weight:800; font-size:0.86rem; margin:10px 0 4px;">&#128204; Profile Highlights</div>
-        <div class="highlights-strip">
-          ${pinnedPosts.length
-            ? pinnedPosts.map(hp => `
-                <div class="highlight-card">
-                  <div style="font-weight:700; color:var(--accent); margin-bottom:4px;">Pinned Post</div>
-                  <div>${(hp.text || 'Media Highlight').slice(0, 58)}...</div>
-                </div>
-              `).join('')
-            : `<div style="font-size:0.8rem; color:var(--muted);">No pinned highlights yet. Tap "Pin" on any post below.</div>`
-          }
-        </div>
-
-        ${isSelf ? `
-          <div class="card" style="margin-top:8px;">
-            <strong style="font-size:0.84rem;">&#128065; Profile Visitors (${(target.profileViews || []).length})</strong>
-            <div style="font-size:0.75rem; color:var(--muted);">
-              ${userPrefs.stealthView ? 'Stealth Mode is ON.' : 'Showing visitors while alerts are active.'}
-            </div>
-          </div>
-        ` : ''}
-
-        <!-- Profile Activity with Real Media Thumbnails -->
-        <div style="font-weight:800; font-size:0.86rem; margin:12px 0 6px;">Posts &amp; Media Activity (${userPosts.length})</div>
-        ${userPosts.map(p => `
-          <div class="card" style="display:flex; gap:10px; align-items:center; padding:10px;">
-            ${p.mediaType === 'image' && p.mediaUrl ? `<img src="${p.mediaUrl}" class="activity-thumb" />` : ''}
-            ${p.mediaType === 'video' && p.mediaUrl ? `<video src="${p.mediaUrl}" class="activity-thumb"></video>` : ''}
-            <div style="flex:1;">
-              <div style="font-size:0.74rem; color:var(--muted);">${p.time} ${p.location ? '&bull; ' + p.location : ''}</div>
-              <div style="font-size:0.85rem; margin-top:3px;">${p.text || (p.mediaType === 'video' ? 'Video Post' : 'Photo Post')}</div>
-            </div>
-            ${isSelf ? `<button class="icon-btn" onclick="togglePinHighlight(${p.id})">${pinnedIds.includes(p.id) ? 'Unpin' : 'Pin'}</button>` : ''}
-          </div>
-        `).join('')}
-      `;
-
-      document.getElementById('profile-standalone-page').classList.add('open');
-    }
-
-    function closeProfilePage() { document.getElementById('profile-standalone-page').classList.remove('open'); }
-
-    function toggleFollowUser(username) {
-      const u = usersDB.find(x => x.username === username);
-      if (!u) return;
-      u.following = !u.following;
-      saveAll();
-      openProfilePage(username);
-    }
-
-    function togglePinHighlight(postId) {
-      currentUser.pinnedPostIds = currentUser.pinnedPostIds || [];
-      if (currentUser.pinnedPostIds.includes(postId)) {
-        currentUser.pinnedPostIds = currentUser.pinnedPostIds.filter(id => id !== postId);
-      } else {
-        currentUser.pinnedPostIds.push(postId);
-      }
-      const idx = usersDB.findIndex(u => u.username === currentUser.username);
-      if (idx > -1) usersDB[idx] = currentUser;
-      saveAll();
-      openProfilePage(currentUser.username);
-    }
-
-    function updateViewAlertBadge() {
-      const views = (currentUser && currentUser.profileViews) ? currentUser.profileViews.length : 0;
-      const pill = document.getElementById('view-alert-pill');
-      pill.style.display = views > 0 ? 'inline-block' : 'none';
-      pill.textContent = `👁 ${views}`;
-    }
-
-    // TIPPING MODAL (M-Pesa STK Push + Stripe Card/Crypto)
-    function openTipModal(username) {
-      document.getElementById('tip-target-name').textContent = '@' + username;
-      document.getElementById('tip-status-msg').style.display = 'none';
-      document.getElementById('tip-modal').classList.add('open');
-    }
-    function closeTipModal() { document.getElementById('tip-modal').classList.remove('open'); }
-    function switchTipMethod(m) {
-      document.getElementById('tip-tab-mpesa').classList.toggle('active', m === 'mpesa');
-      document.getElementById('tip-tab-card').classList.toggle('active', m === 'card');
-      document.getElementById('tip-mpesa-box').style.display = m === 'mpesa' ? 'flex' : 'none';
-      document.getElementById('tip-card-box').style.display = m === 'card' ? 'flex' : 'none';
-    }
-    function simulateMpesaStk() {
-      const phone = document.getElementById('tip-phone').value.trim();
-      const amt = document.getElementById('tip-amount-kes').value;
-      const msg = document.getElementById('tip-status-msg');
-      if (!phone) { alert('Enter your M-Pesa phone number.'); return; }
-      msg.style.display = 'block';
-      msg.textContent = `📲 M-Pesa STK Push sent to ${phone} for KES ${amt}. Enter your M-Pesa PIN on your phone to complete!`;
-    }
-    function simulateCardTip() {
-      const amt = document.getElementById('tip-amount-usd').value;
-      const msg = document.getElementById('tip-status-msg');
-      msg.style.display = 'block';
-      msg.textContent = `✓ Stripe / Crypto tip of $${amt} processed!`;
-    }
-
-    // IRL LIVE VIDEO & VOICE ROOMS
-    async function openIrlLiveModal(type, targetName) {
-      const titleMap = {
-        solo: '🔴 Solo IRL Live Broadcast',
-        group: '🔴 Group Live Video & Voice Stage',
-        personal: `📞 Live Call with ${targetName || 'Connection'}`
-      };
-      document.getElementById('irl-modal-title').textContent = titleMap[type] || '🔴 IRL Live';
-      document.getElementById('irl-live-modal').classList.add('open');
-      setLiveMediaMode('video');
-    }
-
-    async function setLiveMediaMode(mode) {
-      document.getElementById('live-mode-video').classList.toggle('active', mode === 'video');
-      document.getElementById('live-mode-voice').classList.toggle('active', mode === 'voice');
-      const vid = document.getElementById('irlLiveVideo');
-      const voiceBox = document.getElementById('irlVoiceAvatar');
-      const status = document.getElementById('irl-live-status');
-
-      if (activeLiveStream) {
-        activeLiveStream.getTracks().forEach(t => t.stop());
-        activeLiveStream = null;
-      }
-
-      try {
-        activeLiveStream = await navigator.mediaDevices.getUserMedia({ video: mode === 'video', audio: true });
-        if (mode === 'video') {
-          vid.style.display = 'block';
-          voiceBox.style.display = 'none';
-          vid.srcObject = activeLiveStream;
-          status.textContent = '● LIVE VIDEO & AUDIO STREAMING';
-        } else {
-          vid.style.display = 'none';
-          voiceBox.style.display = 'block';
-          status.textContent = '● LIVE VOICE ROOM ACTIVE';
-        }
-      } catch (e) {
-        vid.style.display = 'none';
-        voiceBox.style.display = 'block';
-        status.textContent = '● LIVE STAGE READY (Grant camera/mic permission to broadcast)';
-      }
-    }
-
-    function toggleLiveMute() {
-      if (!activeLiveStream) return;
-      const audioTrack = activeLiveStream.getAudioTracks()[0];
-      if (!audioTrack) return;
-      audioTrack.enabled = !audioTrack.enabled;
-      document.getElementById('btn-live-mute').textContent = audioTrack.enabled ? 'Mute Mic' : 'Unmute Mic';
-    }
-
-    function sendLiveChat() {
-      const inp = document.getElementById('liveChatInput');
-      if (!inp.value.trim()) return;
-      const box = document.getElementById('live-room-chat');
-      box.innerHTML += `<div><strong>@${currentUser.username}:</strong> ${inp.value.trim()}</div>`;
-      inp.value = '';
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function closeIrlLiveModal() {
-      if (activeLiveStream) {
-        activeLiveStream.getTracks().forEach(t => t.stop());
-        activeLiveStream = null;
-      }
-      document.getElementById('irl-live-modal').classList.remove('open');
-    }
-
-    // EXPLORE: AUTO-TIMEZONE EPL + SPOILER BLUR + DUAL WEATHER + NEWS
-    function formatLocalKickoff(isoEat) {
-      const dt = new Date(isoEat);
-      return new Intl.DateTimeFormat(undefined, { weekday: 'short', hour: '2-digit', minute: '2-digit' }).format(dt);
-    }
-
-    function renderEPL() {
-      document.getElementById('eplList').innerHTML = EPL_FIXTURES.map(m => `
-        <div class="epl-row">
-          <div><strong>${m.home}</strong> vs <strong>${m.away}</strong></div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span class="${userPrefs.spoilerBlur ? 'spoiler-blur' : ''}" onclick="this.classList.remove('spoiler-blur')" style="font-weight:800; background:var(--surface-2); padding:2px 7px; border-radius:6px;" title="Tap to reveal score">${m.score}</span>
-            <span style="font-size:0.74rem; color:var(--accent); font-weight:700;">${formatLocalKickoff(m.isoEat)}</span>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    async function fetchDualWeather() {
-      const cities = [userPrefs.city1, userPrefs.city2];
-      for (let i = 0; i < 2; i++) {
-        const c = cities[i];
-        document.getElementById(`w-city-${i + 1}`).textContent = c.name.toUpperCase();
-        try {
-          const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,wind_speed_10m`);
-          const data = await res.json();
-          document.getElementById(`w-temp-${i + 1}`).innerHTML = `${Math.round(data.current.temperature_2m)}&deg;C`;
-          document.getElementById(`w-desc-${i + 1}`).textContent = `Wind ${data.current.wind_speed_10m} km/h • Live`;
-        } catch (e) {
-          document.getElementById(`w-temp-${i + 1}`).innerHTML = i === 0 ? `23&deg;C` : `11&deg;C`;
-          document.getElementById(`w-desc-${i + 1}`).textContent = i === 0 ? 'Partly Cloudy' : 'Clear Sky';
-        }
-      }
-    }
-
-    function changeWeatherCities() {
-      const presets = [
-        { c1: { name: 'Nairobi', lat: -1.2864, lon: 36.8172 }, c2: { name: 'New York', lat: 40.7128, lon: -74.0060 } },
-        { c1: { name: 'Mombasa', lat: -4.0435, lon: 39.6682 }, c2: { name: 'London', lat: 51.5072, lon: -0.1276 } }
-      ];
-      const next = presets[(presets.findIndex(p => p.c1.name === userPrefs.city1.name) + 1) % presets.length];
-      userPrefs.city1 = next.c1;
-      userPrefs.city2 = next.c2;
-      saveAll();
-      fetchDualWeather();
-    }
-
-    function renderNews(scope) {
-      const items = scope === 'all' ? IRL_NEWS : IRL_NEWS.filter(n => n.scope === scope);
-      document.getElementById('newsList').innerHTML = items.map(n => `
-        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
-          <span style="font-size:0.7rem; font-weight:800; color:var(--accent);">${n.tag}</span>
-          <div style="font-size:0.83rem; margin-top:2px;">${n.title}</div>
-        </div>
-      `).join('');
-    }
-
-    function handleGlobalSearch(q) {
-      const box = document.getElementById('search-live-results');
-      const query = q.trim().toLowerCase().replace(/^@/, '');
-      if (!query) { box.style.display = 'none'; return; }
-      const matchedUsers = usersDB.filter(u => u.username !== currentUser.username && (u.name.toLowerCase().includes(query) || u.username.toLowerCase().includes(query)));
-      box.innerHTML = `<div class="card"><strong style="font-size:0.8rem; color:var(--accent);">People</strong>` +
-        (matchedUsers.length ? matchedUsers.map(u => `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border);" onclick="openProfilePage('${u.username}')">
-            <span><strong>${u.name}</strong> @${u.username}</span>
-            <span style="color:var(--accent); font-size:0.78rem;">View Profile &rarr;</span>
-          </div>
-        `).join('') : `<div style="font-size:0.8rem; color:var(--muted); padding-top:4px;">No matching users.</div>`) + `</div>`;
-      box.style.display = 'block';
-    }
-
-    // GROUPS (₲) WITH ADMIN / MODERATOR / MEMBER ROLES
-    function renderGroups() {
-      const joined = groups.filter(g => g.joined);
-      const suggested = groups.filter(g => !g.joined);
-
-      document.getElementById('joinedGroupsList').innerHTML = joined.map(g => {
-        const myRole = (g.roles && g.roles[currentUser.username]) || 'Member';
-        return `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong>₲ ${g.name}</strong>
-              <span style="font-size:0.72rem; background:var(--surface-2); border:1px solid var(--accent); color:var(--accent); padding:2px 8px; border-radius:999px; font-weight:700;">Role: ${myRole}</span>
-            </div>
-            <div style="font-size:0.8rem; color:var(--muted); margin:4px 0;">${g.desc} &bull; ${g.members} members</div>
-            ${myRole === 'Admin' ? `
-              <div style="margin-top:6px; padding-top:6px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:0.78rem;">
-                <span>Assign Role (@mayatech):</span>
-                <select style="width:auto; padding:4px 8px; font-size:0.76rem;" onchange="assignGroupRole('${g.id}', 'mayatech', this.value)">
-                  <option value="Member">Member</option>
-                  <option value="Moderator" selected>Moderator</option>
-                  <option value="Admin">Admin</option>
-                </select>
-              </div>
-            ` : ''}
-          </div>
-        `;
-      }).join('');
-
-      document.getElementById('suggestedGroupsList').innerHTML = suggested.map(g => `
-        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <strong>₲ ${g.name}</strong>
-            <div style="font-size:0.78rem; color:var(--muted);">${g.desc}</div>
-          </div>
-          <button class="primary" style="width:auto;" onclick="toggleGroup('${g.id}')">Join</button>
-        </div>
-      `).join('');
-    }
-
-    function createGroup() {
-      const name = document.getElementById('newGroupName').value.trim();
-      const desc = document.getElementById('newGroupDesc').value.trim() || 'Community group';
-      if (!name) return;
-      groups.unshift({ id: 'g_' + Date.now(), name, desc, members: 1, joined: true, roles: { [currentUser.username]: 'Admin' } });
-      document.getElementById('newGroupName').value = '';
-      document.getElementById('newGroupDesc').value = '';
-      saveAll();
-      renderGroups();
-    }
-
-    function assignGroupRole(groupId, handle, role) {
-      const g = groups.find(x => x.id === groupId);
-      if (!g) return;
-      g.roles = g.roles || {};
-      g.roles[handle] = role;
-      saveAll();
-      alert(`Updated @${handle} to ${role}`);
-    }
-
-    function toggleGroup(id) {
-      const g = groups.find(x => x.id === id);
-      if (!g) return;
-      g.joined = !g.joined;
-      g.members += g.joined ? 1 : -1;
-      g.roles = g.roles || {};
-      if (g.joined) g.roles[currentUser.username] = 'Member';
-      saveAll();
-      renderGroups();
-    }
-
-    // DIRECT MESSAGES (ĐM͒)
-    function renderChatDirectory() {
-      const others = usersDB.filter(u => u.username !== currentUser.username);
-      document.getElementById('peopleChatList').innerHTML = others.map(u => {
-        const thread = chatsDB[u.username] || [];
-        return `
-          <div class="card" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="startChatWith('${u.username}')">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <div class="avatar-circle">${u.name[0].toUpperCase()}</div>
-              <div>
-                <strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.8rem;">@${u.username}</span>
-                <div style="font-size:0.78rem; color:var(--muted);">${thread.length ? thread[thread.length - 1].text : 'Tap to chat'}</div>
-              </div>
-            </div>
-            <span style="color:var(--accent); font-weight:800;">ĐM͒</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function startChatWith(username) {
-      const clean = username.replace(/^@/, '').toLowerCase();
-      if (clean === currentUser.username) return;
-      activeChatPartner = usersDB.find(u => u.username === clean) || { name: clean, username: clean };
-      goToPage(3);
-      document.getElementById('chat-directory').style.display = 'none';
-      document.getElementById('chat-thread-view').style.display = 'block';
-      document.getElementById('active-chat-name').textContent = `${activeChatPartner.name} (@${activeChatPartner.username})`;
-      renderChatMessages();
-    }
-
-    function closeChatThread() {
-      activeChatPartner = null;
-      document.getElementById('chat-thread-view').style.display = 'none';
-      document.getElementById('chat-directory').style.display = 'block';
-      renderChatDirectory();
-    }
-
-    function renderChatMessages() {
-      if (!activeChatPartner) return;
-      const thread = chatsDB[activeChatPartner.username] || [];
-      const box = document.getElementById('chatBox');
-      box.innerHTML = thread.map(m => `<div class="msg ${m.sender}">${m.text}</div>`).join('');
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function sendMsg() {
-      const input = document.getElementById('chatInput');
-      if (!input.value.trim() || !activeChatPartner) return;
-      chatsDB[activeChatPartner.username] = chatsDB[activeChatPartner.username] || [];
-      chatsDB[activeChatPartner.username].push({ sender: 'out', text: input.value.trim() });
-      input.value = '';
-      saveAll();
-      renderChatMessages();
-    }
-
-    // MENU DRAWER & ALPHABETICAL SETTINGS
-    function openMenuDrawer() { renderSettings(); document.getElementById('menu-backdrop').classList.add('open'); document.getElementById('menu-drawer').classList.add('open'); }
-    function closeMenuDrawer() { document.getElementById('menu-backdrop').classList.remove('open'); document.getElementById('menu-drawer').classList.remove('open'); }
-
-    function renderSettings() {
-      const sections = [
-        {
-          title: 'Accessibility',
-          body: `
-            <label style="display:block; margin-bottom:4px;">Text Size</label>
-            <select style="margin-bottom:8px;" onchange="userPrefs.fontSize=this.value; saveAll(); applyAccessibility();">
-              <option value="sm" ${userPrefs.fontSize === 'sm' ? 'selected' : ''}>Small</option>
-              <option value="md" ${userPrefs.fontSize === 'md' ? 'selected' : ''}>Medium (Default)</option>
-              <option value="lg" ${userPrefs.fontSize === 'lg' ? 'selected' : ''}>Large</option>
-            </select>
-            <label style="display:block; margin-bottom:4px;">Speed Dial (+) Button Side</label>
-            <select onchange="userPrefs.fabSide=this.value; saveAll(); applyAccessibility();">
-              <option value="left" ${userPrefs.fabSide === 'left' ? 'selected' : ''}>Left Side</option>
-              <option value="right" ${userPrefs.fabSide === 'right' ? 'selected' : ''}>Right Side</option>
-            </select>
-          `
-        },
-        {
-          title: 'Account',
-          body: `<button class="primary" onclick="closeMenuDrawer(); openProfilePage(currentUser.username)">Open My Full Profile Page</button>`
-        },
-        {
-          title: 'Additional resources',
-          body: `<button class="secondary" style="width:100%;" onclick="openLegalModal()">Terms &amp; Conditions and Privacy Policy</button>`
-        },
-        {
-          title: 'Appearance',
-          body: `
-            <div class="theme-grid">
-              <div class="theme-pill ${currentTheme === 'black' ? 'active' : ''}" style="background:#000; color:#fff;" onclick="setTheme('black')">Pure Black</div>
-              <div class="theme-pill ${currentTheme === 'white' ? 'active' : ''}" style="background:#fff; color:#0f172a;" onclick="setTheme('white')">Crisp White</div>
-              <div class="theme-pill ${currentTheme === 'navy' ? 'active' : ''}" style="background:#061021; color:#93c5fd;" onclick="setTheme('navy')">Navy Blue</div>
-              <div class="theme-pill ${currentTheme === 'purple' ? 'active' : ''}" style="background:#f6f1ff; color:#581c87;" onclick="setTheme('purple')">Light Purple</div>
-              <div class="theme-pill ${currentTheme === 'pink' ? 'active' : ''}" style="background:#fff0f6; color:#831843; grid-column:span 2;" onclick="setTheme('pink')">Light Pink</div>
-            </div>
-          `
-        },
-        {
-          title: 'Chat',
-          body: `<div class="toggle-row"><span>Show Online Status</span><input type="checkbox" ${userPrefs.activeStatus ? 'checked' : ''} onchange="userPrefs.activeStatus=this.checked; saveAll();" /></div>`
-        },
-        {
-          title: 'Explore',
-          body: `<div class="toggle-row"><span>Sports Spoiler Blur (Blur EPL scores until tapped)</span><input type="checkbox" ${userPrefs.spoilerBlur ? 'checked' : ''} onchange="userPrefs.spoilerBlur=this.checked; saveAll(); renderEPL();" /></div>`
-        },
-        {
-          title: 'Languages',
-          body: `
-            <select onchange="userPrefs.language=this.value; saveAll(); applyLanguage();">
-              <option value="English" ${userPrefs.language === 'English' ? 'selected' : ''}>English</option>
-              <option value="Spanish" ${userPrefs.language === 'Spanish' ? 'selected' : ''}>Spanish</option>
-              <option value="Kiswahili" ${userPrefs.language === 'Kiswahili' ? 'selected' : ''}>Kiswahili</option>
-              <option value="Sheng'" ${userPrefs.language === "Sheng'" ? 'selected' : ''}>Sheng'</option>
-            </select>
-          `
-        },
-        {
-          title: 'Notifications',
-          body: `<div class="toggle-row"><span>Reactions &amp; Replies</span><input type="checkbox" ${userPrefs.notifLikes ? 'checked' : ''} onchange="userPrefs.notifLikes=this.checked; saveAll();" /></div>`
-        },
-        {
-          title: 'Privacy and safety',
-          body: `
-            <div class="toggle-row"><span>Stealth Profile Viewing (Visit silently without notifying owner)</span><input type="checkbox" ${userPrefs.stealthView ? 'checked' : ''} onchange="userPrefs.stealthView=this.checked; saveAll();" /></div>
-            <div class="toggle-row"><span>Private Account</span><input type="checkbox" ${userPrefs.privateAccount ? 'checked' : ''} onchange="userPrefs.privateAccount=this.checked; saveAll();" /></div>
-          `
-        },
-        {
-          title: 'Security and access',
-          body: `<button class="danger-btn" onclick="logoutUser()">Log Out</button>`
-        },
-        {
-          title: 'Storage and Data',
-          body: `<button class="secondary" style="width:100%;" onclick="if(confirm('Reset local data?')){localStorage.clear();location.reload();}">Reset App Cache</button>`
-        },
-        {
-          title: 'Subscription',
-          body: `<p><strong>ᖇᒪ Free Tier</strong> &bull; Creator Tipping Enabled</p>`
-        },
-        {
-          title: 'Timeline',
-          body: `
-            <select onchange="userPrefs.timelineOrder=this.value; saveAll(); renderFeed();">
-              <option value="latest" ${userPrefs.timelineOrder === 'latest' ? 'selected' : ''}>Latest First</option>
-              <option value="top" ${userPrefs.timelineOrder === 'top' ? 'selected' : ''}>Most Reacted First</option>
-            </select>
-          `
-        }
-      ];
-
-      sections.sort((a, b) => a.title.localeCompare(b.title));
-      document.getElementById('alphabetical-settings-list').innerHTML = sections.map((s, idx) => `
-        <div class="settings-item" id="set-acc-${idx}">
-          <div class="settings-header" onclick="document.getElementById('set-acc-${idx}').classList.toggle('open')">
-            <span>${s.title}</span><span style="color:var(--muted);">&#9662;</span>
-          </div>
-          <div class="settings-body">${s.body}</div>
-        </div>
-      `).join('');
-    }
-
-    function openLegalModal() { document.getElementById('legal-modal').classList.add('open'); }
-    function closeLegalModal() { document.getElementById('legal-modal').classList.remove('open'); }
-
-    setTheme(currentTheme);
-    if (currentUser) {
-      if (!currentUser.onboarded) openOnboarding();
-      else enterApp();
-    }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>RYKERLORD v0.4</title>
-  <style>
-    :root {
-      --bg: #000000;
-      --surface: #0f0f12;
-      --surface-2: #1a1a20;
-      --glass: rgba(15, 15, 18, 0.88);
-      --text: #ffffff;
-      --muted: #8e8e93;
-      --border: #27272a;
-      --accent: #38bdf8;
-      --accent-text: #000000;
-      --msg-in: #1c1c1e;
-      --msg-out: #0284c7;
-      --msg-out-text: #ffffff;
-      --danger: #ef4444;
-      --success: #22c55e;
-      --gold: #f59e0b;
-    }
-    [data-theme="white"] {
-      --bg: #ffffff;
-      --surface: #f8fafc;
-      --surface-2: #f1f5f9;
-      --glass: rgba(255, 255, 255, 0.9);
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --accent: #0284c7;
-      --accent-text: #ffffff;
-      --msg-in: #e2e8f0;
-      --msg-out: #0284c7;
-      --msg-out-text: #ffffff;
-    }
-    [data-theme="navy"] {
-      --bg: #061021;
-      --surface: #0c1c38;
-      --surface-2: #13294f;
-      --glass: rgba(12, 28, 56, 0.9);
-      --text: #f1f5f9;
-      --muted: #93c5fd;
-      --border: #1e3a6e;
-      --accent: #60a5fa;
-      --accent-text: #061021;
-      --msg-in: #13294f;
-      --msg-out: #2563eb;
-      --msg-out-text: #ffffff;
-    }
-    [data-theme="purple"] {
-      --bg: #f6f1ff;
-      --surface: #ede4ff;
-      --surface-2: #e2d4ff;
-      --glass: rgba(237, 228, 255, 0.92);
-      --text: #2e1065;
-      --muted: #6b21a8;
-      --border: #d8b4fe;
-      --accent: #7e22ce;
-      --accent-text: #ffffff;
-      --msg-in: #e2d4ff;
-      --msg-out: #7e22ce;
-      --msg-out-text: #ffffff;
-    }
-    [data-theme="pink"] {
-      --bg: #fff0f6;
-      --surface: #ffe4ef;
-      --surface-2: #ffd1e4;
-      --glass: rgba(255, 228, 239, 0.92);
-      --text: #500724;
-      --muted: #9d174d;
-      --border: #fbcfe8;
-      --accent: #db2777;
-      --accent-text: #ffffff;
-      --msg-in: #ffd1e4;
-      --msg-out: #db2777;
-      --msg-out-text: #ffffff;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      max-width: 480px;
-      margin: 0 auto;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      font-size: 15px;
-      transition: background 0.2s, color 0.2s;
-    }
-    body.font-sm { font-size: 13px; }
-    body.font-lg { font-size: 17px; }
-
     .full-overlay {
       position: fixed; inset: 0; max-width: 480px; margin: 0 auto;
       background: var(--bg); z-index: 90; overflow-y: auto;
@@ -2346,4 +420,1273 @@
         <!-- For You Feed: What Most People Are Talking About in Chosen Vibes -->
         <div class="card" style="border-color:var(--accent);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <strong style="font-size:0.9rem; color:var(--accent);">&#10024; For You &bull; Hot in Your Vibes
+            <strong style="font-size:0.9rem; color:var(--accent);">&#10024; For You &bull; Hot in Your Vibes</strong>
+            <span style="font-size:0.72rem; color:var(--muted);" id="for-you-vibes-label"></span>
+          </div>
+          <div id="forYouVibeFeed"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <strong style="font-size:0.86rem;" id="lbl-weather-title">Live IRL Weather</strong>
+          <button class="icon-btn" onclick="changeWeatherCities()">Switch Cities</button>
+        </div>
+        <div class="weather-grid" id="weatherGrid">
+          <div class="weather-card">
+            <div style="font-size:0.74rem; color:var(--muted); font-weight:700;" id="w-city-1">NAIROBI</div>
+            <div style="font-size:1.3rem; font-weight:800;" id="w-temp-1">--&deg;C</div>
+            <div style="font-size:0.74rem; color:var(--accent);" id="w-desc-1">Loading...</div>
+          </div>
+          <div class="weather-card">
+            <div style="font-size:0.74rem; color:var(--muted); font-weight:700;" id="w-city-2">NEW YORK</div>
+            <div style="font-size:1.3rem; font-weight:800;" id="w-temp-2">--&deg;C</div>
+            <div style="font-size:0.74rem; color:var(--accent);" id="w-desc-2">Loading...</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="font-size:0.88rem;">&#9917; EPL Fixtures (Local Time)</strong>
+            <button class="icon-btn" id="btn-spoiler-toggle" onclick="toggleSpoilerBlur()">Spoilers Blurred</button>
+          </div>
+          <div id="eplList"></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.88rem;" id="lbl-news-title">&#127758; IRL Global &amp; Local News</strong>
+            <div style="display:flex; gap:4px;">
+              <button class="icon-btn" onclick="renderNews('all')">All</button>
+              <button class="icon-btn" onclick="renderNews('local')">Local</button>
+              <button class="icon-btn" onclick="renderNews('global')">Global</button>
+            </div>
+          </div>
+          <div id="newsList"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 2: GROUPS (₲) -->
+      <div class="swipe-page" id="page-groups">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="font-size:0.9rem;">Create Group (₲)</strong>
+            <button class="icon-btn" style="border-color:var(--danger); color:var(--danger);" onclick="openIrlLiveModal('group')">&#127909; Group Live Room</button>
+          </div>
+          <input id="newGroupName" placeholder="Group name..." style="margin-bottom:6px;" />
+          <input id="newGroupDesc" placeholder="Description..." style="margin-bottom:6px;" />
+          <button class="primary" onclick="createGroup()">Create Group (You = Admin)</button>
+        </div>
+
+        <div style="font-weight:800; font-size:0.86rem; margin:10px 0 6px;">Your Joined Groups &amp; Roles</div>
+        <div id="joinedGroupsList"></div>
+
+        <div style="font-weight:800; font-size:0.86rem; margin:12px 0 6px; color:var(--accent);">Suggested For You</div>
+        <div id="suggestedGroupsList"></div>
+      </div>
+
+      <!-- PAGE 3: DIRECT MESSAGES (ĐM͒) -->
+      <div class="swipe-page" id="page-dm">
+        <div id="chat-directory">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.95rem;">Direct Messages (ĐM͒)</strong>
+            <button class="icon-btn" onclick="openIrlLiveModal('personal')">&#128222; IRL Voice/Video Call</button>
+          </div>
+          <div id="peopleChatList"></div>
+        </div>
+
+        <div id="chat-thread-view" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="secondary" onclick="closeChatThread()">&larr;</button>
+              <strong style="cursor:pointer;" id="active-chat-name" onclick="openProfilePage(activeChatPartner.username)">User</strong>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="icon-btn" onclick="openIrlLiveModal('personal', activeChatPartner.name)">&#127908; Voice</button>
+              <button class="icon-btn" onclick="openIrlLiveModal('personal', activeChatPartner.name)">&#127909; Video</button>
+            </div>
+          </div>
+          <div class="card chat-box" id="chatBox"></div>
+          <div style="display:flex; gap:8px;">
+            <input id="chatInput" placeholder="Write a ĐM͒..." />
+            <button class="primary" style="width:auto;" onclick="sendMsg()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPEED DIAL FLOATING ACTION BUTTON -->
+    <div class="speed-dial-wrap" id="speedDialWrap">
+      <div class="speed-dial-items">
+        <button class="sd-pill" onclick="toggleSpeedDial(); openComposerModal('text')">&#9997;&#65039; Create Text Post</button>
+        <button class="sd-pill" onclick="toggleSpeedDial(); openComposerModal('media')">&#128247; Upload Media</button>
+        <button class="sd-pill" onclick="toggleSpeedDial(); openComposerModal('poll')">&#128202; Create Poll</button>
+        <button class="sd-pill" style="border-color:var(--danger); color:var(--danger);" onclick="toggleSpeedDial(); openIrlLiveModal('solo')">&#128308; Go Live (IRL)</button>
+      </div>
+      <button class="fab-main" onclick="toggleSpeedDial()">+</button>
+    </div>
+
+    <!-- BASE NAVIGATION BAR -->
+    <nav class="base-nav">
+      <button class="active" onclick="goToPage(0)"><span>TL</span><span class="nav-sub" id="nav-tl">Timeline</span></button>
+      <button onclick="goToPage(1)"><span>Q</span><span class="nav-sub" id="nav-search">Search</span></button>
+      <button onclick="goToPage(2)"><span>₲</span><span class="nav-sub" id="nav-groups">Groups</span></button>
+      <button onclick="goToPage(3)"><span>ĐM͒</span><span class="nav-sub" id="nav-dm">Chats</span></button>
+    </nav>
+  </div>
+
+  <!-- STANDALONE FULL-PAGE PROFILE VIEW -->
+  <div id="profile-standalone-page" class="standalone-page">
+    <header>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="secondary" onclick="closeProfilePage()">&larr; Back</button>
+        <strong id="prof-page-header">Profile</strong>
+      </div>
+      <button class="icon-btn" style="border-color:var(--gold); color:var(--gold);" id="prof-tip-btn">&#128176; Tip</button>
+    </header>
+    <div id="profile-page-body" style="padding:14px;"></div>
+  </div>
+
+  <!-- STANDALONE FULL-PAGE THREADED REPLIES VIEW -->
+  <div id="thread-standalone-page" class="standalone-page">
+    <header>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="secondary" onclick="closeThreadPage()">&larr; Back to TL</button>
+        <strong>Post Thread &amp; Replies</strong>
+      </div>
+    </header>
+    <div id="thread-page-body" style="padding:14px; flex:1; overflow-y:auto;"></div>
+  </div>
+
+  <!-- LEFT DRAWER: MENU (☰) -->
+  <div id="menu-backdrop" class="drawer-backdrop" onclick="closeMenuDrawer()"></div>
+  <div id="menu-drawer" class="left-drawer">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <strong style="font-size:1.1rem;">&#9776; ᖇᒪ Menu</strong>
+      <button class="icon-btn" onclick="closeMenuDrawer()">&times;</button>
+    </div>
+
+    <div class="card" style="border-color:var(--danger);">
+      <strong style="font-size:0.88rem; color:var(--danger);">&#128308; Live IRL Video &amp; Voice</strong>
+      <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+        <button class="secondary" onclick="closeMenuDrawer(); openIrlLiveModal('personal')">&#128222; Personal 1-on-1 Video / Voice</button>
+        <button class="secondary" onclick="closeMenuDrawer(); openIrlLiveModal('group')">&#128101; Group Live Video / Voice Stage</button>
+        <button class="primary" style="background:var(--danger); color:#fff;" onclick="closeMenuDrawer(); openIrlLiveModal('solo')">&#127909; Go Live to Followers</button>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--gold);">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="font-size:0.88rem; color:var(--gold);">&#128176; Creator Tipping</strong>
+          <div style="font-size:0.75rem; color:var(--muted);">M-Pesa STK &amp; Card/Crypto</div>
+        </div>
+        <button class="icon-btn" style="border-color:var(--gold); color:var(--gold);" onclick="closeMenuDrawer(); openTipModal('rykerlord')">Send Tip</button>
+      </div>
+    </div>
+
+    <div style="font-size:0.76rem; color:var(--muted); margin:10px 0 6px;">Settings (Alphabetical A &ndash; Z)</div>
+    <div id="alphabetical-settings-list"></div>
+  </div>
+
+  <!-- POST COMPOSER MODAL -->
+  <div id="composer-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span id="comp-modal-title">Create Post on ᖇᒪ</span>
+        <button class="icon-btn" onclick="closeComposerModal()">&times;</button>
+      </div>
+      <div class="modal-content" style="display:flex; flex-direction:column; gap:9px;">
+        <textarea id="comp-text" rows="3" placeholder="What's happening? (Optional if posting photo/video alone)"></textarea>
+
+        <select id="comp-vibe">
+          <option value="Football">Vibe: Football</option>
+          <option value="Rugby">Vibe: Rugby</option>
+          <option value="Basketball">Vibe: Basketball</option>
+          <option value="Athletics">Vibe: Athletics</option>
+          <option value="Formula 1">Vibe: Formula 1</option>
+          <option value="Music">Vibe: Music</option>
+          <option value="Movies">Vibe: Movies</option>
+          <option value="Gaming">Vibe: Gaming</option>
+          <option value="Comedy">Vibe: Comedy</option>
+          <option value="Fashion">Vibe: Fashion</option>
+          <option value="Tech">Vibe: Tech</option>
+          <option value="IRL News">Vibe: IRL News</option>
+          <option value="Business">Vibe: Business</option>
+          <option value="Photography">Vibe: Photography</option>
+        </select>
+
+        <div style="display:flex; gap:8px;">
+          <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
+            &#128247; Photo
+            <input type="file" accept="image/*" style="display:none;" onchange="handleMediaSelect(event, 'image')" />
+          </label>
+          <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">
+            &#127909; Video
+            <input type="file" accept="video/*" style="display:none;" onchange="handleMediaSelect(event, 'video')" />
+          </label>
+        </div>
+
+        <div id="comp-media-preview" style="display:none;"></div>
+
+        <div id="comp-poll-fields" style="display:none; flex-direction:column; gap:6px; background:var(--surface-2); padding:8px; border-radius:10px;">
+          <strong style="font-size:0.8rem;">Poll Options</strong>
+          <input id="poll-opt-1" placeholder="Option 1" />
+          <input id="poll-opt-2" placeholder="Option 2" />
+        </div>
+
+        <input id="comp-tag-people" placeholder="&#128100; Tag people (e.g. @mayatech)" />
+        <input id="comp-tag-place" placeholder="&#128205; Tag location (e.g. Nairobi, Kenya)" />
+
+        <div class="toggle-row" style="font-size:0.82rem;">
+          <span>&#128373;&#65039; Post Anonymously</span>
+          <input type="checkbox" id="comp-anon" />
+        </div>
+        <div class="toggle-row" style="font-size:0.82rem;">
+          <span>&#9888;&#65039; Sensitive Content</span>
+          <input type="checkbox" id="comp-sensitive" />
+        </div>
+
+        <button class="primary" onclick="publishRichPost()">Publish to TL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPPING MODAL -->
+  <div id="tip-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span>&#128176; Tip <span id="tip-target-name">@creator</span></span>
+        <button class="icon-btn" onclick="closeTipModal()">&times;</button>
+      </div>
+      <div class="modal-content" style="display:flex; flex-direction:column; gap:10px;">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tip-tab-mpesa" onclick="switchTipMethod('mpesa')">M-Pesa (STK Push)</button>
+          <button class="auth-tab" id="tip-tab-card" onclick="switchTipMethod('card')">Card / Crypto</button>
+        </div>
+        <div id="tip-mpesa-box" style="display:flex; flex-direction:column; gap:8px;">
+          <input id="tip-phone" placeholder="07XXXXXXXX or 2547XXXXXXXX" />
+          <input id="tip-amount-kes" type="number" value="100" />
+          <button class="primary" style="background:#16a34a; color:#fff;" onclick="simulateMpesaStk()">Send M-Pesa STK Prompt</button>
+        </div>
+        <div id="tip-card-box" style="display:none; flex-direction:column; gap:8px;">
+          <input id="tip-amount-usd" type="number" value="5" />
+          <input placeholder="Card Number (Stripe Simulation)" />
+          <button class="primary" onclick="simulateCardTip()">Pay via Stripe / Crypto</button>
+        </div>
+        <div id="tip-status-msg" style="font-size:0.82rem; color:var(--success); display:none; padding:8px; background:var(--surface-2); border-radius:9px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IRL LIVE VIDEO & VOICE MODAL -->
+  <div id="irl-live-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span id="irl-modal-title">&#128308; IRL Live Room</span>
+        <button class="icon-btn" onclick="closeIrlLiveModal()">End &times;</button>
+      </div>
+      <div class="modal-content">
+        <div class="auth-tabs" style="margin-bottom:8px;">
+          <button class="auth-tab active" id="live-mode-video" onclick="setLiveMediaMode('video')">&#127909; Video + Voice</button>
+          <button class="auth-tab" id="live-mode-voice" onclick="setLiveMediaMode('voice')">&#127908; Voice Only</button>
+        </div>
+        <div class="live-stage-box">
+          <div style="font-size:0.78rem; color:#f87171; font-weight:800;" id="irl-live-status">CONNECTING...</div>
+          <video id="irlLiveVideo" autoplay muted playsinline></video>
+          <div id="irlVoiceAvatar" style="display:none; padding:28px 0; font-size:2.4rem;">&#127908; <div style="font-size:0.85rem; color:#93c5fd; margin-top:6px;">Live Voice Stage Active</div></div>
+          <div style="display:flex; justify-content:center; gap:8px; margin-top:6px;">
+            <button class="secondary" onclick="toggleLiveMute()" id="btn-live-mute">Mute Mic</button>
+            <button class="danger-btn" style="width:auto;" onclick="closeIrlLiveModal()">Leave Room</button>
+          </div>
+        </div>
+        <div id="live-room-chat" style="max-height:95px; overflow-y:auto; font-size:0.8rem; margin-bottom:6px; background:var(--bg); padding:6px; border-radius:8px;">
+          <div><strong>@mayatech:</strong> Tap in live! &#128293;</div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <input id="liveChatInput" placeholder="Say something live..." />
+          <button class="primary" style="width:auto;" onclick="sendLiveChat()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGAL MODAL -->
+  <div id="legal-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span>RYKERLORD Terms &amp; Privacy Policy</span>
+        <button class="icon-btn" onclick="closeLegalModal()">Close &times;</button>
+      </div>
+      <div class="modal-content">
+        <p><strong>Effective Date:</strong> November 2026 &bull; <strong>Platform:</strong> RYKERLORD (ᖇᒪ)</p>
+        <p>By using RYKERLORD, you agree to respectful conduct, lawful media sharing, and transparent moderation. Anonymous posts retain internal author IDs solely to prevent severe abuse.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const VIBES_LIST = [
+      'Football', 'Rugby', 'Basketball', 'Athletics', 'Formula 1',
+      'Music', 'Movies', 'Gaming', 'Comedy', 'Fashion',
+      'Tech', 'IRL News', 'Business', 'Photography'
+    ];
+
+    const I18N = {
+      English: { tl: 'Timeline', search: 'Search', groups: 'Groups', dm: 'Chats', weather: 'Live IRL Weather', news: 'IRL Global & Local News' },
+      Spanish: { tl: 'Inicio', search: 'Buscar', groups: 'Grupos', dm: 'Mensajes', weather: 'Clima en Vivo', news: 'Noticias Globales y Locales' },
+      Kiswahili: { tl: 'Mlisho', search: 'Tafuta', groups: 'Vikundi', dm: 'Jumbe', weather: 'Hali ya Hewa', news: 'Habari za Ndani na Dunia' },
+      "Sheng'": { tl: 'Rada', search: 'Saka', groups: 'Mtaa', dm: 'Bonga', weather: 'Hewa Saa Hii', news: 'Form za Mtaa na Dunia' }
+    };
+
+    const EMOJIS = ['😂', '🔥', '😲', '🏆', '❤️'];
+    let currentTheme = localStorage.getItem('rl_theme') || 'black';
+    let authMode = 'signup';
+    let currentPageIndex = 0;
+    let currentUser = JSON.parse(localStorage.getItem('rl_current_user') || 'null');
+
+    let usersDB = JSON.parse(localStorage.getItem('rl_users_db') || 'null') || [
+      { id: 'u1', name: 'Ryker Admin', username: 'rykerlord', bio: 'Founder of ᖇᒪ RYKERLORD.', email: 'admin@rykerlord.app', following: true, interests: ['Football', 'Tech', 'Music'], pinnedPostIds: [101], profileViews: [] },
+      { id: 'u2', name: 'Maya Lin', username: 'mayatech', bio: 'Design & photography', email: 'maya@example.com', following: true, interests: ['Football', 'Photography', 'Fashion'], pinnedPostIds: [], profileViews: [] },
+      { id: 'u3', name: 'David Kimani', username: 'dkimani', bio: 'Rugby & EPL', email: 'david@example.com', following: false, interests: ['Rugby', 'Football', 'Business'], pinnedPostIds: [], profileViews: [] }
+    ];
+
+    let posts = JSON.parse(localStorage.getItem('rl_posts_v4') || 'null') || [
+      {
+        id: 101, author: 'Ryker Admin', username: 'rykerlord', realAuthorId: 'u1',
+        anonymous: false, sensitive: false, revealed: true, time: 'Just now', category: 'Tech',
+        text: 'Welcome to ᖇᒪ v0.4! Swipe across TL, Q, ₲, and ĐM͒ or tap ᖇᒪ in the center for fresh feeds.',
+        mediaType: null, mediaUrl: null, poll: null, taggedPeople: ['@mayatech'], location: 'Nairobi, Kenya',
+        reactions: { '😂': 2, '🔥': 9, '😲': 1, '🏆': 3, '❤️': 11 }, userReaction: null, replies: []
+      },
+      {
+        id: 102, author: 'David Kimani', username: 'dkimani', realAuthorId: 'u3',
+        anonymous: false, sensitive: false, revealed: true, time: '14m ago', category: 'Football',
+        text: 'Everyone on TL is debating weekend EPL lineups and midfield battles right now.',
+        mediaType: null, mediaUrl: null,
+        poll: { opt1: 'Arsenal', votes1: 19, opt2: 'Chelsea', votes2: 12, voted: null },
+        taggedPeople: [], location: 'Nairobi, Kenya',
+        reactions: { '😂': 3, '🔥': 14, '😲': 2, '🏆': 7, '❤️': 6 }, userReaction: null, replies: []
+      },
+      {
+        id: 103, author: 'Maya Lin', username: 'mayatech', realAuthorId: 'u2',
+        anonymous: false, sensitive: false, revealed: true, time: '28m ago', category: 'Photography',
+        text: 'Golden hour street frames and new creative drops—most talked about vibe on the feed today.',
+        mediaType: null, mediaUrl: null, poll: null, taggedPeople: [], location: 'Westlands',
+        reactions: { '😂': 1, '🔥': 12, '😲': 4, '🏆': 2, '❤️': 15 }, userReaction: null, replies: []
+      }
+    ];
+
+    let groups = JSON.parse(localStorage.getItem('rl_groups_v4') || 'null') || [
+      { id: 'g1', name: 'EPL & Football Banter', desc: 'Live Premier League reactions', members: 312, joined: true, roles: { rykerlord: 'Admin', mayatech: 'Moderator', dkimani: 'Member' } },
+      { id: 'g2', name: 'Kenya Rugby & Sports Hub', desc: 'Rugby & sports talk', members: 189, joined: false, roles: { dkimani: 'Admin' } }
+    ];
+
+    let chatsDB = JSON.parse(localStorage.getItem('rl_chats_db') || 'null') || {
+      rykerlord: [{ sender: 'in', text: 'Karibu ᖇᒪ v0.4!' }]
+    };
+
+    let userPrefs = JSON.parse(localStorage.getItem('rl_prefs_v4') || 'null') || {
+      privateAccount: false, stealthView: false, spoilerBlur: true, activeStatus: true,
+      readReceipts: true, notifLikes: true, notifMessages: true, timelineOrder: 'latest',
+      language: 'English', dataSaver: false, fontSize: 'md', fabSide: 'left',
+      city1: { name: 'Nairobi', lat: -1.2864, lon: 36.8172 },
+      city2: { name: 'New York', lat: 40.7128, lon: -74.0060 }
+    };
+
+    const EPL_FIXTURES = [
+      { home: 'Arsenal', away: 'Chelsea', score: '2 - 1', isoEat: '2026-11-21T18:30:00+03:00' },
+      { home: 'Liverpool', away: 'Man City', score: '1 - 1', isoEat: '2026-11-22T19:30:00+03:00' },
+      { home: 'Man United', away: 'Tottenham', score: '3 - 2', isoEat: '2026-11-22T17:00:00+03:00' }
+    ];
+
+    const IRL_NEWS = [
+      { scope: 'local', tag: 'Kenya IRL', title: 'Nairobi mobile creators embrace instant M-Pesa micro-tipping across social platforms.' },
+      { scope: 'global', tag: 'World News', title: 'Global renewable energy capacity reaches record highs heading into late 2026.' },
+      { scope: 'local', tag: 'Local Sports', title: 'Kenya Sevens rugby squad intensifies preparations ahead of international tournament.' },
+      { scope: 'global', tag: 'Global Tech', title: 'Real-time mobile audio/video rooms surge in popularity among youth communities.' }
+    ];
+
+    let activeChatPartner = null;
+    let activeThreadPostId = null;
+    let pendingMedia = { type: null, url: null };
+    let pendingReplyMedia = { type: null, url: null };
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecordingVoice = false;
+    let activeLiveStream = null;
+    let selectedInterests = [];
+    let isLoadingFeed = false;
+
+    function saveAll() {
+      localStorage.setItem('rl_users_db', JSON.stringify(usersDB));
+      localStorage.setItem('rl_posts_v4', JSON.stringify(posts));
+      localStorage.setItem('rl_groups_v4', JSON.stringify(groups));
+      localStorage.setItem('rl_chats_db', JSON.stringify(chatsDB));
+      localStorage.setItem('rl_prefs_v4', JSON.stringify(userPrefs));
+      if (currentUser) localStorage.setItem('rl_current_user', JSON.stringify(currentUser));
+    }
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      if (theme === 'black') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('rl_theme', theme);
+      renderSettings();
+    }
+
+    function applyAccessibility() {
+      document.body.classList.remove('font-sm', 'font-lg');
+      if (userPrefs.fontSize === 'sm') document.body.classList.add('font-sm');
+      if (userPrefs.fontSize === 'lg') document.body.classList.add('font-lg');
+      const sd = document.getElementById('speedDialWrap');
+      if (sd) sd.classList.toggle('fab-right', userPrefs.fabSide === 'right');
+    }
+
+    function applyLanguage() {
+      const dict = I18N[userPrefs.language] || I18N.English;
+      document.getElementById('nav-tl').textContent = dict.tl;
+      document.getElementById('nav-search').textContent = dict.search;
+      document.getElementById('nav-groups').textContent = dict.groups;
+      document.getElementById('nav-dm').textContent = dict.dm;
+      document.getElementById('lbl-weather-title').textContent = dict.weather;
+      document.getElementById('lbl-news-title').textContent = dict.news;
+    }
+
+    function switchAuthMode(mode) {
+      authMode = mode;
+      document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
+      document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+      document.getElementById('signup-fields').style.display = mode === 'signup' ? 'flex' : 'none';
+      document.getElementById('terms-check-row').style.display = mode === 'signup' ? 'flex' : 'none';
+      document.getElementById('auth-submit-btn').textContent = mode === 'signup' ? 'Create Account' : 'Log In';
+    }
+
+    function submitAuth() {
+      const email = document.getElementById('auth-email').value.trim().toLowerCase();
+      const pass = document.getElementById('auth-pass').value.trim();
+      const errEl = document.getElementById('auth-error');
+      if (!email || pass.length < 4) {
+        errEl.textContent = 'Enter a valid email and password (min 4 chars).';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (authMode === 'signup') {
+        const name = document.getElementById('reg-name').value.trim();
+        const username = document.getElementById('reg-user').value.trim().replace(/^@/, '').toLowerCase();
+        const bio = document.getElementById('reg-bio').value.trim() || 'On ᖇᒪ RYKERLORD';
+        if (!name || !username || !document.getElementById('agree-terms').checked) {
+          errEl.textContent = 'Complete all fields and agree to the Terms & Privacy Policy.';
+          errEl.style.display = 'block';
+          return;
+        }
+        const newUser = { id: 'u_' + Date.now(), name, username, bio, email, password: pass, onboarded: false, interests: [], pinnedPostIds: [], profileViews: [] };
+        usersDB = usersDB.filter(u => u.username !== username);
+        usersDB.unshift(newUser);
+        currentUser = newUser;
+        saveAll();
+        openOnboarding();
+      } else {
+        let found = usersDB.find(u => u.email === email || u.username === email);
+        if (!found) {
+          const handle = email.split('@')[0];
+          found = { id: 'u_' + Date.now(), name: handle, username: handle, bio: 'ᖇᒪ Member', email, onboarded: false, interests: [], pinnedPostIds: [], profileViews: [] };
+          usersDB.unshift(found);
+        }
+        currentUser = found;
+        saveAll();
+        if (!currentUser.onboarded) openOnboarding();
+        else enterApp();
+      }
+    }
+
+    function openOnboarding() {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('onboarding-screen').style.display = 'flex';
+      selectedInterests = [...(currentUser.interests || [])];
+      document.getElementById('vibes-chips-grid').innerHTML = VIBES_LIST.map(vibe => {
+        const active = selectedInterests.includes(vibe) ? 'selected' : '';
+        return `<div class="interest-chip ${active}" onclick="toggleInterest(this, '${vibe}')">${vibe}</div>`;
+      }).join('');
+    }
+
+    function toggleInterest(el, item) {
+      el.classList.toggle('selected');
+      selectedInterests = selectedInterests.includes(item) ? selectedInterests.filter(x => x !== item) : [...selectedInterests, item];
+    }
+
+    function finishOnboarding() {
+      // Smart fallback: if none picked, infer top talked-about vibes automatically
+      currentUser.interests = selectedInterests.length ? selectedInterests : ['Football', 'Music', 'Tech', 'IRL News'];
+      currentUser.onboarded = true;
+      const idx = usersDB.findIndex(u => u.username === currentUser.username);
+      if (idx > -1) usersDB[idx] = currentUser;
+      saveAll();
+      document.getElementById('onboarding-screen').style.display = 'none';
+      enterApp();
+    }
+
+    function logoutUser() {
+      closeMenuDrawer();
+      currentUser = null;
+      localStorage.removeItem('rl_current_user');
+      document.getElementById('app-shell').style.display = 'none';
+      document.getElementById('auth-screen').style.display = 'flex';
+    }
+
+    function enterApp() {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('onboarding-screen').style.display = 'none';
+      document.getElementById('app-shell').style.display = 'flex';
+      document.getElementById('header-avatar').textContent = (currentUser.name || 'R')[0].toUpperCase();
+      updateViewAlertBadge();
+      applyAccessibility();
+      applyLanguage();
+      triggerSkeletonLoad();
+      renderForYouVibes();
+      renderEPL();
+      renderNews('all');
+      fetchDualWeather();
+      renderGroups();
+      renderChatDirectory();
+      renderSettings();
+      goToPage(0);
+    }
+
+    function triggerSkeletonLoad() {
+      isLoadingFeed = true;
+      document.getElementById('feedList').innerHTML = [1, 2, 3].map(() => `
+        <div class="skeleton-card">
+          <div class="skel-line" style="width:45%;"></div>
+          <div class="skel-line" style="width:92%;"></div>
+          <div class="skel-line" style="width:74%;"></div>
+        </div>
+      `).join('');
+      setTimeout(() => { isLoadingFeed = false; renderFeed(); }, 400);
+    }
+
+    function goToPage(index) {
+      const vp = document.getElementById('swipeViewport');
+      vp.scrollTo({ left: vp.clientWidth * index, behavior: 'smooth' });
+      updateActivePageUI(index);
+    }
+
+    function onViewportScroll() {
+      const vp = document.getElementById('swipeViewport');
+      const idx = Math.round(vp.scrollLeft / vp.clientWidth);
+      if (idx !== currentPageIndex) updateActivePageUI(idx);
+    }
+
+    function updateActivePageUI(idx) {
+      currentPageIndex = idx;
+      document.querySelectorAll('nav.base-nav button').forEach((b, i) => b.classList.toggle('active', i === idx));
+      const tlHeader = document.getElementById('tl-header-content');
+      const searchHeader = document.getElementById('top-search-header');
+      const sd = document.getElementById('speedDialWrap');
+
+      if (idx === 1) {
+        tlHeader.style.display = 'none';
+        searchHeader.style.display = 'flex';
+        sd.style.display = 'none';
+        renderForYouVibes();
+      } else {
+        tlHeader.style.display = 'grid';
+        searchHeader.style.display = 'none';
+        document.getElementById('tl-menu-trigger').style.visibility = (idx === 0) ? 'visible' : 'hidden';
+        sd.style.display = (idx === 0) ? 'flex' : 'none';
+      }
+    }
+
+    function refreshTimeline() {
+      goToPage(0);
+      document.getElementById('page-tl').scrollTo({ top: 0, behavior: 'smooth' });
+      const banner = document.getElementById('tl-update-banner');
+      banner.textContent = '✓ Latest feeds synced';
+      banner.style.display = 'block';
+      triggerSkeletonLoad();
+      setTimeout(() => { banner.style.display = 'none'; }, 1600);
+    }
+
+    function totalReactions(p) {
+      return Object.values(p.reactions || {}).reduce((a, b) => a + b, 0);
+    }
+
+    function renderFeed() {
+      if (isLoadingFeed) return;
+      const preferred = currentUser.interests || [];
+      let list = [...posts];
+      if (userPrefs.timelineOrder === 'top') {
+        list.sort((a, b) => totalReactions(b) - totalReactions(a));
+      } else if (preferred.length) {
+        list.sort((a, b) => {
+          const scoreA = (preferred.includes(a.category) ? 500 : 0) + totalReactions(a) + a.id * 0.001;
+          const scoreB = (preferred.includes(b.category) ? 500 : 0) + totalReactions(b) + b.id * 0.001;
+          return scoreB - scoreA;
+        });
+      }
+
+      document.getElementById('feedList').innerHTML = list.map(p => {
+        const dispAuthor = p.anonymous ? 'Anonymous User' : p.author;
+        const dispHandle = p.anonymous ? 'anonymous' : p.username;
+        const avatarChar = p.anonymous ? '?' : (p.author || 'U')[0].toUpperCase();
+        const isBlurred = p.sensitive && !p.revealed;
+        const topEmoji = p.userReaction || '❤️';
+
+        return `
+          <div class="card">
+            <div class="post-top">
+              <div class="avatar-circle" onclick="${p.anonymous ? '' : `openProfilePage('${p.username}')`}">${avatarChar}</div>
+              <div class="post-author-wrap" onclick="${p.anonymous ? '' : `openProfilePage('${p.username}')`}">
+                <div class="post-name">${dispAuthor} <span style="color:var(--muted); font-weight:400;">@${dispHandle}</span></div>
+                <div class="post-meta">${p.time} ${p.category ? '&bull; #' + p.category : ''}</div>
+              </div>
+              ${!p.anonymous ? `<button class="icon-btn" style="border-color:var(--gold); color:var(--gold);" onclick="openTipModal('${p.username}')">&#128176; Tip</button>` : ''}
+            </div>
+
+            ${isBlurred ? `
+              <div class="sensitive-overlay">
+                <div style="font-weight:800; margin-bottom:6px;">&#9888;&#65039; Sensitive Content</div>
+                <button class="secondary" onclick="revealSensitive(${p.id})">Show Content</button>
+              </div>
+            ` : `
+              ${p.text ? `<div class="post-text">${p.translatedText || p.text}</div>` : ''}
+              ${p.text ? `<div style="margin-bottom:8px;"><span style="font-size:0.74rem; color:var(--accent); cursor:pointer; font-weight:600;" onclick="translatePost(${p.id})">&#127760; ${p.translatedText ? 'Show Original' : 'Translate'}</span></div>` : ''}
+              ${p.mediaType === 'image' && p.mediaUrl ? `<img src="${p.mediaUrl}" class="post-media" />` : ''}
+              ${p.mediaType === 'video' && p.mediaUrl ? `<video src="${p.mediaUrl}" class="post-media" controls playsinline></video>` : ''}
+            `}
+
+            ${p.poll ? `
+              <div style="margin:6px 0;">
+                <div class="poll-opt ${p.poll.voted === 1 ? 'voted' : ''}" onclick="votePoll(${p.id}, 1)"><span>${p.poll.opt1}</span><span>${p.poll.votes1}</span></div>
+                <div class="poll-opt ${p.poll.voted === 2 ? 'voted' : ''}" onclick="votePoll(${p.id}, 2)"><span>${p.poll.opt2}</span><span>${p.poll.votes2}</span></div>
+              </div>
+            ` : ''}
+
+            ${((p.taggedPeople && p.taggedPeople.length) || p.location) ? `
+              <div class="post-tags-bar">
+                ${p.location ? `<span>&#128205; ${p.location}</span>` : ''}
+                ${(p.taggedPeople || []).map(t => `<span style="cursor:pointer; font-weight:600;" onclick="openProfilePage('${t.replace(/^@/,'')}')">&#128100; ${t}</span>`).join('')}
+              </div>
+            ` : ''}
+
+            <div class="card-actions">
+              <div class="emoji-picker-pop" id="emoji-pop-${p.id}">
+                ${EMOJIS.map(em => `<span onclick="reactToPost(${p.id}, '${em}')">${em}</span>`).join('')}
+              </div>
+              <span class="action-btn" onclick="toggleEmojiPop(${p.id})" style="color:${p.userReaction ? 'var(--accent)' : 'inherit'}">${topEmoji} ${totalReactions(p)}</span>
+              <span class="action-btn" onclick="openThreadPage(${p.id})">&#128172; ${(p.replies || []).length}</span>
+              ${!p.anonymous ? `<span class="action-btn" onclick="startChatWith('${p.username}')">&#9993; ĐM͒</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // FOR YOU BELOW SEARCH: WHAT MOST PEOPLE TALK ABOUT IN CHOSEN VIBES (WITHOUT EXPOSING USERS)
+    function renderForYouVibes() {
+      const vibes = (currentUser && currentUser.interests && currentUser.interests.length)
+        ? currentUser.interests
+        : ['Football', 'Music', 'Tech', 'IRL News'];
+
+      document.getElementById('for-you-vibes-label').textContent = vibes.slice(0, 3).join(' • ');
+
+      // Rank posts by buzz/reactions across the user's chosen vibes
+      const ranked = [...posts]
+        .sort((a, b) => {
+          const aInVibe = vibes.includes(a.category) ? 100 : 0;
+          const bInVibe = vibes.includes(b.category) ? 100 : 0;
+          return (bInVibe + totalReactions(b) + (b.replies || []).length * 2) - (aInVibe + totalReactions(a) + (a.replies || []).length * 2);
+        })
+        .slice(0, 4);
+
+      document.getElementById('forYouVibeFeed').innerHTML = ranked.map(item => {
+        const buzzCount = totalReactions(item) + (item.replies || []).length;
+        return `
+          <div style="padding:8px 0; border-bottom:1px solid var(--border); cursor:pointer;" onclick="openThreadPage(${item.id})">
+            <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--accent); font-weight:700;">
+              <span>#${item.category || 'Vibe'}</span>
+              <span>&#128293; ${buzzCount} talking</span>
+            </div>
+            <div style="font-size:0.84rem; margin-top:2px;">${item.text || 'Trending media vibe'}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleEmojiPop(id) {
+      const el = document.getElementById(`emoji-pop-${id}`);
+      const wasOpen = el.classList.contains('open');
+      document.querySelectorAll('.emoji-picker-pop').forEach(x => x.classList.remove('open'));
+      if (!wasOpen) el.classList.add('open');
+    }
+
+    function reactToPost(id, emoji) {
+      const p = posts.find(x => x.id === id);
+      if (!p) return;
+      p.reactions = p.reactions || { '😂': 0, '🔥': 0, '😲': 0, '🏆': 0, '❤️': 0 };
+      if (p.userReaction === emoji) {
+        p.reactions[emoji] = Math.max(0, p.reactions[emoji] - 1);
+        p.userReaction = null;
+      } else {
+        if (p.userReaction) p.reactions[p.userReaction] = Math.max(0, p.reactions[p.userReaction] - 1);
+        p.reactions[emoji] = (p.reactions[emoji] || 0) + 1;
+        p.userReaction = emoji;
+      }
+      saveAll();
+      renderFeed();
+    }
+
+    function revealSensitive(id) {
+      const p = posts.find(x => x.id === id);
+      if (p) { p.revealed = true; renderFeed(); }
+    }
+
+    function translatePost(id) {
+      const p = posts.find(x => x.id === id);
+      if (!p) return;
+      p.translatedText = p.translatedText ? null : `[${userPrefs.language}]: ${p.text}`;
+      renderFeed();
+    }
+
+    function votePoll(id, optNum) {
+      const p = posts.find(x => x.id === id);
+      if (!p || !p.poll || p.poll.voted) return;
+      p.poll.voted = optNum;
+      if (optNum === 1) p.poll.votes1++;
+      else p.poll.votes2++;
+      saveAll();
+      renderFeed();
+    }
+
+    function toggleSpeedDial() { document.getElementById('speedDialWrap').classList.toggle('open'); }
+
+    function openComposerModal(mode) {
+      pendingMedia = { type: null, url: null };
+      document.getElementById('comp-text').value = '';
+      document.getElementById('comp-tag-people').value = '';
+      document.getElementById('comp-tag-place').value = '';
+      document.getElementById('comp-anon').checked = false;
+      document.getElementById('comp-sensitive').checked = false;
+      document.getElementById('comp-media-preview').style.display = 'none';
+      document.getElementById('comp-poll-fields').style.display = (mode === 'poll') ? 'flex' : 'none';
+      document.getElementById('composer-modal').classList.add('open');
+    }
+
+    function closeComposerModal() { document.getElementById('composer-modal').classList.remove('open'); }
+
+    function handleMediaSelect(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      pendingMedia = { type, url };
+      const prev = document.getElementById('comp-media-preview');
+      prev.style.display = 'block';
+      prev.innerHTML = type === 'image' ? `<img src="${url}" class="post-media" />` : `<video src="${url}" class="post-media" controls></video>`;
+    }
+
+    function publishRichPost() {
+      const text = document.getElementById('comp-text').value.trim();
+      const vibe = document.getElementById('comp-vibe').value;
+      const rawTags = document.getElementById('comp-tag-people').value.trim();
+      const location = document.getElementById('comp-tag-place').value.trim();
+      const anonymous = document.getElementById('comp-anon').checked;
+      const sensitive = document.getElementById('comp-sensitive').checked;
+      const opt1 = document.getElementById('poll-opt-1').value.trim();
+      const opt2 = document.getElementById('poll-opt-2').value.trim();
+
+      if (!text && !pendingMedia.url && !(opt1 && opt2)) {
+        alert('Add text, media, or poll options.');
+        return;
+      }
+
+      const taggedPeople = rawTags ? rawTags.split(/[\s,]+/).filter(Boolean).map(t => t.startsWith('@') ? t : '@' + t) : [];
+      const poll = (opt1 && opt2) ? { opt1, votes1: 0, opt2, votes2: 0, voted: null } : null;
+
+      posts.unshift({
+        id: Date.now(), author: currentUser.name, username: currentUser.username, realAuthorId: currentUser.id,
+        anonymous, sensitive, revealed: !sensitive, time: 'Just now', category: vibe,
+        text, mediaType: pendingMedia.type, mediaUrl: pendingMedia.url, poll,
+        taggedPeople, location, reactions: { '😂': 0, '🔥': 0, '😲': 0, '🏆': 0, '❤️': 0 },
+        userReaction: null, replies: []
+      });
+
+      saveAll();
+      closeComposerModal();
+      renderFeed();
+      renderForYouVibes();
+    }
+
+    function openThreadPage(postId) {
+      activeThreadPostId = postId;
+      pendingReplyMedia = { type: null, url: null };
+      document.getElementById('thread-standalone-page').classList.add('open');
+      renderThreadPage();
+    }
+
+    function closeThreadPage() {
+      document.getElementById('thread-standalone-page').classList.remove('open');
+      renderFeed();
+    }
+
+    function renderThreadPage() {
+      const p = posts.find(x => x.id === activeThreadPostId);
+      if (!p) return;
+
+      const repliesHtml = (p.replies || []).map(r => `
+        <div class="card" style="padding:10px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+            <strong style="cursor:pointer;" onclick="closeThreadPage(); openProfilePage('${r.username}')">@${r.username}</strong>
+            <span style="color:var(--accent); cursor:pointer; font-weight:700;" onclick="replyToComment(${p.id}, ${r.id})">Reply</span>
+          </div>
+          ${r.text ? `<div style="margin-top:4px; font-size:0.88rem;">${r.text}</div>` : ''}
+          ${r.mediaType === 'audio' && r.mediaUrl ? `<audio src="${r.mediaUrl}" controls style="width:100%; margin-top:6px;"></audio>` : ''}
+          ${r.mediaType === 'image' && r.mediaUrl ? `<img src="${r.mediaUrl}" class="post-media" style="margin-top:6px;" />` : ''}
+          ${r.mediaType === 'video' && r.mediaUrl ? `<video src="${r.mediaUrl}" class="post-media" controls style="margin-top:6px;"></video>` : ''}
+          ${(r.subReplies && r.subReplies.length) ? `
+            <div style="margin-top:8px; padding-left:10px; border-left:2px solid var(--accent);">
+              ${r.subReplies.map(sr => `<div style="font-size:0.82rem; margin-bottom:5px;"><strong>@${sr.username}:</strong> ${sr.text}</div>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+
+      document.getElementById('thread-page-body').innerHTML = `
+        <div class="card">
+          <strong>${p.anonymous ? 'Anonymous User' : p.author}</strong>
+          <div style="margin-top:6px;">${p.text || '[Media Post]'}</div>
+        </div>
+        <div class="card" style="border-color:var(--accent);">
+          <strong style="font-size:0.84rem; display:block; margin-bottom:6px;">Add a Reply</strong>
+          <textarea id="replyTextInput" rows="2" placeholder="Write a comment..."></textarea>
+          <div style="display:flex; gap:6px; margin:8px 0;">
+            <button class="secondary" style="flex:1;" id="voiceRecBtn" onclick="toggleVoiceNoteRecord()">&#127908; Voice</button>
+            <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">&#128247; Pic<input type="file" accept="image/*" style="display:none;" onchange="handleReplyMedia(event, 'image')" /></label>
+            <label class="secondary" style="flex:1; text-align:center; cursor:pointer;">&#127909; Video<input type="file" accept="video/*" style="display:none;" onchange="handleReplyMedia(event, 'video')" /></label>
+          </div>
+          <div id="replyMediaStatus" style="font-size:0.78rem; color:var(--accent); margin-bottom:6px;"></div>
+          <button class="primary" onclick="submitThreadReply()">Post Reply</button>
+        </div>
+        <div style="font-weight:800; font-size:0.86rem; margin:10px 0 6px;">Comments (${(p.replies || []).length})</div>
+        ${repliesHtml || `<div style="color:var(--muted); font-size:0.82rem;">No comments yet.</div>`}
+      `;
+    }
+
+    async function toggleVoiceNoteRecord() {
+      const btn = document.getElementById('voiceRecBtn');
+      const status = document.getElementById('replyMediaStatus');
+      if (!isRecordingVoice) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+          mediaRecorder.onstop = () => {
+            const url = URL.createObjectURL(new Blob(audioChunks, { type: 'audio/webm' }));
+            pendingReplyMedia = { type: 'audio', url };
+            status.textContent = '✓ Voice note attached';
+            stream.getTracks().forEach(t => t.stop());
+          };
+          mediaRecorder.start();
+          isRecordingVoice = true;
+          btn.textContent = '⏹ Stop';
+        } catch (err) {
+          alert('Microphone access needed.');
+        }
+      } else {
+        mediaRecorder.stop();
+        isRecordingVoice = false;
+        btn.textContent = '🎤 Voice';
+      }
+    }
+
+    function handleReplyMedia(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+      pendingReplyMedia = { type, url: URL.createObjectURL(file) };
+      document.getElementById('replyMediaStatus').textContent = `✓ ${type.toUpperCase()} attached`;
+    }
+
+    function submitThreadReply() {
+      const p = posts.find(x => x.id === activeThreadPostId);
+      const text = document.getElementById('replyTextInput').value.trim();
+      if (!p || (!text && !pendingReplyMedia.url)) return;
+      p.replies = p.replies || [];
+      p.replies.unshift({ id: Date.now(), author: currentUser.name, username: currentUser.username, text, mediaType: pendingReplyMedia.type, mediaUrl: pendingReplyMedia.url, subReplies: [] });
+      pendingReplyMedia = { type: null, url: null };
+      saveAll();
+      renderThreadPage();
+    }
+
+    function replyToComment(postId, replyId) {
+      const txt = prompt('Nested reply:');
+      if (!txt || !txt.trim()) return;
+      const p = posts.find(x => x.id === postId);
+      const r = p && p.replies.find(x => x.id === replyId);
+      if (!r) return;
+      r.subReplies = r.subReplies || [];
+      r.subReplies.push({ id: Date.now(), username: currentUser.username, text: txt.trim() });
+      saveAll();
+      renderThreadPage();
+    }
+
+    function openProfilePage(username) {
+      const cleanUser = username.replace(/^@/, '').toLowerCase();
+      let target = usersDB.find(u => u.username === cleanUser) || { id: 'u_' + cleanUser, name: cleanUser, username: cleanUser, bio: 'ᖇᒪ Member', following: false, pinnedPostIds: [], profileViews: [] };
+      const isSelf = target.username === currentUser.username;
+      if (!isSelf && !userPrefs.stealthView) {
+        target.profileViews = target.profileViews || [];
+        target.profileViews.unshift({ viewer: currentUser.username, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+        saveAll();
+      }
+      const userPosts = posts.filter(p => p.username === target.username && !p.anonymous);
+      const pinnedIds = target.pinnedPostIds || [];
+      const pinnedPosts = userPosts.filter(p => pinnedIds.includes(p.id));
+
+      document.getElementById('prof-page-header').textContent = isSelf ? 'My Profile' : `@${target.username}`;
+      document.getElementById('prof-tip-btn').onclick = () => openTipModal(target.username);
+
+      document.getElementById('profile-page-body').innerHTML = `
+        <div class="card">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="avatar-circle" style="width:54px; height:54px; font-size:1.3rem;">${target.name[0].toUpperCase()}</div>
+            <div style="flex:1;">
+              <strong style="font-size:1.05rem;">${target.name}</strong>
+              <div style="font-size:0.8rem; color:var(--muted);">@${target.username}</div>
+              <p style="font-size:0.84rem; margin-top:4px;">${target.bio || ''}</p>
+            </div>
+          </div>
+          ${!isSelf ? `
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="${target.following ? 'secondary' : 'primary'}" style="flex:1;" onclick="toggleFollowUser('${target.username}')">${target.following ? 'Following (Unfollow)' : 'Follow'}</button>
+              <button class="secondary" style="flex:1;" onclick="closeProfilePage(); startChatWith('${target.username}')">Message ĐM͒</button>
+            </div>
+          ` : ''}
+        </div>
+        <div style="font-weight:800; font-size:0.86rem; margin:10px 0 4px;">&#128204; Highlights</div>
+        <div class="highlights-strip">
+          ${pinnedPosts.length ? pinnedPosts.map(hp => `<div class="highlight-card"><div style="font-weight:700; color:var(--accent);">Pinned</div><div>${(hp.text || 'Media').slice(0, 55)}</div></div>`).join('') : `<div style="font-size:0.8rem; color:var(--muted);">No pinned highlights yet.</div>`}
+        </div>
+        <div style="font-weight:800; font-size:0.86rem; margin:12px 0 6px;">Activity (${userPosts.length})</div>
+        ${userPosts.map(p => `
+          <div class="card" style="display:flex; gap:10px; align-items:center; padding:10px;">
+            ${p.mediaType === 'image' && p.mediaUrl ? `<img src="${p.mediaUrl}" class="activity-thumb" />` : ''}
+            ${p.mediaType === 'video' && p.mediaUrl ? `<video src="${p.mediaUrl}" class="activity-thumb"></video>` : ''}
+            <div style="flex:1;">
+              <div style="font-size:0.74rem; color:var(--muted);">${p.time}</div>
+              <div style="font-size:0.85rem; margin-top:2px;">${p.text || 'Media Post'}</div>
+            </div>
+            ${isSelf ? `<button class="icon-btn" onclick="togglePinHighlight(${p.id})">${pinnedIds.includes(p.id) ? 'Unpin' : 'Pin'}</button>` : ''}
+          </div>
+        `).join('')}
+      `;
+      document.getElementById('profile-standalone-page').classList.add('open');
+    }
+
+    function closeProfilePage() { document.getElementById('profile-standalone-page').classList.remove('open'); }
+
+    function toggleFollowUser(username) {
+      const u = usersDB.find(x => x.username === username);
+      if (!u) return;
+      u.following = !u.following;
+      saveAll();
+      openProfilePage(username);
+    }
+
+    function togglePinHighlight(postId) {
+      currentUser.pinnedPostIds = currentUser.pinnedPostIds || [];
+      currentUser.pinnedPostIds = currentUser.pinnedPostIds.includes(postId)
+        ? currentUser.pinnedPostIds.filter(id => id !== postId)
+        : [...currentUser.pinnedPostIds, postId];
+      const idx = usersDB.findIndex(u => u.username === currentUser.username);
+      if (idx > -1) usersDB[idx] = currentUser;
+      saveAll();
+      openProfilePage(currentUser.username);
+    }
+
+    function updateViewAlertBadge() {
+      const views = (currentUser && currentUser.profileViews) ? currentUser.profileViews.length : 0;
+      const pill = document.getElementById('view-alert-pill');
+      pill.style.display = views > 0 ? 'inline-block' : 'none';
+      pill.textContent = `👁 ${views}`;
+    }
+
+    function openTipModal(username) {
+      document.getElementById('tip-target-name').textContent = '@' + username;
+      document.getElementById('tip-status-msg').style.display = 'none';
+      document.getElementById('tip-modal').classList.add('open');
+    }
+    function closeTipModal() { document.getElementById('tip-modal').classList.remove('open'); }
+    function switchTipMethod(m) {
+      document.getElementById('tip-tab-mpesa').classList.toggle('active', m === 'mpesa');
+      document.getElementById('tip-tab-card').classList.toggle('active', m === 'card');
+      document.getElementById('tip-mpesa-box').style.display = m === 'mpesa' ? 'flex' : 'none';
+      document.getElementById('tip-card-box').style.display = m === 'card' ? 'flex' : 'none';
+    }
+    function simulateMpesaStk() {
+      const phone = document.getElementById('tip-phone').value.trim();
+      const amt = document.getElementById('tip-amount-kes').value;
+      const msg = document.getElementById('tip-status-msg');
+      if (!phone) { alert('Enter M-Pesa phone number.'); return; }
+      msg.style.display = 'block';
+      msg.textContent = `📲 STK Push sent to ${phone} for KES ${amt}.`;
+    }
+    function simulateCardTip() {
+      const amt = document.getElementById('tip-amount-usd').value;
+      const msg = document.getElementById('tip-status-msg');
+      msg.style.display = 'block';
+      msg.textContent = `✓ $${amt} tip sent.`;
+    }
+
+    async function openIrlLiveModal(type, targetName) {
+      const map = { solo: '🔴 Solo IRL Live', group: '🔴 Group Live Stage', personal: `📞 Call with ${targetName || 'User'}` };
+      document.getElementById('irl-modal-title').textContent = map[type] || '🔴 IRL Live';
+      document.getElementById('irl-live-modal').classList.add('open');
+      setLiveMediaMode('video');
+    }
+
+    async function setLiveMediaMode(mode) {
+      document.getElementById('live-mode-video').classList.toggle('active', mode === 'video');
+      document.getElementById('live-mode-voice').classList.toggle('active', mode === 'voice');
+      const vid = document.getElementById('irlLiveVideo');
+      const voiceBox = document.getElementById('irlVoiceAvatar');
+      const status = document.getElementById('irl-live-status');
+      if (activeLiveStream) { activeLiveStream.getTracks().forEach(t => t.stop()); activeLiveStream = null; }
+      try {
+        activeLiveStream = await navigator.mediaDevices.getUserMedia({ video: mode === 'video', audio: true });
+        if (mode === 'video') { vid.style.display = 'block'; voiceBox.style.display = 'none'; vid.srcObject = activeLiveStream; status.textContent = '● LIVE VIDEO & AUDIO'; }
+        else { vid.style.display = 'none'; voiceBox.style.display = 'block'; status.textContent = '● LIVE VOICE ROOM'; }
+      } catch (e) {
+        vid.style.display = 'none'; voiceBox.style.display = 'block'; status.textContent = '● LIVE STAGE READY';
+      }
+    }
+
+    function toggleLiveMute() {
+      if (!activeLiveStream) return;
+      const t = activeLiveStream.getAudioTracks()[0];
+      if (!t) return;
+      t.enabled = !t.enabled;
+      document.getElementById('btn-live-mute').textContent = t.enabled ? 'Mute Mic' : 'Unmute Mic';
+    }
+
+    function sendLiveChat() {
+      const inp = document.getElementById('liveChatInput');
+      if (!inp.value.trim()) return;
+      const box = document.getElementById('live-room-chat');
+      box.innerHTML += `<div><strong>@${currentUser.username}:</strong> ${inp.value.trim()}</div>`;
+      inp.value = '';
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function closeIrlLiveModal() {
+      if (activeLiveStream) { activeLiveStream.getTracks().forEach(t => t.stop()); activeLiveStream = null; }
+      document.getElementById('irl-live-modal').classList.remove('open');
+    }
+
+    function formatLocalKickoff(isoEat) {
+      return new Intl.DateTimeFormat(undefined, { weekday: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(isoEat));
+    }
+
+    function toggleSpoilerBlur() {
+      userPrefs.spoilerBlur = !userPrefs.spoilerBlur;
+      saveAll();
+      renderEPL();
+    }
+
+    function renderEPL() {
+      const btn = document.getElementById('btn-spoiler-toggle');
+      if (btn) btn.textContent = userPrefs.spoilerBlur ? 'Spoilers Blurred' : 'Spoilers Visible';
+      document.getElementById('eplList').innerHTML = EPL_FIXTURES.map(m => `
+        <div class="epl-row">
+          <div><strong>${m.home}</strong> vs <strong>${m.away}</strong></div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span class="${userPrefs.spoilerBlur ? 'spoiler-blur' : ''}" onclick="this.classList.remove('spoiler-blur')" style="font-weight:800; background:var(--surface-2); padding:2px 7px; border-radius:6px;">${m.score}</span>
+            <span style="font-size:0.74rem; color:var(--accent); font-weight:700;">${formatLocalKickoff(m.isoEat)}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function fetchDualWeather() {
+      const cities = [userPrefs.city1, userPrefs.city2];
+      for (let i = 0; i < 2; i++) {
+        const c = cities[i];
+        document.getElementById(`w-city-${i + 1}`).textContent = c.name.toUpperCase();
+        try {
+          const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,wind_speed_10m`);
+          const data = await res.json();
+          document.getElementById(`w-temp-${i + 1}`).innerHTML = `${Math.round(data.current.temperature_2m)}&deg;C`;
+          document.getElementById(`w-desc-${i + 1}`).textContent = `Wind ${data.current.wind_speed_10m} km/h • Live`;
+        } catch (e) {
+          document.getElementById(`w-temp-${i + 1}`).innerHTML = i === 0 ? `23&deg;C` : `11&deg;C`;
+          document.getElementById(`w-desc-${i + 1}`).textContent = i === 0 ? 'Partly Cloudy' : 'Clear Sky';
+        }
+      }
+    }
+
+    function changeWeatherCities() {
+      const presets = [
+        { c1: { name: 'Nairobi', lat: -1.2864, lon: 36.8172 }, c2: { name: 'New York', lat: 40.7128, lon: -74.0060 } },
+        { c1: { name: 'Mombasa', lat: -4.0435, lon: 39.6682 }, c2: { name: 'London', lat: 51.5072, lon: -0.1276 } }
+      ];
+      const next = presets[(presets.findIndex(p => p.c1.name === userPrefs.city1.name) + 1) % presets.length];
+      userPrefs.city1 = next.c1;
+      userPrefs.city2 = next.c2;
+      saveAll();
+      fetchDualWeather();
+    }
+
+    function renderNews(scope) {
+      const items = scope === 'all' ? IRL_NEWS : IRL_NEWS.filter(n => n.scope === scope);
+      document.getElementById('newsList').innerHTML = items.map(n => `
+        <div style="padding:7px 0; border-bottom:1px solid var(--border);">
+          <span style="font-size:0.7rem; font-weight:800; color:var(--accent);">${n.tag}</span>
+          <div style="font-size:0.83rem; margin-top:2px;">${n.title}</div>
+        </div>
+      `).join('');
+    }
+
+    function handleGlobalSearch(q) {
+      const box = document.getElementById('search-live-results');
+      const query = q.trim().toLowerCase().replace(/^@/, '');
+      if (!query) { box.style.display = 'none'; return; }
+      const matchedPosts = posts.filter(p => p.text.toLowerCase().includes(query) || (p.category && p.category.toLowerCase().includes(query)));
+      const matchedUsers = usersDB.filter(u => u.username !== currentUser.username && (u.name.toLowerCase().includes(query) || u.username.toLowerCase().includes(query)));
+      box.innerHTML = `<div class="card"><strong style="font-size:0.8rem; color:var(--accent);">Matches</strong>` +
+        matchedPosts.slice(0, 3).map(p => `<div style="padding:6px 0; border-bottom:1px solid var(--border); font-size:0.82rem;" onclick="openThreadPage(${p.id})">#${p.category}: ${p.text}</div>`).join('') +
+        matchedUsers.map(u => `<div style="padding:6px 0; border-bottom:1px solid var(--border); font-size:0.82rem;" onclick="openProfilePage('${u.username}')">@${u.username} &bull; ${u.name}</div>`).join('') +
+        ((!matchedPosts.length && !matchedUsers.length) ? `<div style="font-size:0.8rem; color:var(--muted); padding-top:4px;">No matches.</div>` : '') + `</div>`;
+      box.style.display = 'block';
+    }
+
+    function renderGroups() {
+      const joined = groups.filter(g => g.joined);
+      const suggested = groups.filter(g => !g.joined);
+      document.getElementById('joinedGroupsList').innerHTML = joined.map(g => {
+        const myRole = (g.roles && g.roles[currentUser.username]) || 'Member';
+        return `
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>₲ ${g.name}</strong>
+              <span style="font-size:0.72rem; border:1px solid var(--accent); color:var(--accent); padding:2px 8px; border-radius:999px; font-weight:700;">${myRole}</span>
+            </div>
+            <div style="font-size:0.8rem; color:var(--muted); margin-top:4px;">${g.desc} &bull; ${g.members} members</div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('suggestedGroupsList').innerHTML = suggested.map(g => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+          <div><strong>₲ ${g.name}</strong><div style="font-size:0.78rem; color:var(--muted);">${g.desc}</div></div>
+          <button class="primary" style="width:auto;" onclick="toggleGroup('${g.id}')">Join</button>
+        </div>
+      `).join('');
+    }
+
+    function createGroup() {
+      const name = document.getElementById('newGroupName').value.trim();
+      const desc = document.getElementById('newGroupDesc').value.trim() || 'Community group';
+      if (!name) return;
+      groups.unshift({ id: 'g_' + Date.now(), name, desc, members: 1, joined: true, roles: { [currentUser.username]: 'Admin' } });
+      document.getElementById('newGroupName').value = '';
+      document.getElementById('newGroupDesc').value = '';
+      saveAll();
+      renderGroups();
+    }
+
+    function toggleGroup(id) {
+      const g = groups.find(x => x.id === id);
+      if (!g) return;
+      g.joined = !g.joined;
+      g.members += g.joined ? 1 : -1;
+      saveAll();
+      renderGroups();
+    }
+
+    function renderChatDirectory() {
+      const others = usersDB.filter(u => u.username !== currentUser.username);
+      document.getElementById('peopleChatList').innerHTML = others.map(u => {
+        const thread = chatsDB[u.username] || [];
+        return `
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="startChatWith('${u.username}')">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="avatar-circle">${u.name[0].toUpperCase()}</div>
+              <div><strong>${u.name}</strong> <span style="color:var(--muted); font-size:0.8rem;">@${u.username}</span><div style="font-size:0.78rem; color:var(--muted);">${thread.length ? thread[thread.length - 1].text : 'Tap to chat'}</div></div>
+            </div>
+            <span style="color:var(--accent); font-weight:800;">ĐM͒</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function startChatWith(username) {
+      const clean = username.replace(/^@/, '').toLowerCase();
+      if (clean === currentUser.username) return;
+      activeChatPartner = usersDB.find(u => u.username === clean) || { name: clean, username: clean };
+      goToPage(3);
+      document.getElementById('chat-directory').style.display = 'none';
+      document.getElementById('chat-thread-view').style.display = 'block';
+      document.getElementById('active-chat-name').textContent = `${activeChatPartner.name} (@${activeChatPartner.username})`;
+      renderChatMessages();
+    }
+
+    function closeChatThread() {
+      activeChatPartner = null;
+      document.getElementById('chat-thread-view').style.display = 'none';
+      document.getElementById('chat-directory').style.display = 'block';
+      renderChatDirectory();
+    }
+
+    function renderChatMessages() {
+      if (!activeChatPartner) return;
+      const thread = chatsDB[activeChatPartner.username] || [];
+      const box = document.getElementById('chatBox');
+      box.innerHTML = thread.map(m => `<div class="msg ${m.sender}">${m.text}</div>`).join('');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function sendMsg() {
+      const input = document.getElementById('chatInput');
+      if (!input.value.trim() || !activeChatPartner) return;
+      chatsDB[activeChatPartner.username] = chatsDB[activeChatPartner.username] || [];
+      chatsDB[activeChatPartner.username].push({ sender: 'out', text: input.value.trim() });
+      input.value = '';
+      saveAll();
+      renderChatMessages();
+    }
+
+    function openMenuDrawer() { renderSettings(); document.getElementById('menu-backdrop').classList.add('open'); document.getElementById('menu-drawer').classList.add('open'); }
+    function closeMenuDrawer() { document.getElementById('menu-backdrop').classList.remove('open'); document.getElementById('menu-drawer').classList.remove('open'); }
+
+    function renderSettings() {
+      const sections = [
+        { title: 'Accessibility', body: `<select onchange="userPrefs.fontSize=this.value; saveAll(); applyAccessibility();"><option value="sm" ${userPrefs.fontSize === 'sm' ? 'selected' : ''}>Small</option><option value="md" ${userPrefs.fontSize === 'md' ? 'selected' : ''}>Medium</option><option value="lg" ${userPrefs.fontSize === 'lg' ? 'selected' : ''}>Large</option></select>` },
+        { title: 'Account', body: `<button class="primary" onclick="closeMenuDrawer(); openProfilePage(currentUser.username)">Open My Profile</button>` },
+        { title: 'Additional resources', body: `<button class="secondary" style="width:100%;" onclick="openLegalModal()">Terms &amp; Privacy Policy</button>` },
+        { title: 'Appearance', body: `<div class="theme-grid"><div class="theme-pill ${currentTheme === 'black' ? 'active' : ''}" style="background:#000; color:#fff;" onclick="setTheme('black')">Pure Black</div><div class="theme-pill ${currentTheme === 'white' ? 'active' : ''}" style="background:#fff; color:#0f172a;" onclick="setTheme('white')">Crisp White</div><div class="theme-pill ${currentTheme === 'navy' ? 'active' : ''}" style="background:#061021; color:#93c5fd;" onclick="setTheme('navy')">Navy Blue</div><div class="theme-pill ${currentTheme === 'purple' ? 'active' : ''}" style="background:#f6f1ff; color:#581c87;" onclick="setTheme('purple')">Light Purple</div><div class="theme-pill ${currentTheme === 'pink' ? 'active' : ''}" style="background:#fff0f6; color:#831843; grid-column:span 2;" onclick="setTheme('pink')">Light Pink</div></div>` },
+        { title: 'Chat', body: `<div class="toggle-row"><span>Online Status</span><input type="checkbox" ${userPrefs.activeStatus ? 'checked' : ''} onchange="userPrefs.activeStatus=this.checked; saveAll();" /></div>` },
+        { title: 'Explore', body: `<div class="toggle-row"><span>Sports Spoiler Blur</span><input type="checkbox" ${userPrefs.spoilerBlur ? 'checked' : ''} onchange="userPrefs.spoilerBlur=this.checked; saveAll(); renderEPL();" /></div>` },
+        { title: 'Languages', body: `<select onchange="userPrefs.language=this.value; saveAll(); applyLanguage();"><option value="English" ${userPrefs.language === 'English' ? 'selected' : ''}>English</option><option value="Spanish" ${userPrefs.language === 'Spanish' ? 'selected' : ''}>Spanish</option><option value="Kiswahili" ${userPrefs.language === 'Kiswahili' ? 'selected' : ''}>Kiswahili</option><option value="Sheng'" ${userPrefs.language === "Sheng'" ? 'selected' : ''}>Sheng'</option></select>` },
+        { title: 'Notifications', body: `<div class="toggle-row"><span>Reactions &amp; Replies</span><input type="checkbox" ${userPrefs.notifLikes ? 'checked' : ''} onchange="userPrefs.notifLikes=this.checked; saveAll();" /></div>` },
+        { title: 'Privacy and safety', body: `<div class="toggle-row"><span>Stealth Profile Viewing</span><input type="checkbox" ${userPrefs.stealthView ? 'checked' : ''} onchange="userPrefs.stealthView=this.checked; saveAll();" /></div>` },
+        { title: 'Security and access', body: `<button class="danger-btn" onclick="logoutUser()">Log Out</button>` },
+        { title: 'Storage and Data', body: `<button class="secondary" style="width:100%;" onclick="if(confirm('Reset local data?')){localStorage.clear();location.reload();}">Reset Cache</button>` },
+        { title: 'Subscription', body: `<p>ᖇᒪ Free Tier</p>` },
+        { title: 'Timeline', body: `<select onchange="userPrefs.timelineOrder=this.value; saveAll(); renderFeed();"><option value="latest" ${userPrefs.timelineOrder === 'latest' ? 'selected' : ''}>Latest &amp; Vibes</option><option value="top" ${userPrefs.timelineOrder === 'top' ? 'selected' : ''}>Top Buzz</option></select>` }
+      ];
+      sections.sort((a, b) => a.title.localeCompare(b.title));
+      document.getElementById('alphabetical-settings-list').innerHTML = sections.map((s, idx) => `
+        <div class="settings-item" id="set-acc-${idx}">
+          <div class="settings-header" onclick="document.getElementById('set-acc-${idx}').classList.toggle('open')"><span>${s.title}</span><span>&#9662;</span></div>
+          <div class="settings-body">${s.body}</div>
+        </div>
+      `).join('');
+    }
+
+    function openLegalModal() { document.getElementById('legal-modal').classList.add('open'); }
+    function closeLegalModal() { document.getElementById('legal-modal').classList.remove('open'); }
+
+    setTheme(currentTheme);
+    if (currentUser) {
+      if (!currentUser.onboarded) openOnboarding();
+      else enterApp();
+    }
+  </script>
+</body>
+</html>
