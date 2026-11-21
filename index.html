@@ -819,7 +819,27 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
     let activeLiveStream = null;
     let selectedInterests = [];
     let isLoadingFeed = false;
-
+async function syncToSupabase() {
+  if (!window.sb || !currentUser || !currentUser.id) return;
+  try {
+    if (Array.isArray(posts) && posts.length > 0) {
+      const topPosts = posts.slice(0, 15).map((p) => ({
+        real_author_id: currentUser.id,
+        author_name: p.author || currentUser.name || 'User',
+        username: p.username || currentUser.username || 'user',
+        anonymous: Boolean(p.anonymous),
+        category: p.vibe || p.category || 'General',
+        text: String(p.text || ''),
+        location: p.location || '',
+        reactions: p.reactions || {}
+      }));
+      await window.sb.from('posts').insert(topPosts);
+    }
+  } catch (err) {
+    console.warn('Supabase sync skipped:', err);
+  }
+    }
+    
     function saveAll() {
       localStorage.setItem('rl_users_db', JSON.stringify(usersDB));
       localStorage.setItem('rl_posts_v4', JSON.stringify(posts));
@@ -827,6 +847,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
       localStorage.setItem('rl_chats_db', JSON.stringify(chatsDB));
       localStorage.setItem('rl_prefs_v4', JSON.stringify(userPrefs));
       if (currentUser) localStorage.setItem('rl_current_user', JSON.stringify(currentUser));
+      syncToSupabase();  
     }
 
     function setTheme(theme) {
